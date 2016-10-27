@@ -1,0 +1,11 @@
+[Protocol]
+exec=duckcoin-qt '%u'
+protocol=duckcoin
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

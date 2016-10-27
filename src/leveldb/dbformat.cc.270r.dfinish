@@ -1,0 +1,323 @@
+
+;; Function virtual const char* leveldb::InternalKeyComparator::Name() const (_ZNK7leveldb21InternalKeyComparator4NameEv, funcdef_no=1420, decl_uid=30090, cgraph_uid=590, symbol_order=602)
+
+(note 1 0 4 NOTE_INSN_DELETED)
+(note 4 1 14 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(note 14 4 3 2 NOTE_INSN_PROLOGUE_END)
+(note 3 14 10 2 NOTE_INSN_FUNCTION_BEG)
+(insn:TI 10 3 11 2 (set (reg/i:DI 0 ax)
+        (symbol_ref/f:DI ("*.LC0") [flags 0x2]  <var_decl 0x7feb014d1a20 *.LC0>)) db/dbformat.cc:48 89 {*movdi_internal}
+     (expr_list:REG_EQUAL (symbol_ref/f:DI ("*.LC0") [flags 0x2]  <var_decl 0x7feb014d1a20 *.LC0>)
+        (nil)))
+(insn 11 10 16 2 (use (reg/i:DI 0 ax)) db/dbformat.cc:48 -1
+     (nil))
+(jump_insn:TI 16 11 15 2 (simple_return) db/dbformat.cc:48 680 {simple_return_internal}
+     (nil)
+ -> simple_return)
+(barrier 15 16 13)
+(note 13 15 0 NOTE_INSN_DELETED)
+
+;; Function virtual int leveldb::InternalKeyComparator::Compare(const leveldb::Slice&, const leveldb::Slice&) const (_ZNK7leveldb21InternalKeyComparator7CompareERKNS_5SliceES3_, funcdef_no=1421, decl_uid=30094, cgraph_uid=591, symbol_order=603)
+
+(note 1 0 9 NOTE_INSN_DELETED)
+(note 9 1 5 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(note 5 9 14 2 NOTE_INSN_FUNCTION_BEG)
+(note 14 5 19 2 NOTE_INSN_DELETED)
+(note 19 14 82 2 NOTE_INSN_DELETED)
+(insn/f:TI 82 19 83 2 (set (mem:DI (pre_dec:DI (reg/f:DI 7 sp)) [0  S8 A8])
+        (reg:DI 6 bp)) db/dbformat.cc:50 65 {*pushdi2_rex64}
+     (expr_list:REG_DEAD (reg:DI 6 bp)
+        (nil)))
+(insn/f 83 82 4 2 (set (mem:DI (pre_dec:DI (reg/f:DI 7 sp)) [0  S8 A8])
+        (reg:DI 3 bx)) db/dbformat.cc:50 65 {*pushdi2_rex64}
+     (expr_list:REG_DEAD (reg:DI 3 bx)
+        (nil)))
+(insn 4 83 3 2 (set (reg/v/f:DI 3 bx [orig:111 bkey ] [111])
+        (reg:DI 1 dx [ bkey ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (nil))
+(insn:TI 3 4 84 2 (set (reg/v/f:DI 6 bp [orig:110 akey ] [110])
+        (reg:DI 4 si [ akey ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (nil))
+(insn/f:TI 84 3 85 2 (parallel [
+            (set (reg/f:DI 7 sp)
+                (plus:DI (reg/f:DI 7 sp)
+                    (const_int -56 [0xffffffffffffffc8])))
+            (clobber (reg:CC 17 flags))
+            (clobber (mem:BLK (scratch) [0  A8]))
+        ]) db/dbformat.cc:50 970 {pro_epilogue_adjust_stack_di_add}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (expr_list:REG_CFA_ADJUST_CFA (set (reg/f:DI 7 sp)
+                (plus:DI (reg/f:DI 7 sp)
+                    (const_int -56 [0xffffffffffffffc8])))
+            (nil))))
+(note 85 84 11 2 NOTE_INSN_PROLOGUE_END)
+(insn 11 85 7 2 (set (reg/f:DI 5 di [orig:88 D.33293 ] [88])
+        (mem/f:DI (plus:DI (reg/f:DI 5 di [orig:109 this ] [109])
+                (const_int 8 [0x8])) [3 this_3(D)->user_comparator_+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn:TI 7 11 12 2 (parallel [
+            (set (mem/v/f/c:DI (plus:DI (reg/f:DI 7 sp)
+                        (const_int 40 [0x28])) [3 D.33300+0 S8 A64])
+                (unspec:DI [
+                        (const_int 40 [0x28])
+                    ] UNSPEC_SP_TLS_SET))
+            (set (reg:DI 0 ax [130])
+                (const_int 0 [0]))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:50 986 {stack_tls_protect_set_di}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (expr_list:REG_UNUSED (reg:DI 0 ax [130])
+            (nil))))
+(insn:TI 12 7 13 2 (set (reg/f:DI 0 ax [orig:113 _4->_vptr.Comparator ] [113])
+        (mem/f:DI (reg/f:DI 5 di [orig:88 D.33293 ] [88]) [3 _4->_vptr.Comparator+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_EQUIV (mem/f:DI (reg/f:DI 5 di [orig:88 D.33293 ] [88]) [3 _4->_vptr.Comparator+0 S8 A64])
+        (nil)))
+(insn:TI 13 12 75 2 (set (reg/f:DI 2 cx [orig:90 D.33295 ] [90])
+        (mem/f:DI (plus:DI (reg/f:DI 0 ax [orig:113 _4->_vptr.Comparator ] [113])
+                (const_int 16 [0x10])) [3 MEM[(int (*__vtbl_ptr_type) () *)_5 + 16B]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 0 ax [orig:113 _4->_vptr.Comparator ] [113])
+        (nil)))
+(insn 75 13 16 2 (set (reg:DI 0 ax [132])
+        (mem:DI (plus:DI (reg/f:DI 1 dx [orig:111 bkey ] [111])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])) ./db/dbformat.h:100 89 {*movdi_internal}
+     (nil))
+(insn:TI 16 75 15 2 (set (reg/f:DI 1 dx [orig:115 MEM[(const char * *)bkey_7(D)] ] [115])
+        (mem/f:DI (reg/f:DI 1 dx [orig:111 bkey ] [111]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_EQUIV (mem/f:DI (reg/v/f:DI 3 bx [orig:111 bkey ] [111]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])
+        (nil)))
+(insn:TI 15 16 18 2 (parallel [
+            (set (reg:DI 0 ax [orig:96 D.33296 ] [96])
+                (plus:DI (reg:DI 0 ax [132])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) ./db/dbformat.h:100 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (expr_list:REG_EQUIV (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                    (const_int -24 [0xffffffffffffffe8])) [11 MEM[(struct Slice *)&D.30480 + 8B]+0 S8 A64])
+            (expr_list:REG_EQUAL (plus:DI (mem:DI (plus:DI (reg/v/f:DI 3 bx [orig:111 bkey ] [111])
+                            (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8]))
+                (nil)))))
+(insn:TI 18 15 76 2 (set (mem/c:DI (plus:DI (reg/f:DI 7 sp)
+                (const_int 24 [0x18])) [11 MEM[(struct Slice *)&D.30480 + 8B]+0 S8 A64])
+        (reg:DI 0 ax [orig:96 D.33296 ] [96])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 0 ax [orig:96 D.33296 ] [96])
+        (nil)))
+(insn 76 18 17 2 (set (reg:DI 0 ax [133])
+        (mem:DI (plus:DI (reg/f:DI 4 si [orig:110 akey ] [110])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])) ./db/dbformat.h:100 89 {*movdi_internal}
+     (nil))
+(insn:TI 17 76 21 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 7 sp)
+                (const_int 16 [0x10])) [11 MEM[(struct Slice *)&D.30480]+0 S8 A128])
+        (reg/f:DI 1 dx [orig:115 MEM[(const char * *)bkey_7(D)] ] [115])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 1 dx [orig:115 MEM[(const char * *)bkey_7(D)] ] [115])
+        (nil)))
+(insn 21 17 25 2 (set (reg/f:DI 1 dx [orig:117 MEM[(const char * *)akey_9(D)] ] [117])
+        (mem/f:DI (reg/f:DI 4 si [orig:110 akey ] [110]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 4 si [orig:110 akey ] [110])
+        (expr_list:REG_EQUIV (mem/f:DI (reg/v/f:DI 6 bp [orig:110 akey ] [110]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])
+            (nil))))
+(insn 25 21 20 2 (set (reg/f:DI 4 si [119])
+        (reg/f:DI 7 sp)) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_EQUIV (plus:DI (reg/f:DI 20 frame)
+            (const_int -48 [0xffffffffffffffd0]))
+        (nil)))
+(insn:TI 20 25 22 2 (parallel [
+            (set (reg:DI 0 ax [orig:98 D.33296 ] [98])
+                (plus:DI (reg:DI 0 ax [133])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) ./db/dbformat.h:100 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (expr_list:REG_EQUIV (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                    (const_int -40 [0xffffffffffffffd8])) [11 MEM[(struct Slice *)&D.30479 + 8B]+0 S8 A64])
+            (expr_list:REG_EQUAL (plus:DI (mem:DI (plus:DI (reg/v/f:DI 6 bp [orig:110 akey ] [110])
+                            (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8]))
+                (nil)))))
+(insn:TI 22 20 23 2 (set (mem/f/c:DI (reg/f:DI 7 sp) [11 MEM[(struct Slice *)&D.30479]+0 S8 A128])
+        (reg/f:DI 1 dx [orig:117 MEM[(const char * *)akey_9(D)] ] [117])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 1 dx [orig:117 MEM[(const char * *)akey_9(D)] ] [117])
+        (nil)))
+(insn 23 22 81 2 (set (mem/c:DI (plus:DI (reg/f:DI 7 sp)
+                (const_int 8 [0x8])) [11 MEM[(struct Slice *)&D.30479 + 8B]+0 S8 A64])
+        (reg:DI 0 ax [orig:98 D.33296 ] [98])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 0 ax [orig:98 D.33296 ] [98])
+        (nil)))
+(insn 81 23 29 2 (set (reg/f:DI 1 dx [118])
+        (plus:DI (reg/f:DI 7 sp)
+            (const_int 16 [0x10]))) db/dbformat.cc:55 214 {*leadi}
+     (nil))
+(call_insn:TI 29 81 31 2 (set (reg:SI 0 ax)
+        (call (mem:QI (reg/f:DI 2 cx [orig:90 D.33295 ] [90]) [0 *OBJ_TYPE_REF(_6;(const struct Comparator)_4->2) S1 A8])
+            (const_int 0 [0]))) db/dbformat.cc:55 669 {*call_value}
+     (expr_list:REG_DEAD (reg:DI 5 di)
+        (expr_list:REG_DEAD (reg:DI 4 si)
+            (expr_list:REG_DEAD (reg/f:DI 2 cx [orig:90 D.33295 ] [90])
+                (expr_list:REG_DEAD (reg:DI 1 dx)
+                    (expr_list:REG_CALL_DECL (nil)
+                        (nil))))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:DI (use (reg:DI 1 dx))
+                (nil)))))
+(insn:TI 31 29 32 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v:SI 0 ax [orig:87 r ] [87])
+            (const_int 0 [0]))) db/dbformat.cc:56 3 {*cmpsi_ccno_1}
+     (nil))
+(jump_insn:TI 32 31 33 2 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 47)
+            (pc))) db/dbformat.cc:56 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 3900 (nil)))
+ -> 47)
+(note 33 32 36 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(note 36 33 39 3 NOTE_INSN_DELETED)
+(note 39 36 35 3 NOTE_INSN_DELETED)
+(insn:TI 35 39 34 3 (set (reg:DI 1 dx [orig:121 MEM[(long unsigned int *)akey_9(D) + 8B] ] [121])
+        (mem:DI (plus:DI (reg/v/f:DI 6 bp [orig:110 akey ] [110])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 6 bp [orig:110 akey ] [110])
+        (nil)))
+(insn 34 35 37 3 (set (reg/f:DI 2 cx [orig:120 MEM[(const char * *)akey_9(D)] ] [120])
+        (mem/f:DI (reg/v/f:DI 6 bp [orig:110 akey ] [110]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])) 89 {*movdi_internal}
+     (nil))
+(insn:TI 37 34 38 3 (set (reg/f:DI 5 di [orig:122 MEM[(const char * *)bkey_7(D)] ] [122])
+        (mem/f:DI (reg/v/f:DI 3 bx [orig:111 bkey ] [111]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])) 89 {*movdi_internal}
+     (nil))
+(insn 38 37 77 3 (set (reg:DI 4 si [orig:123 MEM[(long unsigned int *)bkey_7(D) + 8B] ] [123])
+        (mem:DI (plus:DI (reg/v/f:DI 3 bx [orig:111 bkey ] [111])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 3 bx [orig:111 bkey ] [111])
+        (nil)))
+(insn:TI 77 38 73 3 (set (reg:DI 0 ax [134])
+        (mem:DI (plus:DI (plus:DI (reg/f:DI 2 cx [orig:120 MEM[(const char * *)akey_9(D)] ] [120])
+                    (reg:DI 1 dx [orig:121 MEM[(long unsigned int *)akey_9(D) + 8B] ] [121]))
+                (const_int -8 [0xfffffffffffffff8])) [0 MEM[(char * {ref-all})_17]+0 S8 A8])) db/dbformat.cc:59 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 2 cx [orig:120 MEM[(const char * *)akey_9(D)] ] [120])
+        (expr_list:REG_DEAD (reg:DI 1 dx [orig:121 MEM[(long unsigned int *)akey_9(D) + 8B] ] [121])
+            (nil))))
+(insn 73 77 40 3 (set (reg:SI 1 dx [129])
+        (const_int -1 [0xffffffffffffffff])) 90 {*movsi_internal}
+     (expr_list:REG_EQUIV (const_int -1 [0xffffffffffffffff])
+        (nil)))
+(insn:TI 40 73 79 3 (set (reg:CC 17 flags)
+        (compare:CC (mem:DI (plus:DI (plus:DI (reg/f:DI 5 di [orig:122 MEM[(const char * *)bkey_7(D)] ] [122])
+                        (reg:DI 4 si [orig:123 MEM[(long unsigned int *)bkey_7(D) + 8B] ] [123]))
+                    (const_int -8 [0xfffffffffffffff8])) [0 MEM[(char * {ref-all})_22]+0 S8 A8])
+            (reg:DI 0 ax [134]))) db/dbformat.cc:59 8 {*cmpdi_1}
+     (expr_list:REG_DEAD (reg/f:DI 5 di [orig:122 MEM[(const char * *)bkey_7(D)] ] [122])
+        (expr_list:REG_DEAD (reg:DI 4 si [orig:123 MEM[(long unsigned int *)bkey_7(D) + 8B] ] [123])
+            (expr_list:REG_DEAD (reg:DI 0 ax [134])
+                (nil)))))
+(insn:TI 79 40 80 3 (set (reg:QI 0 ax [128])
+        (gtu:QI (reg:CC 17 flags)
+            (const_int 0 [0]))) 607 {*setcc_qi}
+     (nil))
+(insn:TI 80 79 72 3 (set (reg:SI 0 ax [128])
+        (zero_extend:SI (reg:QI 0 ax [128]))) 138 {*zero_extendqisi2}
+     (nil))
+(insn:TI 72 80 47 3 (set (reg/v:SI 0 ax [orig:87 r ] [87])
+        (if_then_else:SI (geu (reg:CC 17 flags)
+                (const_int 0 [0]))
+            (reg:SI 0 ax [128])
+            (reg:SI 1 dx [129]))) 953 {*movsicc_noc}
+     (expr_list:REG_DEAD (reg:CC 17 flags)
+        (expr_list:REG_DEAD (reg:SI 1 dx [129])
+            (nil))))
+(code_label 47 72 48 4 3 "" [1 uses])
+(note 48 47 55 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn:TI 55 48 56 4 (parallel [
+            (set (reg:CCZ 17 flags)
+                (unspec:CCZ [
+                        (mem/v/f/c:DI (plus:DI (reg/f:DI 7 sp)
+                                (const_int 40 [0x28])) [3 D.33300+0 S8 A64])
+                        (const_int 40 [0x28])
+                    ] UNSPEC_SP_TLS_TEST))
+            (clobber (reg:DI 3 bx [131]))
+        ]) db/dbformat.cc:66 990 {stack_tls_protect_test_di}
+     (expr_list:REG_UNUSED (reg:DI 3 bx [131])
+        (nil)))
+(jump_insn:TI 56 55 67 4 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref:DI 96)
+            (pc))) db/dbformat.cc:66 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 4 (nil)))
+ -> 96)
+(note 67 56 97 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(note 97 67 89 5 NOTE_INSN_EPILOGUE_BEG)
+(insn/f:TI 89 97 60 5 (parallel [
+            (set (reg/f:DI 7 sp)
+                (plus:DI (reg/f:DI 7 sp)
+                    (const_int 56 [0x38])))
+            (clobber (reg:CC 17 flags))
+            (clobber (mem:BLK (scratch) [0  A8]))
+        ]) db/dbformat.cc:66 970 {pro_epilogue_adjust_stack_di_add}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (expr_list:REG_CFA_ADJUST_CFA (set (reg/f:DI 7 sp)
+                (plus:DI (reg/f:DI 7 sp)
+                    (const_int 56 [0x38])))
+            (nil))))
+(insn 60 89 90 5 (use (reg/i:SI 0 ax)) db/dbformat.cc:66 -1
+     (nil))
+(insn/f:TI 90 60 91 5 (set (reg:DI 3 bx)
+        (mem:DI (post_inc:DI (reg/f:DI 7 sp)) [0  S8 A8])) db/dbformat.cc:66 75 {*popdi1}
+     (expr_list:REG_CFA_ADJUST_CFA (set (reg/f:DI 7 sp)
+            (plus:DI (reg/f:DI 7 sp)
+                (const_int 8 [0x8])))
+        (nil)))
+(insn/f:TI 91 90 92 5 (set (reg:DI 6 bp)
+        (mem:DI (post_inc:DI (reg/f:DI 7 sp)) [0  S8 A8])) db/dbformat.cc:66 75 {*popdi1}
+     (expr_list:REG_CFA_ADJUST_CFA (set (reg/f:DI 7 sp)
+            (plus:DI (reg/f:DI 7 sp)
+                (const_int 8 [0x8])))
+        (nil)))
+(jump_insn:TI 92 91 93 5 (simple_return) db/dbformat.cc:66 680 {simple_return_internal}
+     (nil)
+ -> simple_return)
+(barrier 93 92 96)
+(code_label 96 93 66 6 8 "" [1 uses])
+(note 66 96 57 6 [bb 6] NOTE_INSN_BASIC_BLOCK)
+(call_insn:TI 57 66 58 6 (call (mem:QI (symbol_ref:DI ("__stack_chk_fail") [flags 0x41]  <function_decl 0x7feb014d40d8 __stack_chk_fail>) [0 __stack_chk_fail S1 A8])
+        (const_int 0 [0])) db/dbformat.cc:66 660 {*call}
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__stack_chk_fail") [flags 0x41]  <function_decl 0x7feb014d40d8 __stack_chk_fail>)
+        (expr_list:REG_ARGS_SIZE (const_int 0 [0])
+            (expr_list:REG_NORETURN (const_int 0 [0])
+                (expr_list:REG_EH_REGION (const_int 0 [0])
+                    (nil)))))
+    (nil))
+(barrier 58 57 74)
+(note 74 58 0 NOTE_INSN_DELETED)
+
+;; Function virtual const char* leveldb::InternalFilterPolicy::Name() const (_ZNK7leveldb20InternalFilterPolicy4NameEv, funcdef_no=1424, decl_uid=30154, cgraph_uid=594, symbol_order=606)
+
+(note 1 0 4 NOTE_INSN_DELETED)
+(note 4 1 18 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(note 18 4 3 2 NOTE_INSN_PROLOGUE_END)
+(note 3 18 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn:TI 6 3 7 2 (set (reg/f:DI 5 di [orig:87 D.33305 ] [87])
+        (mem/f:DI (plus:DI (reg/f:DI 5 di [orig:92 this ] [92])
+                (const_int 8 [0x8])) [3 this_2(D)->user_policy_+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (nil))
+(insn:TI 7 6 8 2 (set (reg/f:DI 0 ax [orig:93 _3->_vptr.FilterPolicy ] [93])
+        (mem/f:DI (reg/f:DI 5 di [orig:87 D.33305 ] [87]) [3 _3->_vptr.FilterPolicy+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_EQUIV (mem/f:DI (reg/f:DI 5 di [orig:87 D.33305 ] [87]) [3 _3->_vptr.FilterPolicy+0 S8 A64])
+        (nil)))
+(insn:TI 8 7 10 2 (set (reg/f:DI 0 ax [orig:94 MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ] [94])
+        (mem/f:DI (plus:DI (reg/f:DI 0 ax [orig:93 _3->_vptr.FilterPolicy ] [93])
+                (const_int 16 [0x10])) [3 MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B]+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (nil))
+(call_insn/j:TI 10 8 11 2 (set (reg:DI 0 ax)
+        (call (mem:QI (reg/f:DI 0 ax [orig:94 MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ] [94]) [0 *OBJ_TYPE_REF(_5;(const struct FilterPolicy)_3->2) S1 A8])
+            (const_int 0 [0]))) db/dbformat.cc:102 671 {*sibcall_value}
+     (expr_list:REG_DEAD (reg:DI 5 di)
+        (expr_list:REG_CALL_DECL (nil)
+            (nil)))
+    (expr_list:DI (use (reg:DI 5 di))
+        (nil)))
+(barrier 11 10 17)
+(note 17 11 0 NOTE_INSN_DELETED)

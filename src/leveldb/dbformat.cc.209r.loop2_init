@@ -1,0 +1,1645 @@
+
+;; Function virtual const char* leveldb::InternalKeyComparator::Name() const (_ZNK7leveldb21InternalKeyComparator4NameEv, funcdef_no=1420, decl_uid=30090, cgraph_uid=590, symbol_order=602)
+
+0 registers.
+
+3 basic blocks, 2 edges.
+basic block 0, loop depth 0, count 0, freq 10000, maybe hot
+ prev block (nil), next block 2, flags: (RTL, MODIFIED)
+ pred:      
+;; bb 0 artificial_defs: { d-1(0){ }d-1(1){ }d-1(2){ }d-1(4){ }d-1(5){ }d-1(6){ }d-1(7){ }d-1(16){ }d-1(20){ }d-1(21){ }d-1(22){ }d-1(23){ }d-1(24){ }d-1(25){ }d-1(26){ }d-1(27){ }d-1(28){ }d-1(37){ }d-1(38){ }}
+;; bb 0 artificial_uses: { }
+;; lr  in  	
+;; lr  use 	
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  in  	
+;; live  gen 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  kill	
+
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       2 [100.0%]  (FALLTHRU)
+
+basic block 2, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 0, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 87
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 0 [ax] 87
+;; live  kill	
+
+(note 4 0 3 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(note 3 4 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 10 2 (set (reg/f:DI 87 [ <retval> ])
+        (symbol_ref/f:DI ("*.LC0") [flags 0x2]  <var_decl 0x7feb014d1a20 *.LC0>)) db/dbformat.cc:47 89 {*movdi_internal}
+     (nil))
+(insn 10 6 11 2 (set (reg/i:DI 0 ax)
+        (reg/f:DI 87 [ <retval> ])) db/dbformat.cc:48 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 87 [ <retval> ])
+        (expr_list:REG_EQUAL (symbol_ref/f:DI ("*.LC0") [flags 0x2]  <var_decl 0x7feb014d1a20 *.LC0>)
+            (nil))))
+(insn 11 10 0 2 (use (reg/i:DI 0 ax)) db/dbformat.cc:48 -1
+     (nil))
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       EXIT [100.0%]  (FALLTHRU)
+
+basic block 1, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 2, next block (nil), flags: (REACHABLE, RTL, MODIFIED)
+ pred:       2 [100.0%]  (FALLTHRU)
+;; bb 1 artificial_defs: { }
+;; bb 1 artificial_uses: { u6(0){ }u7(6){ }u8(7){ }u9(20){ }}
+;; lr  in  	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; lr  use 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; lr  def 	
+;; live  in  	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+
+;; lr  out 	
+;; live  out 	
+
+ succ:      
+
+
+;; 1 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2
+;; 2 succs { 1 }
+
+
+virtual const char* leveldb::InternalKeyComparator::Name() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0[ax]
+;;  ref usage 	r0={2d,2u} r1={1d} r2={1d} r4={1d} r5={1d} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,2u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} 
+;;    total ref usage 31{21d,10u,0e} in 3{3 regular + 0 call} insns.
+;; basic block 2, loop depth 0, count 0, freq 10000, maybe hot
+;;  prev block 0, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 87
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 0 [ax] 87
+;; live  kill	
+(note 4 0 3 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(note 3 4 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 10 2 (set (reg/f:DI 87 [ <retval> ])
+        (symbol_ref/f:DI ("*.LC0") [flags 0x2]  <var_decl 0x7feb014d1a20 *.LC0>)) db/dbformat.cc:47 89 {*movdi_internal}
+     (nil))
+(insn 10 6 11 2 (set (reg/i:DI 0 ax)
+        (reg/f:DI 87 [ <retval> ])) db/dbformat.cc:48 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 87 [ <retval> ])
+        (expr_list:REG_EQUAL (symbol_ref/f:DI ("*.LC0") [flags 0x2]  <var_decl 0x7feb014d1a20 *.LC0>)
+            (nil))))
+(insn 11 10 0 2 (use (reg/i:DI 0 ax)) db/dbformat.cc:48 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function virtual int leveldb::InternalKeyComparator::Compare(const leveldb::Slice&, const leveldb::Slice&) const (_ZNK7leveldb21InternalKeyComparator7CompareERKNS_5SliceES3_, funcdef_no=1421, decl_uid=30094, cgraph_uid=591, symbol_order=603)
+
+0 registers.
+
+9 basic blocks, 10 edges.
+basic block 0, loop depth 0, count 0, freq 10000, maybe hot
+ prev block (nil), next block 2, flags: (RTL, MODIFIED)
+ pred:      
+;; bb 0 artificial_defs: { d-1(0){ }d-1(1){ }d-1(2){ }d-1(4){ }d-1(5){ }d-1(6){ }d-1(7){ }d-1(16){ }d-1(20){ }d-1(21){ }d-1(22){ }d-1(23){ }d-1(24){ }d-1(25){ }d-1(26){ }d-1(27){ }d-1(28){ }d-1(37){ }d-1(38){ }}
+;; bb 0 artificial_uses: { }
+;; lr  in  	
+;; lr  use 	
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  in  	
+;; live  gen 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  kill	
+
+;; lr  out 	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       2 [100.0%]  (FALLTHRU)
+
+basic block 2, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 0, next block 3, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 87 88 90 96 98 109 110 111 113 114 115 116 117 118 119
+;; live  in  	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 0 [ax] 1 [dx] 4 [si] 5 [di] 17 [flags] 87 88 90 96 98 109 110 111 113 114 115 116 117 118 119
+;; live  kill	 17 [flags]
+
+(note 9 0 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 9 3 2 (set (reg/f:DI 109 [ this ])
+        (reg:DI 5 di [ this ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 3 2 4 2 (set (reg/v/f:DI 110 [ akey ])
+        (reg:DI 4 si [ akey ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ akey ])
+        (nil)))
+(insn 4 3 5 2 (set (reg/v/f:DI 111 [ bkey ])
+        (reg:DI 1 dx [ bkey ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 1 dx [ bkey ])
+        (nil)))
+(note 5 4 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 5 11 2 (parallel [
+            (set (mem/v/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                        (const_int -8 [0xfffffffffffffff8])) [3 D.33300+0 S8 A64])
+                (unspec:DI [
+                        (const_int 40 [0x28])
+                    ] UNSPEC_SP_TLS_SET))
+            (set (scratch:DI)
+                (const_int 0 [0]))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:50 986 {stack_tls_protect_set_di}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 11 7 12 2 (set (reg/f:DI 88 [ D.33293 ])
+        (mem/f:DI (plus:DI (reg/f:DI 109 [ this ])
+                (const_int 8 [0x8])) [3 this_3(D)->user_comparator_+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 109 [ this ])
+        (nil)))
+(insn 12 11 13 2 (set (reg/f:DI 113 [ _4->_vptr.Comparator ])
+        (mem/f:DI (reg/f:DI 88 [ D.33293 ]) [3 _4->_vptr.Comparator+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 90 [ D.33295 ])
+        (mem/f:DI (plus:DI (reg/f:DI 113 [ _4->_vptr.Comparator ])
+                (const_int 16 [0x10])) [3 MEM[(int (*__vtbl_ptr_type) () *)_5 + 16B]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 113 [ _4->_vptr.Comparator ])
+        (nil)))
+(insn 14 13 15 2 (set (reg:DI 114 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 111 [ bkey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])) ./db/dbformat.h:100 89 {*movdi_internal}
+     (nil))
+(insn 15 14 16 2 (parallel [
+            (set (reg:DI 96 [ D.33296 ])
+                (plus:DI (reg:DI 114 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) ./db/dbformat.h:100 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 114 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (expr_list:REG_EQUAL (plus:DI (mem:DI (plus:DI (reg/v/f:DI 111 [ bkey ])
+                            (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8]))
+                (nil)))))
+(insn 16 15 17 2 (set (reg/f:DI 115 [ MEM[(const char * *)bkey_7(D)] ])
+        (mem/f:DI (reg/v/f:DI 111 [ bkey ]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn 17 16 18 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -32 [0xffffffffffffffe0])) [11 MEM[(struct Slice *)&D.30480]+0 S8 A128])
+        (reg/f:DI 115 [ MEM[(const char * *)bkey_7(D)] ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 115 [ MEM[(const char * *)bkey_7(D)] ])
+        (nil)))
+(insn 18 17 19 2 (set (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -24 [0xffffffffffffffe8])) [11 MEM[(struct Slice *)&D.30480 + 8B]+0 S8 A64])
+        (reg:DI 96 [ D.33296 ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 96 [ D.33296 ])
+        (nil)))
+(insn 19 18 20 2 (set (reg:DI 116 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 110 [ akey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])) ./db/dbformat.h:100 89 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (parallel [
+            (set (reg:DI 98 [ D.33296 ])
+                (plus:DI (reg:DI 116 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) ./db/dbformat.h:100 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 116 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (expr_list:REG_EQUAL (plus:DI (mem:DI (plus:DI (reg/v/f:DI 110 [ akey ])
+                            (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8]))
+                (nil)))))
+(insn 21 20 22 2 (set (reg/f:DI 117 [ MEM[(const char * *)akey_9(D)] ])
+        (mem/f:DI (reg/v/f:DI 110 [ akey ]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn 22 21 23 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -48 [0xffffffffffffffd0])) [11 MEM[(struct Slice *)&D.30479]+0 S8 A128])
+        (reg/f:DI 117 [ MEM[(const char * *)akey_9(D)] ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 117 [ MEM[(const char * *)akey_9(D)] ])
+        (nil)))
+(insn 23 22 24 2 (set (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -40 [0xffffffffffffffd8])) [11 MEM[(struct Slice *)&D.30479 + 8B]+0 S8 A64])
+        (reg:DI 98 [ D.33296 ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 98 [ D.33296 ])
+        (nil)))
+(insn 24 23 25 2 (parallel [
+            (set (reg/f:DI 118)
+                (plus:DI (reg/f:DI 20 frame)
+                    (const_int -32 [0xffffffffffffffe0])))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:55 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 25 24 26 2 (parallel [
+            (set (reg/f:DI 119)
+                (plus:DI (reg/f:DI 20 frame)
+                    (const_int -48 [0xffffffffffffffd0])))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:55 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 26 25 27 2 (set (reg:DI 1 dx)
+        (reg/f:DI 118)) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 118)
+        (expr_list:REG_EQUAL (plus:DI (reg/f:DI 20 frame)
+                (const_int -32 [0xffffffffffffffe0]))
+            (nil))))
+(insn 27 26 28 2 (set (reg:DI 4 si)
+        (reg/f:DI 119)) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 119)
+        (expr_list:REG_EQUAL (plus:DI (reg/f:DI 20 frame)
+                (const_int -48 [0xffffffffffffffd0]))
+            (nil))))
+(insn 28 27 29 2 (set (reg:DI 5 di)
+        (reg/f:DI 88 [ D.33293 ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 88 [ D.33293 ])
+        (nil)))
+(call_insn 29 28 30 2 (set (reg:SI 0 ax)
+        (call (mem:QI (reg/f:DI 90 [ D.33295 ]) [0 *OBJ_TYPE_REF(_6;(const struct Comparator)_4->2) S1 A8])
+            (const_int 0 [0]))) db/dbformat.cc:55 669 {*call_value}
+     (expr_list:REG_DEAD (reg/f:DI 90 [ D.33295 ])
+        (expr_list:REG_DEAD (reg:DI 5 di)
+            (expr_list:REG_DEAD (reg:DI 4 si)
+                (expr_list:REG_DEAD (reg:DI 1 dx)
+                    (expr_list:REG_CALL_DECL (nil)
+                        (nil))))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:DI (use (reg:DI 1 dx))
+                (nil)))))
+(insn 30 29 31 2 (set (reg/v:SI 87 [ r ])
+        (reg:SI 0 ax)) db/dbformat.cc:55 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg:SI 0 ax)
+        (nil)))
+(insn 31 30 32 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v:SI 87 [ r ])
+            (const_int 0 [0]))) db/dbformat.cc:56 3 {*cmpsi_ccno_1}
+     (nil))
+(jump_insn 32 31 33 2 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 47)
+            (pc))) db/dbformat.cc:56 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 3900 (nil)))
+ -> 47)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87 110 111
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87 110 111
+
+ succ:       3 [61.0%]  (FALLTHRU)
+             6 [39.0%] 
+
+basic block 3, loop depth 0, count 0, freq 6100, maybe hot
+ prev block 2, next block 4, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       2 [61.0%]  (FALLTHRU)
+;; bb 3 artificial_defs: { }
+;; bb 3 artificial_uses: { u42(6){ }u43(7){ }u44(16){ }u45(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 110 111
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 110 111
+;; lr  def 	 17 [flags] 91 106 120 121 122 123
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 110 111
+;; live  gen 	 17 [flags] 91 106 120 121 122 123
+;; live  kill	
+
+(note 33 32 34 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(insn 34 33 35 3 (set (reg/f:DI 120 [ MEM[(const char * *)akey_9(D)] ])
+        (mem/f:DI (reg/v/f:DI 110 [ akey ]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])) 89 {*movdi_internal}
+     (nil))
+(insn 35 34 36 3 (set (reg:DI 121 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 110 [ akey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 110 [ akey ])
+        (nil)))
+(insn 36 35 37 3 (set (reg:DI 106 [ D.33296 ])
+        (mem:DI (plus:DI (plus:DI (reg/f:DI 120 [ MEM[(const char * *)akey_9(D)] ])
+                    (reg:DI 121 [ MEM[(long unsigned int *)akey_9(D) + 8B] ]))
+                (const_int -8 [0xfffffffffffffff8])) [0 MEM[(char * {ref-all})_17]+0 S8 A8])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 121 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (expr_list:REG_DEAD (reg/f:DI 120 [ MEM[(const char * *)akey_9(D)] ])
+            (nil))))
+(insn 37 36 38 3 (set (reg/f:DI 122 [ MEM[(const char * *)bkey_7(D)] ])
+        (mem/f:DI (reg/v/f:DI 111 [ bkey ]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])) 89 {*movdi_internal}
+     (nil))
+(insn 38 37 39 3 (set (reg:DI 123 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 111 [ bkey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 111 [ bkey ])
+        (nil)))
+(insn 39 38 40 3 (set (reg:DI 91 [ D.33296 ])
+        (mem:DI (plus:DI (plus:DI (reg/f:DI 122 [ MEM[(const char * *)bkey_7(D)] ])
+                    (reg:DI 123 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ]))
+                (const_int -8 [0xfffffffffffffff8])) [0 MEM[(char * {ref-all})_22]+0 S8 A8])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 123 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (expr_list:REG_DEAD (reg/f:DI 122 [ MEM[(const char * *)bkey_7(D)] ])
+            (nil))))
+(insn 40 39 41 3 (set (reg:CC 17 flags)
+        (compare:CC (reg:DI 91 [ D.33296 ])
+            (reg:DI 106 [ D.33296 ]))) db/dbformat.cc:59 8 {*cmpdi_1}
+     (nil))
+(jump_insn 41 40 42 3 (set (pc)
+        (if_then_else (ltu (reg:CC 17 flags)
+                (const_int 0 [0]))
+            (label_ref:DI 65)
+            (pc))) db/dbformat.cc:59 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CC 17 flags)
+        (int_list:REG_BR_PROB 400 (nil)))
+ -> 65)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+
+ succ:       5 [4.0%] 
+             4 [96.0%]  (FALLTHRU)
+
+basic block 4, loop depth 0, count 0, freq 5856, maybe hot
+ prev block 3, next block 5, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       3 [96.0%]  (FALLTHRU)
+;; bb 4 artificial_defs: { }
+;; bb 4 artificial_uses: { u57(6){ }u58(7){ }u59(16){ }u60(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; lr  def 	 17 [flags] 87 125
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; live  gen 	 17 [flags] 87 125
+;; live  kill	
+
+(note 42 41 43 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 43 42 44 4 (set (reg:CC 17 flags)
+        (compare:CC (reg:DI 91 [ D.33296 ])
+            (reg:DI 106 [ D.33296 ]))) 8 {*cmpdi_1}
+     (expr_list:REG_DEAD (reg:DI 106 [ D.33296 ])
+        (expr_list:REG_DEAD (reg:DI 91 [ D.33296 ])
+            (nil))))
+(insn 44 43 45 4 (set (reg:QI 125)
+        (gtu:QI (reg:CC 17 flags)
+            (const_int 0 [0]))) 607 {*setcc_qi}
+     (expr_list:REG_DEAD (reg:CC 17 flags)
+        (nil)))
+(insn 45 44 65 4 (set (reg/v:SI 87 [ r ])
+        (zero_extend:SI (reg:QI 125))) 138 {*zero_extendqisi2}
+     (expr_list:REG_DEAD (reg:QI 125)
+        (nil)))
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+
+ succ:       6 [100.0%]  (FALLTHRU)
+
+basic block 5, loop depth 0, count 0, freq 244, maybe hot
+ prev block 4, next block 6, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       3 [4.0%] 
+;; bb 5 artificial_defs: { }
+;; bb 5 artificial_uses: { u66(6){ }u67(7){ }u68(16){ }u69(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 87
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 87
+;; live  kill	
+
+(code_label 65 45 64 5 5 "" [1 uses])
+(note 64 65 8 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(insn 8 64 47 5 (set (reg/v:SI 87 [ r ])
+        (const_int -1 [0xffffffffffffffff])) db/dbformat.cc:60 90 {*movsi_internal}
+     (nil))
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+
+ succ:       6 [100.0%]  (FALLTHRU)
+
+basic block 6, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 5, next block 7, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       2 [39.0%] 
+             5 [100.0%]  (FALLTHRU)
+             4 [100.0%]  (FALLTHRU)
+;; bb 6 artificial_defs: { }
+;; bb 6 artificial_uses: { u70(6){ }u71(7){ }u72(16){ }u73(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; lr  def 	 0 [ax] 17 [flags]
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; live  gen 	 0 [ax] 17 [flags]
+;; live  kill	
+
+(code_label 47 8 48 6 3 "" [1 uses])
+(note 48 47 53 6 [bb 6] NOTE_INSN_BASIC_BLOCK)
+(insn 53 48 55 6 (set (reg/i:SI 0 ax)
+        (reg/v:SI 87 [ r ])) db/dbformat.cc:66 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg/v:SI 87 [ r ])
+        (nil)))
+(insn 55 53 56 6 (parallel [
+            (set (reg:CCZ 17 flags)
+                (unspec:CCZ [
+                        (mem/v/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                                (const_int -8 [0xfffffffffffffff8])) [3 D.33300+0 S8 A64])
+                        (const_int 40 [0x28])
+                    ] UNSPEC_SP_TLS_TEST))
+            (clobber (scratch:DI))
+        ]) db/dbformat.cc:66 990 {stack_tls_protect_test_di}
+     (nil))
+(jump_insn 56 55 66 6 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 59)
+            (pc))) db/dbformat.cc:66 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 9996 (nil)))
+ -> 59)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       8 [100.0%] 
+             7 [0.0%]  (FALLTHRU)
+
+basic block 7, loop depth 0, count 0, freq 4
+ prev block 6, next block 8, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       6 [0.0%]  (FALLTHRU)
+;; bb 7 artificial_defs: { }
+;; bb 7 artificial_uses: { u78(6){ }u79(7){ }u80(16){ }u81(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+
+(note 66 56 57 7 [bb 7] NOTE_INSN_BASIC_BLOCK)
+(call_insn 57 66 59 7 (call (mem:QI (symbol_ref:DI ("__stack_chk_fail") [flags 0x41]  <function_decl 0x7feb014d40d8 __stack_chk_fail>) [0 __stack_chk_fail S1 A8])
+        (const_int 0 [0])) db/dbformat.cc:66 660 {*call}
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__stack_chk_fail") [flags 0x41]  <function_decl 0x7feb014d40d8 __stack_chk_fail>)
+        (expr_list:REG_ARGS_SIZE (const_int 0 [0])
+            (expr_list:REG_NORETURN (const_int 0 [0])
+                (expr_list:REG_EH_REGION (const_int 0 [0])
+                    (nil)))))
+    (nil))
+;; lr  out 	 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 7 [sp] 16 [argp] 20 [frame]
+
+ succ:      
+
+basic block 8, loop depth 0, count 0, freq 9996, maybe hot
+ prev block 7, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       6 [100.0%] 
+;; bb 8 artificial_defs: { }
+;; bb 8 artificial_uses: { u83(6){ }u84(7){ }u85(16){ }u86(20){ }}
+;; lr  in  	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	
+;; live  in  	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+
+(code_label 59 57 67 8 4 "" [1 uses])
+(note 67 59 60 8 [bb 8] NOTE_INSN_BASIC_BLOCK)
+(insn 60 67 0 8 (use (reg/i:SI 0 ax)) db/dbformat.cc:66 -1
+     (nil))
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       EXIT [100.0%]  (FALLTHRU)
+
+basic block 1, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 8, next block (nil), flags: (REACHABLE, RTL, MODIFIED)
+ pred:       8 [100.0%]  (FALLTHRU)
+;; bb 1 artificial_defs: { }
+;; bb 1 artificial_uses: { u88(0){ }u89(6){ }u90(7){ }u91(20){ }}
+;; lr  in  	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; lr  use 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; lr  def 	
+;; live  in  	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+
+;; lr  out 	
+;; live  out 	
+
+ succ:      
+
+
+;; 1 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5 6 7 8
+;; 2 succs { 3 6 }
+;; 3 succs { 5 4 }
+;; 4 succs { 6 }
+;; 5 succs { 6 }
+;; 6 succs { 8 7 }
+;; 7 succs { }
+;; 8 succs { 1 }
+
+
+virtual int leveldb::InternalKeyComparator::Compare(const leveldb::Slice&, const leveldb::Slice&) const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0[ax] 1[dx] 4[si] 5[di] 7[sp] 17[flags]
+;;  ref usage 	r0={4d,3u} r1={4d,2u} r2={3d} r4={4d,2u} r5={4d,2u} r6={1d,8u} r7={1d,10u} r8={2d} r9={2d} r10={2d} r11={2d} r12={2d} r13={2d} r14={2d} r15={2d} r16={1d,7u} r17={11d,4u} r18={2d} r19={2d} r20={1d,16u,2e} r21={3d} r22={3d} r23={3d} r24={3d} r25={3d} r26={3d} r27={3d} r28={3d} r29={2d} r30={2d} r31={2d} r32={2d} r33={2d} r34={2d} r35={2d} r36={2d} r37={3d} r38={3d} r39={2d} r40={2d} r45={2d} r46={2d} r47={2d} r48={2d} r49={2d} r50={2d} r51={2d} r52={2d} r53={2d} r54={2d} r55={2d} r56={2d} r57={2d} r58={2d} r59={2d} r60={2d} r61={2d} r62={2d} r63={2d} r64={2d} r65={2d} r66={2d} r67={2d} r68={2d} r69={2d} r70={2d} r71={2d} r72={2d} r73={2d} r74={2d} r75={2d} r76={2d} r77={2d} r78={2d} r79={2d} r80={2d} r87={3d,2u} r88={1d,2u} r90={1d,1u} r91={1d,2u} r96={1d,1u} r98={1d,1u} r106={1d,2u} r109={1d,1u} r110={1d,4u,1e} r111={1d,4u,1e} r113={1d,1u} r114={1d,1u} r115={1d,1u} r116={1d,1u} r117={1d,1u} r118={1d,1u} r119={1d,1u} r120={1d,1u} r121={1d,1u} r122={1d,1u} r123={1d,1u} r125={1d,1u} 
+;;    total ref usage 290{200d,86u,4e} in 43{41 regular + 2 call} insns.
+;; basic block 2, loop depth 0, count 0, freq 10000, maybe hot
+;;  prev block 0, next block 3, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 87 88 90 96 98 109 110 111 113 114 115 116 117 118 119
+;; live  in  	 1 [dx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 0 [ax] 1 [dx] 4 [si] 5 [di] 17 [flags] 87 88 90 96 98 109 110 111 113 114 115 116 117 118 119
+;; live  kill	 17 [flags]
+(note 9 0 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 9 3 2 (set (reg/f:DI 109 [ this ])
+        (reg:DI 5 di [ this ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 3 2 4 2 (set (reg/v/f:DI 110 [ akey ])
+        (reg:DI 4 si [ akey ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ akey ])
+        (nil)))
+(insn 4 3 5 2 (set (reg/v/f:DI 111 [ bkey ])
+        (reg:DI 1 dx [ bkey ])) db/dbformat.cc:50 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 1 dx [ bkey ])
+        (nil)))
+(note 5 4 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 5 11 2 (parallel [
+            (set (mem/v/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                        (const_int -8 [0xfffffffffffffff8])) [3 D.33300+0 S8 A64])
+                (unspec:DI [
+                        (const_int 40 [0x28])
+                    ] UNSPEC_SP_TLS_SET))
+            (set (scratch:DI)
+                (const_int 0 [0]))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:50 986 {stack_tls_protect_set_di}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 11 7 12 2 (set (reg/f:DI 88 [ D.33293 ])
+        (mem/f:DI (plus:DI (reg/f:DI 109 [ this ])
+                (const_int 8 [0x8])) [3 this_3(D)->user_comparator_+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 109 [ this ])
+        (nil)))
+(insn 12 11 13 2 (set (reg/f:DI 113 [ _4->_vptr.Comparator ])
+        (mem/f:DI (reg/f:DI 88 [ D.33293 ]) [3 _4->_vptr.Comparator+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 90 [ D.33295 ])
+        (mem/f:DI (plus:DI (reg/f:DI 113 [ _4->_vptr.Comparator ])
+                (const_int 16 [0x10])) [3 MEM[(int (*__vtbl_ptr_type) () *)_5 + 16B]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 113 [ _4->_vptr.Comparator ])
+        (nil)))
+(insn 14 13 15 2 (set (reg:DI 114 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 111 [ bkey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])) ./db/dbformat.h:100 89 {*movdi_internal}
+     (nil))
+(insn 15 14 16 2 (parallel [
+            (set (reg:DI 96 [ D.33296 ])
+                (plus:DI (reg:DI 114 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) ./db/dbformat.h:100 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 114 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (expr_list:REG_EQUAL (plus:DI (mem:DI (plus:DI (reg/v/f:DI 111 [ bkey ])
+                            (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8]))
+                (nil)))))
+(insn 16 15 17 2 (set (reg/f:DI 115 [ MEM[(const char * *)bkey_7(D)] ])
+        (mem/f:DI (reg/v/f:DI 111 [ bkey ]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn 17 16 18 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -32 [0xffffffffffffffe0])) [11 MEM[(struct Slice *)&D.30480]+0 S8 A128])
+        (reg/f:DI 115 [ MEM[(const char * *)bkey_7(D)] ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 115 [ MEM[(const char * *)bkey_7(D)] ])
+        (nil)))
+(insn 18 17 19 2 (set (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -24 [0xffffffffffffffe8])) [11 MEM[(struct Slice *)&D.30480 + 8B]+0 S8 A64])
+        (reg:DI 96 [ D.33296 ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 96 [ D.33296 ])
+        (nil)))
+(insn 19 18 20 2 (set (reg:DI 116 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 110 [ akey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])) ./db/dbformat.h:100 89 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (parallel [
+            (set (reg:DI 98 [ D.33296 ])
+                (plus:DI (reg:DI 116 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) ./db/dbformat.h:100 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 116 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (expr_list:REG_EQUAL (plus:DI (mem:DI (plus:DI (reg/v/f:DI 110 [ akey ])
+                            (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8]))
+                (nil)))))
+(insn 21 20 22 2 (set (reg/f:DI 117 [ MEM[(const char * *)akey_9(D)] ])
+        (mem/f:DI (reg/v/f:DI 110 [ akey ]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])) db/dbformat.cc:55 89 {*movdi_internal}
+     (nil))
+(insn 22 21 23 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -48 [0xffffffffffffffd0])) [11 MEM[(struct Slice *)&D.30479]+0 S8 A128])
+        (reg/f:DI 117 [ MEM[(const char * *)akey_9(D)] ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 117 [ MEM[(const char * *)akey_9(D)] ])
+        (nil)))
+(insn 23 22 24 2 (set (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -40 [0xffffffffffffffd8])) [11 MEM[(struct Slice *)&D.30479 + 8B]+0 S8 A64])
+        (reg:DI 98 [ D.33296 ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 98 [ D.33296 ])
+        (nil)))
+(insn 24 23 25 2 (parallel [
+            (set (reg/f:DI 118)
+                (plus:DI (reg/f:DI 20 frame)
+                    (const_int -32 [0xffffffffffffffe0])))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:55 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 25 24 26 2 (parallel [
+            (set (reg/f:DI 119)
+                (plus:DI (reg/f:DI 20 frame)
+                    (const_int -48 [0xffffffffffffffd0])))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:55 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 26 25 27 2 (set (reg:DI 1 dx)
+        (reg/f:DI 118)) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 118)
+        (expr_list:REG_EQUAL (plus:DI (reg/f:DI 20 frame)
+                (const_int -32 [0xffffffffffffffe0]))
+            (nil))))
+(insn 27 26 28 2 (set (reg:DI 4 si)
+        (reg/f:DI 119)) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 119)
+        (expr_list:REG_EQUAL (plus:DI (reg/f:DI 20 frame)
+                (const_int -48 [0xffffffffffffffd0]))
+            (nil))))
+(insn 28 27 29 2 (set (reg:DI 5 di)
+        (reg/f:DI 88 [ D.33293 ])) db/dbformat.cc:55 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 88 [ D.33293 ])
+        (nil)))
+(call_insn 29 28 30 2 (set (reg:SI 0 ax)
+        (call (mem:QI (reg/f:DI 90 [ D.33295 ]) [0 *OBJ_TYPE_REF(_6;(const struct Comparator)_4->2) S1 A8])
+            (const_int 0 [0]))) db/dbformat.cc:55 669 {*call_value}
+     (expr_list:REG_DEAD (reg/f:DI 90 [ D.33295 ])
+        (expr_list:REG_DEAD (reg:DI 5 di)
+            (expr_list:REG_DEAD (reg:DI 4 si)
+                (expr_list:REG_DEAD (reg:DI 1 dx)
+                    (expr_list:REG_CALL_DECL (nil)
+                        (nil))))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:DI (use (reg:DI 1 dx))
+                (nil)))))
+(insn 30 29 31 2 (set (reg/v:SI 87 [ r ])
+        (reg:SI 0 ax)) db/dbformat.cc:55 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg:SI 0 ax)
+        (nil)))
+(insn 31 30 32 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v:SI 87 [ r ])
+            (const_int 0 [0]))) db/dbformat.cc:56 3 {*cmpsi_ccno_1}
+     (nil))
+(jump_insn 32 31 33 2 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 47)
+            (pc))) db/dbformat.cc:56 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 3900 (nil)))
+ -> 47)
+;;  succ:       3 [61.0%]  (FALLTHRU)
+;;              6 [39.0%] 
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87 110 111
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87 110 111
+
+;; basic block 3, loop depth 0, count 0, freq 6100, maybe hot
+;;  prev block 2, next block 4, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       2 [61.0%]  (FALLTHRU)
+;; bb 3 artificial_defs: { }
+;; bb 3 artificial_uses: { u42(6){ }u43(7){ }u44(16){ }u45(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 110 111
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 110 111
+;; lr  def 	 17 [flags] 91 106 120 121 122 123
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 110 111
+;; live  gen 	 17 [flags] 91 106 120 121 122 123
+;; live  kill	
+(note 33 32 34 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(insn 34 33 35 3 (set (reg/f:DI 120 [ MEM[(const char * *)akey_9(D)] ])
+        (mem/f:DI (reg/v/f:DI 110 [ akey ]) [3 MEM[(const char * *)akey_9(D)]+0 S8 A64])) 89 {*movdi_internal}
+     (nil))
+(insn 35 34 36 3 (set (reg:DI 121 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 110 [ akey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)akey_9(D) + 8B]+0 S8 A64])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 110 [ akey ])
+        (nil)))
+(insn 36 35 37 3 (set (reg:DI 106 [ D.33296 ])
+        (mem:DI (plus:DI (plus:DI (reg/f:DI 120 [ MEM[(const char * *)akey_9(D)] ])
+                    (reg:DI 121 [ MEM[(long unsigned int *)akey_9(D) + 8B] ]))
+                (const_int -8 [0xfffffffffffffff8])) [0 MEM[(char * {ref-all})_17]+0 S8 A8])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 121 [ MEM[(long unsigned int *)akey_9(D) + 8B] ])
+        (expr_list:REG_DEAD (reg/f:DI 120 [ MEM[(const char * *)akey_9(D)] ])
+            (nil))))
+(insn 37 36 38 3 (set (reg/f:DI 122 [ MEM[(const char * *)bkey_7(D)] ])
+        (mem/f:DI (reg/v/f:DI 111 [ bkey ]) [3 MEM[(const char * *)bkey_7(D)]+0 S8 A64])) 89 {*movdi_internal}
+     (nil))
+(insn 38 37 39 3 (set (reg:DI 123 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (mem:DI (plus:DI (reg/v/f:DI 111 [ bkey ])
+                (const_int 8 [0x8])) [6 MEM[(long unsigned int *)bkey_7(D) + 8B]+0 S8 A64])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 111 [ bkey ])
+        (nil)))
+(insn 39 38 40 3 (set (reg:DI 91 [ D.33296 ])
+        (mem:DI (plus:DI (plus:DI (reg/f:DI 122 [ MEM[(const char * *)bkey_7(D)] ])
+                    (reg:DI 123 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ]))
+                (const_int -8 [0xfffffffffffffff8])) [0 MEM[(char * {ref-all})_22]+0 S8 A8])) 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 123 [ MEM[(long unsigned int *)bkey_7(D) + 8B] ])
+        (expr_list:REG_DEAD (reg/f:DI 122 [ MEM[(const char * *)bkey_7(D)] ])
+            (nil))))
+(insn 40 39 41 3 (set (reg:CC 17 flags)
+        (compare:CC (reg:DI 91 [ D.33296 ])
+            (reg:DI 106 [ D.33296 ]))) db/dbformat.cc:59 8 {*cmpdi_1}
+     (nil))
+(jump_insn 41 40 42 3 (set (pc)
+        (if_then_else (ltu (reg:CC 17 flags)
+                (const_int 0 [0]))
+            (label_ref:DI 65)
+            (pc))) db/dbformat.cc:59 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CC 17 flags)
+        (int_list:REG_BR_PROB 400 (nil)))
+ -> 65)
+;;  succ:       5 [4.0%] 
+;;              4 [96.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+
+;; basic block 4, loop depth 0, count 0, freq 5856, maybe hot
+;;  prev block 3, next block 5, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       3 [96.0%]  (FALLTHRU)
+;; bb 4 artificial_defs: { }
+;; bb 4 artificial_uses: { u57(6){ }u58(7){ }u59(16){ }u60(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; lr  def 	 17 [flags] 87 125
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 91 106
+;; live  gen 	 17 [flags] 87 125
+;; live  kill	
+(note 42 41 43 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 43 42 44 4 (set (reg:CC 17 flags)
+        (compare:CC (reg:DI 91 [ D.33296 ])
+            (reg:DI 106 [ D.33296 ]))) 8 {*cmpdi_1}
+     (expr_list:REG_DEAD (reg:DI 106 [ D.33296 ])
+        (expr_list:REG_DEAD (reg:DI 91 [ D.33296 ])
+            (nil))))
+(insn 44 43 45 4 (set (reg:QI 125)
+        (gtu:QI (reg:CC 17 flags)
+            (const_int 0 [0]))) 607 {*setcc_qi}
+     (expr_list:REG_DEAD (reg:CC 17 flags)
+        (nil)))
+(insn 45 44 65 4 (set (reg/v:SI 87 [ r ])
+        (zero_extend:SI (reg:QI 125))) 138 {*zero_extendqisi2}
+     (expr_list:REG_DEAD (reg:QI 125)
+        (nil)))
+;;  succ:       6 [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+
+;; basic block 5, loop depth 0, count 0, freq 244, maybe hot
+;;  prev block 4, next block 6, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       3 [4.0%] 
+;; bb 5 artificial_defs: { }
+;; bb 5 artificial_uses: { u66(6){ }u67(7){ }u68(16){ }u69(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 87
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 87
+;; live  kill	
+(code_label 65 45 64 5 5 "" [1 uses])
+(note 64 65 8 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(insn 8 64 47 5 (set (reg/v:SI 87 [ r ])
+        (const_int -1 [0xffffffffffffffff])) db/dbformat.cc:60 90 {*movsi_internal}
+     (nil))
+;;  succ:       6 [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+
+;; basic block 6, loop depth 0, count 0, freq 10000, maybe hot
+;;  prev block 5, next block 7, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       2 [39.0%] 
+;;              5 [100.0%]  (FALLTHRU)
+;;              4 [100.0%]  (FALLTHRU)
+;; bb 6 artificial_defs: { }
+;; bb 6 artificial_uses: { u70(6){ }u71(7){ }u72(16){ }u73(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; lr  def 	 0 [ax] 17 [flags]
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 87
+;; live  gen 	 0 [ax] 17 [flags]
+;; live  kill	
+(code_label 47 8 48 6 3 "" [1 uses])
+(note 48 47 53 6 [bb 6] NOTE_INSN_BASIC_BLOCK)
+(insn 53 48 55 6 (set (reg/i:SI 0 ax)
+        (reg/v:SI 87 [ r ])) db/dbformat.cc:66 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg/v:SI 87 [ r ])
+        (nil)))
+(insn 55 53 56 6 (parallel [
+            (set (reg:CCZ 17 flags)
+                (unspec:CCZ [
+                        (mem/v/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                                (const_int -8 [0xfffffffffffffff8])) [3 D.33300+0 S8 A64])
+                        (const_int 40 [0x28])
+                    ] UNSPEC_SP_TLS_TEST))
+            (clobber (scratch:DI))
+        ]) db/dbformat.cc:66 990 {stack_tls_protect_test_di}
+     (nil))
+(jump_insn 56 55 66 6 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 59)
+            (pc))) db/dbformat.cc:66 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 9996 (nil)))
+ -> 59)
+;;  succ:       8 [100.0%] 
+;;              7 [0.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 7, loop depth 0, count 0, freq 4
+;;  prev block 6, next block 8, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       6 [0.0%]  (FALLTHRU)
+;; bb 7 artificial_defs: { }
+;; bb 7 artificial_uses: { u78(6){ }u79(7){ }u80(16){ }u81(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+(note 66 56 57 7 [bb 7] NOTE_INSN_BASIC_BLOCK)
+(call_insn 57 66 59 7 (call (mem:QI (symbol_ref:DI ("__stack_chk_fail") [flags 0x41]  <function_decl 0x7feb014d40d8 __stack_chk_fail>) [0 __stack_chk_fail S1 A8])
+        (const_int 0 [0])) db/dbformat.cc:66 660 {*call}
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__stack_chk_fail") [flags 0x41]  <function_decl 0x7feb014d40d8 __stack_chk_fail>)
+        (expr_list:REG_ARGS_SIZE (const_int 0 [0])
+            (expr_list:REG_NORETURN (const_int 0 [0])
+                (expr_list:REG_EH_REGION (const_int 0 [0])
+                    (nil)))))
+    (nil))
+;;  succ:      
+;; lr  out 	 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 8, loop depth 0, count 0, freq 9996, maybe hot
+;;  prev block 7, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       6 [100.0%] 
+;; bb 8 artificial_defs: { }
+;; bb 8 artificial_uses: { u83(6){ }u84(7){ }u85(16){ }u86(20){ }}
+;; lr  in  	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	
+;; live  in  	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+(code_label 59 57 67 8 4 "" [1 uses])
+(note 67 59 60 8 [bb 8] NOTE_INSN_BASIC_BLOCK)
+(insn 60 67 0 8 (use (reg/i:SI 0 ax)) db/dbformat.cc:66 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function virtual const char* leveldb::InternalFilterPolicy::Name() const (_ZNK7leveldb20InternalFilterPolicy4NameEv, funcdef_no=1424, decl_uid=30154, cgraph_uid=594, symbol_order=606)
+
+0 registers.
+
+3 basic blocks, 2 edges.
+basic block 0, loop depth 0, count 0, freq 10000, maybe hot
+ prev block (nil), next block 2, flags: (RTL, MODIFIED)
+ pred:      
+;; bb 0 artificial_defs: { d-1(0){ }d-1(1){ }d-1(2){ }d-1(4){ }d-1(5){ }d-1(6){ }d-1(7){ }d-1(16){ }d-1(20){ }d-1(21){ }d-1(22){ }d-1(23){ }d-1(24){ }d-1(25){ }d-1(26){ }d-1(27){ }d-1(28){ }d-1(37){ }d-1(38){ }}
+;; bb 0 artificial_uses: { }
+;; lr  in  	
+;; lr  use 	
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  in  	
+;; live  gen 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  kill	
+
+;; lr  out 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       2 [100.0%]  (FALLTHRU)
+
+basic block 2, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 0, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 87 92 93 94
+;; live  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 0 [ax] 5 [di] 87 92 93 94
+;; live  kill	
+
+(note 4 0 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (reg/f:DI 92 [ this ])
+        (reg:DI 5 di [ this ])) db/dbformat.cc:101 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 87 [ D.33305 ])
+        (mem/f:DI (plus:DI (reg/f:DI 92 [ this ])
+                (const_int 8 [0x8])) [3 this_2(D)->user_policy_+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 92 [ this ])
+        (nil)))
+(insn 7 6 8 2 (set (reg/f:DI 93 [ _3->_vptr.FilterPolicy ])
+        (mem/f:DI (reg/f:DI 87 [ D.33305 ]) [3 _3->_vptr.FilterPolicy+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg/f:DI 94 [ MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ])
+        (mem/f:DI (plus:DI (reg/f:DI 93 [ _3->_vptr.FilterPolicy ])
+                (const_int 16 [0x10])) [3 MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B]+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 93 [ _3->_vptr.FilterPolicy ])
+        (nil)))
+(insn 9 8 10 2 (set (reg:DI 5 di)
+        (reg/f:DI 87 [ D.33305 ])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 87 [ D.33305 ])
+        (nil)))
+(call_insn/j 10 9 0 2 (set (reg:DI 0 ax)
+        (call (mem:QI (reg/f:DI 94 [ MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ]) [0 *OBJ_TYPE_REF(_5;(const struct FilterPolicy)_3->2) S1 A8])
+            (const_int 0 [0]))) db/dbformat.cc:102 671 {*sibcall_value}
+     (expr_list:REG_DEAD (reg/f:DI 94 [ MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ])
+        (expr_list:REG_DEAD (reg:DI 5 di)
+            (expr_list:REG_CALL_DECL (nil)
+                (nil))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (nil)))
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       EXIT [100.0%]  (ABNORMAL,SIBCALL)
+
+basic block 1, loop depth 0, count 0, freq 10000, maybe hot
+ prev block 2, next block (nil), flags: (REACHABLE, RTL, MODIFIED)
+ pred:       2 [100.0%]  (ABNORMAL,SIBCALL)
+;; bb 1 artificial_defs: { }
+;; bb 1 artificial_uses: { u12(0){ }u13(6){ }u14(7){ }u15(20){ }}
+;; lr  in  	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; lr  use 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; lr  def 	
+;; live  in  	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+
+;; lr  out 	
+;; live  out 	
+
+ succ:      
+
+
+;; 1 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2
+;; 2 succs { 1 }
+
+
+virtual const char* leveldb::InternalFilterPolicy::Name() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0[ax] 5[di] 7[sp]
+;;  ref usage 	r0={2d,1u} r1={2d} r2={2d} r4={2d} r5={3d,2u} r6={1d,2u} r7={1d,3u} r8={1d} r9={1d} r10={1d} r11={1d} r12={1d} r13={1d} r14={1d} r15={1d} r16={1d,1u} r17={1d} r18={1d} r19={1d} r20={1d,2u} r21={2d} r22={2d} r23={2d} r24={2d} r25={2d} r26={2d} r27={2d} r28={2d} r29={1d} r30={1d} r31={1d} r32={1d} r33={1d} r34={1d} r35={1d} r36={1d} r37={2d} r38={2d} r39={1d} r40={1d} r45={1d} r46={1d} r47={1d} r48={1d} r49={1d} r50={1d} r51={1d} r52={1d} r53={1d} r54={1d} r55={1d} r56={1d} r57={1d} r58={1d} r59={1d} r60={1d} r61={1d} r62={1d} r63={1d} r64={1d} r65={1d} r66={1d} r67={1d} r68={1d} r69={1d} r70={1d} r71={1d} r72={1d} r73={1d} r74={1d} r75={1d} r76={1d} r77={1d} r78={1d} r79={1d} r80={1d} r87={1d,2u} r92={1d,1u} r93={1d,1u} r94={1d,1u} 
+;;    total ref usage 112{96d,16u,0e} in 6{5 regular + 1 call} insns.
+;; basic block 2, loop depth 0, count 0, freq 10000, maybe hot
+;;  prev block 0, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 87 92 93 94
+;; live  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 0 [ax] 5 [di] 87 92 93 94
+;; live  kill	
+(note 4 0 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (reg/f:DI 92 [ this ])
+        (reg:DI 5 di [ this ])) db/dbformat.cc:101 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 87 [ D.33305 ])
+        (mem/f:DI (plus:DI (reg/f:DI 92 [ this ])
+                (const_int 8 [0x8])) [3 this_2(D)->user_policy_+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 92 [ this ])
+        (nil)))
+(insn 7 6 8 2 (set (reg/f:DI 93 [ _3->_vptr.FilterPolicy ])
+        (mem/f:DI (reg/f:DI 87 [ D.33305 ]) [3 _3->_vptr.FilterPolicy+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg/f:DI 94 [ MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ])
+        (mem/f:DI (plus:DI (reg/f:DI 93 [ _3->_vptr.FilterPolicy ])
+                (const_int 16 [0x10])) [3 MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B]+0 S8 A64])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 93 [ _3->_vptr.FilterPolicy ])
+        (nil)))
+(insn 9 8 10 2 (set (reg:DI 5 di)
+        (reg/f:DI 87 [ D.33305 ])) db/dbformat.cc:102 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 87 [ D.33305 ])
+        (nil)))
+(call_insn/j 10 9 0 2 (set (reg:DI 0 ax)
+        (call (mem:QI (reg/f:DI 94 [ MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ]) [0 *OBJ_TYPE_REF(_5;(const struct FilterPolicy)_3->2) S1 A8])
+            (const_int 0 [0]))) db/dbformat.cc:102 671 {*sibcall_value}
+     (expr_list:REG_DEAD (reg/f:DI 94 [ MEM[(int (*__vtbl_ptr_type) () *)_4 + 16B] ])
+        (expr_list:REG_DEAD (reg:DI 5 di)
+            (expr_list:REG_CALL_DECL (nil)
+                (nil))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (nil)))
+;;  succ:       EXIT [100.0%]  (ABNORMAL,SIBCALL)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function virtual void leveldb::InternalFilterPolicy::CreateFilter(const leveldb::Slice*, int, std::__cxx11::string*) const (_ZNK7leveldb20InternalFilterPolicy12CreateFilterEPKNS_5SliceEiPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE, funcdef_no=1425, decl_uid=30159, cgraph_uid=595, symbol_order=607)
+
+0 registers.
+
+7 basic blocks, 8 edges.
+basic block 0, loop depth 0, count 0, freq 900, maybe hot
+ prev block (nil), next block 2, flags: (RTL, MODIFIED)
+ pred:      
+;; bb 0 artificial_defs: { d-1(0){ }d-1(1){ }d-1(2){ }d-1(4){ }d-1(5){ }d-1(6){ }d-1(7){ }d-1(16){ }d-1(20){ }d-1(21){ }d-1(22){ }d-1(23){ }d-1(24){ }d-1(25){ }d-1(26){ }d-1(27){ }d-1(28){ }d-1(37){ }d-1(38){ }}
+;; bb 0 artificial_uses: { }
+;; lr  in  	
+;; lr  use 	
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  in  	
+;; live  gen 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;; live  kill	
+
+;; lr  out 	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       2 [100.0%]  (FALLTHRU)
+
+basic block 2, loop depth 0, count 0, freq 900, maybe hot
+ prev block 0, next block 3, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 17 [flags] 124 125 126 127
+;; live  in  	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 17 [flags] 124 125 126 127
+;; live  kill	
+
+(note 29 0 24 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 24 29 25 2 (set (reg/f:DI 124 [ this ])
+        (reg:DI 5 di [ this ])) db/dbformat.cc:106 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 25 24 26 2 (set (reg/v/f:DI 125 [ keys ])
+        (reg:DI 4 si [ keys ])) db/dbformat.cc:106 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ keys ])
+        (nil)))
+(insn 26 25 27 2 (set (reg/v:SI 126 [ n ])
+        (reg:SI 1 dx [ n ])) db/dbformat.cc:106 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg:SI 1 dx [ n ])
+        (nil)))
+(insn 27 26 28 2 (set (reg/v/f:DI 127 [ dst ])
+        (reg:DI 2 cx [ dst ])) db/dbformat.cc:106 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 2 cx [ dst ])
+        (nil)))
+(note 28 27 31 2 NOTE_INSN_FUNCTION_BEG)
+(insn 31 28 32 2 (set (reg:CCNO 17 flags)
+        (compare:CCNO (reg/v:SI 126 [ n ])
+            (const_int 0 [0]))) db/dbformat.cc:110 3 {*cmpsi_ccno_1}
+     (nil))
+(jump_insn 32 31 55 2 (set (pc)
+        (if_then_else (gt (reg:CCNO 17 flags)
+                (const_int 0 [0]))
+            (label_ref 43)
+            (pc))) db/dbformat.cc:110 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCNO 17 flags)
+        (int_list:REG_BR_PROB 9100 (nil)))
+ -> 43)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+
+ succ:       3 [9.0%]  (FALLTHRU)
+             4 [91.0%] 
+
+basic block 3, loop depth 0, count 0, freq 900, maybe hot
+ prev block 2, next block 4, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       2 [9.0%]  (FALLTHRU)
+             5 [9.0%]  (LOOP_EXIT)
+;; bb 3 artificial_defs: { }
+;; bb 3 artificial_uses: { u10(6){ }u11(7){ }u12(16){ }u13(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 111 128 129
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; live  gen 	 1 [dx] 2 [cx] 4 [si] 5 [di] 111 128 129
+;; live  kill	
+
+(code_label 55 32 33 3 12 "" [1 uses])
+(note 33 55 34 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(insn 34 33 35 3 (set (reg/f:DI 111 [ D.33320 ])
+        (mem/f:DI (plus:DI (reg/f:DI 124 [ this ])
+                (const_int 8 [0x8])) [3 this_11(D)->user_policy_+0 S8 A64])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 124 [ this ])
+        (nil)))
+(insn 35 34 36 3 (set (reg/f:DI 128 [ _12->_vptr.FilterPolicy ])
+        (mem/f:DI (reg/f:DI 111 [ D.33320 ]) [3 _12->_vptr.FilterPolicy+0 S8 A64])) db/dbformat.cc:114 89 {*movdi_internal}
+     (nil))
+(insn 36 35 37 3 (set (reg/f:DI 129 [ MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B] ])
+        (mem/f:DI (plus:DI (reg/f:DI 128 [ _12->_vptr.FilterPolicy ])
+                (const_int 24 [0x18])) [3 MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B]+0 S8 A64])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 128 [ _12->_vptr.FilterPolicy ])
+        (nil)))
+(insn 37 36 38 3 (set (reg:DI 2 cx)
+        (reg/v/f:DI 127 [ dst ])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 127 [ dst ])
+        (nil)))
+(insn 38 37 39 3 (set (reg:SI 1 dx)
+        (reg/v:SI 126 [ n ])) db/dbformat.cc:114 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg/v:SI 126 [ n ])
+        (nil)))
+(insn 39 38 40 3 (set (reg:DI 4 si)
+        (reg/v/f:DI 125 [ keys ])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 125 [ keys ])
+        (nil)))
+(insn 40 39 41 3 (set (reg:DI 5 di)
+        (reg/f:DI 111 [ D.33320 ])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 111 [ D.33320 ])
+        (nil)))
+(call_insn/j 41 40 43 3 (call (mem:QI (reg/f:DI 129 [ MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B] ]) [0 *OBJ_TYPE_REF(_14;(const struct FilterPolicy)_12->3) S1 A8])
+        (const_int 0 [0])) db/dbformat.cc:114 662 {*sibcall}
+     (expr_list:REG_DEAD (reg/f:DI 129 [ MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B] ])
+        (expr_list:REG_DEAD (reg:DI 5 di)
+            (expr_list:REG_DEAD (reg:DI 4 si)
+                (expr_list:REG_DEAD (reg:DI 2 cx)
+                    (expr_list:REG_DEAD (reg:SI 1 dx)
+                        (expr_list:REG_CALL_DECL (nil)
+                            (nil)))))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:SI (use (reg:SI 1 dx))
+                (expr_list:DI (use (reg:DI 2 cx))
+                    (nil))))))
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+ succ:       EXIT [100.0%]  (ABNORMAL,SIBCALL)
+
+basic block 4, loop depth 0, count 0, freq 819, maybe hot
+ prev block 3, next block 5, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       2 [91.0%] 
+;; bb 4 artificial_defs: { }
+;; bb 4 artificial_uses: { u27(6){ }u28(7){ }u29(16){ }u30(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 125 126
+;; lr  def 	 17 [flags] 116 123 130 131 132 133
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; live  gen 	 116 123 130 131 132 133
+;; live  kill	 17 [flags]
+
+(code_label 43 41 44 4 11 "" [1 uses])
+(note 44 43 45 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 45 44 46 4 (parallel [
+            (set (reg:DI 116 [ ivtmp.164 ])
+                (plus:DI (reg/v/f:DI 125 [ keys ])
+                    (const_int 8 [0x8])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 46 45 47 4 (parallel [
+            (set (reg:SI 130 [ D.33324 ])
+                (plus:SI (reg/v:SI 126 [ n ])
+                    (const_int -1 [0xffffffffffffffff])))
+            (clobber (reg:CC 17 flags))
+        ]) 217 {*addsi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 47 46 48 4 (set (reg:DI 131 [ D.33325 ])
+        (zero_extend:DI (reg:SI 130 [ D.33324 ]))) 133 {*zero_extendsidi2}
+     (expr_list:REG_DEAD (reg:SI 130 [ D.33324 ])
+        (nil)))
+(insn 48 47 49 4 (parallel [
+            (set (reg:DI 132 [ D.33325 ])
+                (ashift:DI (reg:DI 131 [ D.33325 ])
+                    (const_int 4 [0x4])))
+            (clobber (reg:CC 17 flags))
+        ]) 512 {*ashldi3_1}
+     (expr_list:REG_DEAD (reg:DI 131 [ D.33325 ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+(insn 49 48 50 4 (parallel [
+            (set (reg:DI 133 [ D.33326 ])
+                (plus:DI (reg:DI 132 [ D.33325 ])
+                    (const_int 24 [0x18])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 132 [ D.33325 ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+(insn 50 49 58 4 (parallel [
+            (set (reg:DI 123 [ D.33325 ])
+                (plus:DI (reg/v/f:DI 125 [ keys ])
+                    (reg:DI 133 [ D.33326 ])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 133 [ D.33326 ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+
+ succ:       5 [100.0%]  (FALLTHRU)
+
+basic block 5, loop depth 1, count 0, freq 9100, maybe hot
+ prev block 4, next block 6, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       4 [100.0%]  (FALLTHRU)
+             6 [100.0%]  (FALLTHRU)
+;; bb 5 artificial_defs: { }
+;; bb 5 artificial_uses: { u38(6){ }u39(7){ }u40(16){ }u41(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123
+;; lr  def 	 17 [flags] 116
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  gen 	 17 [flags] 116
+;; live  kill	 17 [flags]
+
+(code_label 58 50 51 5 13 "" [0 uses])
+(note 51 58 53 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(insn 53 51 54 5 (parallel [
+            (set (mem:DI (reg:DI 116 [ ivtmp.164 ]) [11 MEM[base: _1, offset: 0B]+0 S8 A64])
+                (plus:DI (mem:DI (reg:DI 116 [ ivtmp.164 ]) [6 MEM[base: _1, offset: 0B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:111 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 54 53 56 5 (parallel [
+            (set (reg:DI 116 [ ivtmp.164 ])
+                (plus:DI (reg:DI 116 [ ivtmp.164 ])
+                    (const_int 16 [0x10])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 56 54 57 5 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 116 [ ivtmp.164 ])
+            (reg:DI 123 [ D.33325 ]))) db/dbformat.cc:110 8 {*cmpdi_1}
+     (nil))
+(jump_insn 57 56 61 5 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 55)
+            (pc))) db/dbformat.cc:110 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 900 (nil)))
+ -> 55)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+
+ succ:       3 [9.0%]  (LOOP_EXIT)
+             6 [91.0%]  (FALLTHRU,DFS_BACK)
+
+basic block 6, loop depth 1, count 0, freq 8281, maybe hot
+ prev block 5, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+ pred:       5 [91.0%]  (FALLTHRU,DFS_BACK)
+;; bb 6 artificial_defs: { }
+;; bb 6 artificial_uses: { u49(6){ }u50(7){ }u51(16){ }u52(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  gen 	
+;; live  kill	
+
+(note 61 57 0 6 [bb 6] NOTE_INSN_BASIC_BLOCK)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+
+ succ:       5 [100.0%]  (FALLTHRU)
+
+basic block 1, loop depth 0, count 0, freq 900, maybe hot
+ prev block 6, next block (nil), flags: (REACHABLE, RTL, MODIFIED)
+ pred:       3 [100.0%]  (ABNORMAL,SIBCALL)
+;; bb 1 artificial_defs: { }
+;; bb 1 artificial_uses: { u53(6){ }u54(7){ }u55(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 20 [frame]
+;; lr  def 	
+;; live  in  	 6 [bp] 7 [sp] 20 [frame]
+;; live  gen 	
+;; live  kill	
+
+;; lr  out 	
+;; live  out 	
+
+ succ:      
+
+
+;; 2 loops found
+;;
+;; Loop 0
+;;  header 0, latch 1
+;;  depth 0, outer -1
+;;  nodes: 0 1 2 3 4 5 6
+;;
+;; Loop 1
+;;  header 5, latch 6
+;;  depth 1, outer 0
+;;  nodes: 5 6
+;; 2 succs { 3 4 }
+;; 3 succs { 1 }
+;; 4 succs { 5 }
+;; 5 succs { 3 6 }
+;; 6 succs { 5 }
+
+
+virtual void leveldb::InternalFilterPolicy::CreateFilter(const leveldb::Slice*, int, std::__cxx11::string*) const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 1[dx] 2[cx] 4[si] 5[di] 7[sp] 17[flags]
+;;  ref usage 	r0={2d} r1={3d,2u} r2={3d,2u} r4={3d,2u} r5={3d,2u} r6={1d,6u} r7={1d,7u} r8={1d} r9={1d} r10={1d} r11={1d} r12={1d} r13={1d} r14={1d} r15={1d} r16={1d,5u} r17={10d,2u} r18={1d} r19={1d} r20={1d,6u} r21={2d} r22={2d} r23={2d} r24={2d} r25={2d} r26={2d} r27={2d} r28={2d} r29={1d} r30={1d} r31={1d} r32={1d} r33={1d} r34={1d} r35={1d} r36={1d} r37={2d} r38={2d} r39={1d} r40={1d} r45={1d} r46={1d} r47={1d} r48={1d} r49={1d} r50={1d} r51={1d} r52={1d} r53={1d} r54={1d} r55={1d} r56={1d} r57={1d} r58={1d} r59={1d} r60={1d} r61={1d} r62={1d} r63={1d} r64={1d} r65={1d} r66={1d} r67={1d} r68={1d} r69={1d} r70={1d} r71={1d} r72={1d} r73={1d} r74={1d} r75={1d} r76={1d} r77={1d} r78={1d} r79={1d} r80={1d} r111={1d,2u} r116={2d,4u} r123={1d,1u} r124={1d,1u} r125={1d,3u} r126={1d,3u} r127={1d,1u} r128={1d,1u} r129={1d,1u} r130={1d,1u} r131={1d,1u} r132={1d,1u} r133={1d,1u} 
+;;    total ref usage 173{118d,55u,0e} in 24{23 regular + 1 call} insns.
+;; basic block 2, loop depth 0, count 0, freq 900, maybe hot
+;;  prev block 0, next block 3, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY [100.0%]  (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u0(6){ }u1(7){ }u2(16){ }u3(20){ }}
+;; lr  in  	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 17 [flags] 124 125 126 127
+;; live  in  	 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  gen 	 17 [flags] 124 125 126 127
+;; live  kill	
+(note 29 0 24 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 24 29 25 2 (set (reg/f:DI 124 [ this ])
+        (reg:DI 5 di [ this ])) db/dbformat.cc:106 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 25 24 26 2 (set (reg/v/f:DI 125 [ keys ])
+        (reg:DI 4 si [ keys ])) db/dbformat.cc:106 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ keys ])
+        (nil)))
+(insn 26 25 27 2 (set (reg/v:SI 126 [ n ])
+        (reg:SI 1 dx [ n ])) db/dbformat.cc:106 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg:SI 1 dx [ n ])
+        (nil)))
+(insn 27 26 28 2 (set (reg/v/f:DI 127 [ dst ])
+        (reg:DI 2 cx [ dst ])) db/dbformat.cc:106 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 2 cx [ dst ])
+        (nil)))
+(note 28 27 31 2 NOTE_INSN_FUNCTION_BEG)
+(insn 31 28 32 2 (set (reg:CCNO 17 flags)
+        (compare:CCNO (reg/v:SI 126 [ n ])
+            (const_int 0 [0]))) db/dbformat.cc:110 3 {*cmpsi_ccno_1}
+     (nil))
+(jump_insn 32 31 55 2 (set (pc)
+        (if_then_else (gt (reg:CCNO 17 flags)
+                (const_int 0 [0]))
+            (label_ref 43)
+            (pc))) db/dbformat.cc:110 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCNO 17 flags)
+        (int_list:REG_BR_PROB 9100 (nil)))
+ -> 43)
+;;  succ:       3 [9.0%]  (FALLTHRU)
+;;              4 [91.0%] 
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+
+;; basic block 3, loop depth 0, count 0, freq 900, maybe hot
+;;  prev block 2, next block 4, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       2 [9.0%]  (FALLTHRU)
+;;              5 [9.0%]  (LOOP_EXIT)
+;; bb 3 artificial_defs: { }
+;; bb 3 artificial_uses: { u10(6){ }u11(7){ }u12(16){ }u13(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 111 128 129
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; live  gen 	 1 [dx] 2 [cx] 4 [si] 5 [di] 111 128 129
+;; live  kill	
+(code_label 55 32 33 3 12 "" [1 uses])
+(note 33 55 34 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(insn 34 33 35 3 (set (reg/f:DI 111 [ D.33320 ])
+        (mem/f:DI (plus:DI (reg/f:DI 124 [ this ])
+                (const_int 8 [0x8])) [3 this_11(D)->user_policy_+0 S8 A64])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 124 [ this ])
+        (nil)))
+(insn 35 34 36 3 (set (reg/f:DI 128 [ _12->_vptr.FilterPolicy ])
+        (mem/f:DI (reg/f:DI 111 [ D.33320 ]) [3 _12->_vptr.FilterPolicy+0 S8 A64])) db/dbformat.cc:114 89 {*movdi_internal}
+     (nil))
+(insn 36 35 37 3 (set (reg/f:DI 129 [ MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B] ])
+        (mem/f:DI (plus:DI (reg/f:DI 128 [ _12->_vptr.FilterPolicy ])
+                (const_int 24 [0x18])) [3 MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B]+0 S8 A64])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 128 [ _12->_vptr.FilterPolicy ])
+        (nil)))
+(insn 37 36 38 3 (set (reg:DI 2 cx)
+        (reg/v/f:DI 127 [ dst ])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 127 [ dst ])
+        (nil)))
+(insn 38 37 39 3 (set (reg:SI 1 dx)
+        (reg/v:SI 126 [ n ])) db/dbformat.cc:114 90 {*movsi_internal}
+     (expr_list:REG_DEAD (reg/v:SI 126 [ n ])
+        (nil)))
+(insn 39 38 40 3 (set (reg:DI 4 si)
+        (reg/v/f:DI 125 [ keys ])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/v/f:DI 125 [ keys ])
+        (nil)))
+(insn 40 39 41 3 (set (reg:DI 5 di)
+        (reg/f:DI 111 [ D.33320 ])) db/dbformat.cc:114 89 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 111 [ D.33320 ])
+        (nil)))
+(call_insn/j 41 40 43 3 (call (mem:QI (reg/f:DI 129 [ MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B] ]) [0 *OBJ_TYPE_REF(_14;(const struct FilterPolicy)_12->3) S1 A8])
+        (const_int 0 [0])) db/dbformat.cc:114 662 {*sibcall}
+     (expr_list:REG_DEAD (reg/f:DI 129 [ MEM[(int (*__vtbl_ptr_type) () *)_13 + 24B] ])
+        (expr_list:REG_DEAD (reg:DI 5 di)
+            (expr_list:REG_DEAD (reg:DI 4 si)
+                (expr_list:REG_DEAD (reg:DI 2 cx)
+                    (expr_list:REG_DEAD (reg:SI 1 dx)
+                        (expr_list:REG_CALL_DECL (nil)
+                            (nil)))))))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:SI (use (reg:SI 1 dx))
+                (expr_list:DI (use (reg:DI 2 cx))
+                    (nil))))))
+;;  succ:       EXIT [100.0%]  (ABNORMAL,SIBCALL)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 4, loop depth 0, count 0, freq 819, maybe hot
+;;  prev block 3, next block 5, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       2 [91.0%] 
+;; bb 4 artificial_defs: { }
+;; bb 4 artificial_uses: { u27(6){ }u28(7){ }u29(16){ }u30(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 125 126
+;; lr  def 	 17 [flags] 116 123 130 131 132 133
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 124 125 126 127
+;; live  gen 	 116 123 130 131 132 133
+;; live  kill	 17 [flags]
+(code_label 43 41 44 4 11 "" [1 uses])
+(note 44 43 45 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 45 44 46 4 (parallel [
+            (set (reg:DI 116 [ ivtmp.164 ])
+                (plus:DI (reg/v/f:DI 125 [ keys ])
+                    (const_int 8 [0x8])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 46 45 47 4 (parallel [
+            (set (reg:SI 130 [ D.33324 ])
+                (plus:SI (reg/v:SI 126 [ n ])
+                    (const_int -1 [0xffffffffffffffff])))
+            (clobber (reg:CC 17 flags))
+        ]) 217 {*addsi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 47 46 48 4 (set (reg:DI 131 [ D.33325 ])
+        (zero_extend:DI (reg:SI 130 [ D.33324 ]))) 133 {*zero_extendsidi2}
+     (expr_list:REG_DEAD (reg:SI 130 [ D.33324 ])
+        (nil)))
+(insn 48 47 49 4 (parallel [
+            (set (reg:DI 132 [ D.33325 ])
+                (ashift:DI (reg:DI 131 [ D.33325 ])
+                    (const_int 4 [0x4])))
+            (clobber (reg:CC 17 flags))
+        ]) 512 {*ashldi3_1}
+     (expr_list:REG_DEAD (reg:DI 131 [ D.33325 ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+(insn 49 48 50 4 (parallel [
+            (set (reg:DI 133 [ D.33326 ])
+                (plus:DI (reg:DI 132 [ D.33325 ])
+                    (const_int 24 [0x18])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 132 [ D.33325 ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+(insn 50 49 58 4 (parallel [
+            (set (reg:DI 123 [ D.33325 ])
+                (plus:DI (reg/v/f:DI 125 [ keys ])
+                    (reg:DI 133 [ D.33326 ])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 133 [ D.33326 ])
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+;;  succ:       5 [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+
+;; basic block 5, loop depth 1, count 0, freq 9100, maybe hot
+;;  prev block 4, next block 6, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       4 [100.0%]  (FALLTHRU)
+;;              6 [100.0%]  (FALLTHRU)
+;; bb 5 artificial_defs: { }
+;; bb 5 artificial_uses: { u38(6){ }u39(7){ }u40(16){ }u41(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123
+;; lr  def 	 17 [flags] 116
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  gen 	 17 [flags] 116
+;; live  kill	 17 [flags]
+(code_label 58 50 51 5 13 "" [0 uses])
+(note 51 58 53 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(insn 53 51 54 5 (parallel [
+            (set (mem:DI (reg:DI 116 [ ivtmp.164 ]) [11 MEM[base: _1, offset: 0B]+0 S8 A64])
+                (plus:DI (mem:DI (reg:DI 116 [ ivtmp.164 ]) [6 MEM[base: _1, offset: 0B]+0 S8 A64])
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) db/dbformat.cc:111 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 54 53 56 5 (parallel [
+            (set (reg:DI 116 [ ivtmp.164 ])
+                (plus:DI (reg:DI 116 [ ivtmp.164 ])
+                    (const_int 16 [0x10])))
+            (clobber (reg:CC 17 flags))
+        ]) 218 {*adddi_1}
+     (expr_list:REG_UNUSED (reg:CC 17 flags)
+        (nil)))
+(insn 56 54 57 5 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 116 [ ivtmp.164 ])
+            (reg:DI 123 [ D.33325 ]))) db/dbformat.cc:110 8 {*cmpdi_1}
+     (nil))
+(jump_insn 57 56 61 5 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 55)
+            (pc))) db/dbformat.cc:110 612 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (int_list:REG_BR_PROB 900 (nil)))
+ -> 55)
+;;  succ:       3 [9.0%]  (LOOP_EXIT)
+;;              6 [91.0%]  (FALLTHRU,DFS_BACK)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+
+;; basic block 6, loop depth 1, count 0, freq 8281, maybe hot
+;;  prev block 5, next block 1, flags: (REACHABLE, RTL, MODIFIED)
+;;  pred:       5 [91.0%]  (FALLTHRU,DFS_BACK)
+;; bb 6 artificial_defs: { }
+;; bb 6 artificial_uses: { u49(6){ }u50(7){ }u51(16){ }u52(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	
+;; live  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  gen 	
+;; live  kill	
+(note 61 57 0 6 [bb 6] NOTE_INSN_BASIC_BLOCK)
+;;  succ:       5 [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+;; live  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 116 123 124 125 126 127
+

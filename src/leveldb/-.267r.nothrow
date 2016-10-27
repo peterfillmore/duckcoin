@@ -1,0 +1,43 @@
+
+;; Function int main() (main, funcdef_no=0, decl_uid=2325, cgraph_uid=0, symbol_order=0)
+
+
+
+int main()
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp]
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0[ax] 6[bp]
+;;  ref usage 	r0={2d,2u} r1={1d} r2={1d} r4={1d} r5={1d} r6={3d,3u} r7={3d,5u} r20={1d,1u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 34{23d,11u,0e} in 6{6 regular + 0 call} insns.
+(note 1 0 3 NOTE_INSN_DELETED)
+(note 3 1 16 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn/f 16 3 17 2 (set (mem:DI (pre_dec:DI (reg/f:DI 7 sp)) [0  S8 A8])
+        (reg/f:DI 6 bp)) <stdin>:1 65 {*pushdi2_rex64}
+     (nil))
+(insn/f 17 16 18 2 (set (reg/f:DI 6 bp)
+        (reg/f:DI 7 sp)) <stdin>:1 89 {*movdi_internal}
+     (nil))
+(note 18 17 2 2 NOTE_INSN_PROLOGUE_END)
+(note 2 18 5 2 NOTE_INSN_FUNCTION_BEG)
+(insn 5 2 13 2 (set (reg:SI 0 ax [orig:87 D.2331 ] [87])
+        (const_int 0 [0])) <stdin>:1 90 {*movsi_internal}
+     (nil))
+(insn 13 5 19 2 (use (reg/i:SI 0 ax)) <stdin>:1 -1
+     (nil))
+(note 19 13 20 2 NOTE_INSN_EPILOGUE_BEG)
+(insn/f 20 19 21 2 (set (reg/f:DI 6 bp)
+        (mem:DI (post_inc:DI (reg/f:DI 7 sp)) [0  S8 A8])) <stdin>:1 75 {*popdi1}
+     (expr_list:REG_CFA_DEF_CFA (plus:DI (reg/f:DI 7 sp)
+            (const_int 8 [0x8]))
+        (nil)))
+(jump_insn 21 20 22 2 (simple_return) <stdin>:1 680 {simple_return_internal}
+     (nil)
+ -> simple_return)
+(barrier 22 21 15)
+(note 15 22 0 NOTE_INSN_DELETED)

@@ -1,0 +1,24 @@
+
+;; Function int main() (main, funcdef_no=0, decl_uid=2252, cgraph_uid=0, symbol_order=0)
+
+Reordered sequence:
+ 2 bb 2  [0]
+(note 1 0 3 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 3 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(note 2 3 5 2 NOTE_INSN_FUNCTION_BEG)
+(insn 5 2 8 2 (set (reg:SI 87 [ _1 ])
+        (const_int 0 [0])) <stdin>:1 86 {*movsi_internal}
+     (nil))
+(insn 8 5 12 2 (set (reg:SI 88 [ <retval> ])
+        (reg:SI 87 [ _1 ])) <stdin>:1 86 {*movsi_internal}
+     (nil))
+(insn 12 8 13 2 (set (reg/i:SI 0 ax)
+        (reg:SI 88 [ <retval> ])) <stdin>:1 86 {*movsi_internal}
+     (nil))
+(insn 13 12 0 2 (use (reg/i:SI 0 ax)) <stdin>:1 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+

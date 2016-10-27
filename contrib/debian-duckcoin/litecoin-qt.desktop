@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Duckcoin
+Comment=Duckcoin P2P Cryptocurrency
+Exec=duckcoin-qt %u
+Terminal=false
+Type=Application
+Icon=bitcoin128
+MimeType=x-scheme-handler/duckcoin;
+Categories=Office;Finance;
+Name[en_US]=duckcoin-qt.desktop
