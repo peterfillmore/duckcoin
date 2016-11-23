@@ -74,17 +74,19 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
         (10, uint256("0x2b49c3285b6a4fcbcc53552942cd6eb5a0a326d6cb8f7dcbc52b4c10d0a70085"))
         (20, uint256("0xae0e6fbe2a4f4c8ed8b96e8e5ac2cefde18304e26d0f50cf56c5b7cc7d5a525b"))
         (40, uint256("0xa8f22114cdfd5d11f338f2e85ad773688d9ac307f73e19611394a26ca0dfda23"))
-	(80, uint256("0x003d25bf102487fcd462d39139c67115337e98bbe5f7c830c220d50c76fdd7a5"))
+	    (80, uint256("0x003d25bf102487fcd462d39139c67115337e98bbe5f7c830c220d50c76fdd7a5"))
         (160, uint256("0x47d161410589c990ad568ae7d32bd39487e9592d01b2324c9336a3fc5f7cc657"))
         (320, uint256("0x11254a91329bed86af0b4e29676ad16df5e9f7bc9642689e480a5550c912ebd1"))
         (640, uint256("0x033010a08213d500d89b684686a6e918eac14d54c9806237ce6fc9db8a1f60b1"))
-        ;
+        (1280, uint256("0x1052a2e991b42ada79af110b8ff4b2959f229d24ba50f16ab7a8b047cbd02c4b"))
+        (2560, uint256("0x0b988529a0bb027cef28ab67618afbc7754b42fde8780eb98d1a61a5a0e5935f"))
+        (5120, uint256("0x18ce85996d42f1e5ecda0cd6a7b41fab188e434fa1c2a656065647d8c91cfb44")) 
+       ;
 static const Checkpoints::CCheckpointData data = {
-        &mapCheckpoints,
-        1477377620, // * UNIX timestamp of last checkpoint block
-        640,   // * total number of transactions between genesis and last checkpoint
-                    //   (the tx=... number in the SetBestChain debug.log lines)
-        500     // * estimated number of transactions per day after checkpoint
+            &mapCheckpoints,
+            1479008915, // * UNIX timestamp of last checkpoint block
+            5120,       // * total number of transactions between genesis and last checkpoint
+            100         //   (the tx=... number in the SetBestChain debug.log lines)
     };
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
@@ -189,12 +191,12 @@ public:
         	//printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
 		//printf("genesis.MerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
 	
-	assert(hashGenesisBlock == uint256("0x1761527fd393fd6306ecb1552ac9a632ba1a33846f7b0b6609697e53ec73344c"));
+	    assert(hashGenesisBlock == uint256("0x1761527fd393fd6306ecb1552ac9a632ba1a33846f7b0b6609697e53ec73344c"));
         assert(genesis.hashMerkleRoot == uint256("0xc12c019a9471f59ea0bae289721b39a44cd7bd1c96739b592afe4f7d25012c2c"));
 
         vFixedSeeds.clear();
         vSeeds.clear(); 
-        //vSeeds.push_back(CDNSSeedData("loshan.co.uk", "seed-a.duckcoin.loshan.co.uk"));
+        vSeeds.push_back(CDNSSeedData("www.xn--ss8hl1f.tk", "188.166.233.145"));
 
         base58Prefixes[PUBKEY_ADDRESS] = {12};
         base58Prefixes[SCRIPT_ADDRESS] = {5};
@@ -319,7 +321,8 @@ public:
         return dataTestnet;
     }
 };
-static CTestNetParams testNetParams;
+
+    static CTestNetParams testNetParams;
 
 /**
  * Regression test
