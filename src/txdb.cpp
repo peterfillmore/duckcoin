@@ -14,7 +14,7 @@
 
 using namespace std;
 
-void static BatchWriteBreadcrumbs(CLevelDBBatch &batch, const uint256 &hash, const CBreadcrumbs &coins) {
+void static BatchWriteCoins(CLevelDBBatch &batch, const uint256 &hash, const CCoins &coins) {
     if (coins.IsPruned())
         batch.Erase(make_pair('c', hash));
     else
@@ -25,36 +25,36 @@ void static BatchWriteHashBestChain(CLevelDBBatch &batch, const uint256 &hash) {
     batch.Write('B', hash);
 }
 
-CBreadcrumbsViewDB::CBreadcrumbsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(GetDataDir() / "chainstate", nCacheSize, fMemory, fWipe) {
+CCoinsViewDB::CCoinsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(GetDataDir() / "chainstate", nCacheSize, fMemory, fWipe) {
 }
 
-bool CBreadcrumbsViewDB::GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const {
+bool CCoinsViewDB::GetCoins(const uint256 &txid, CCoins &coins) const {
     return db.Read(make_pair('c', txid), coins);
 }
 
-bool CBreadcrumbsViewDB::HaveBreadcrumbs(const uint256 &txid) const {
+bool CCoinsViewDB::HaveCoins(const uint256 &txid) const {
     return db.Exists(make_pair('c', txid));
 }
 
-uint256 CBreadcrumbsViewDB::GetBestBlock() const {
+uint256 CCoinsViewDB::GetBestBlock() const {
     uint256 hashBestChain;
     if (!db.Read('B', hashBestChain))
         return uint256(0);
     return hashBestChain;
 }
 
-bool CBreadcrumbsViewDB::BatchWrite(CBreadcrumbsMap &mapBreadcrumbs, const uint256 &hashBlock) {
+bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
     CLevelDBBatch batch;
     size_t count = 0;
     size_t changed = 0;
-    for (CBreadcrumbsMap::iterator it = mapBreadcrumbs.begin(); it != mapBreadcrumbs.end();) {
-        if (it->second.flags & CBreadcrumbsCacheEntry::DIRTY) {
-            BatchWriteBreadcrumbs(batch, it->first, it->second.coins);
+    for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end();) {
+        if (it->second.flags & CCoinsCacheEntry::DIRTY) {
+            BatchWriteCoins(batch, it->first, it->second.coins);
             changed++;
         }
         count++;
-        CBreadcrumbsMap::iterator itOld = it++;
-        mapBreadcrumbs.erase(itOld);
+        CCoinsMap::iterator itOld = it++;
+        mapCoins.erase(itOld);
     }
     if (hashBlock != uint256(0))
         BatchWriteHashBestChain(batch, hashBlock);
@@ -99,7 +99,7 @@ bool CBlockTreeDB::ReadLastBlockFile(int &nFile) {
     return Read('l', nFile);
 }
 
-bool CBreadcrumbsViewDB::GetStats(CBreadcrumbsStats &stats) const {
+bool CCoinsViewDB::GetStats(CCoinsStats &stats) const {
     /* It seems that there are no "const iterators" for LevelDB.  Since we
        only need read operations on it, use a const-cast to get around
        that restriction.  */
@@ -120,13 +120,13 @@ bool CBreadcrumbsViewDB::GetStats(CBreadcrumbsStats &stats) const {
             if (chType == 'c') {
                 leveldb::Slice slValue = pcursor->value();
                 CDataStream ssValue(slValue.data(), slValue.data()+slValue.size(), SER_DISK, CLIENT_VERSION);
-                CBreadcrumbs coins;
+                CCoins coins;
                 ssValue >> coins;
                 uint256 txhash;
                 ssKey >> txhash;
                 ss << txhash;
                 ss << VARINT(coins.nVersion);
-                ss << (coins.fBreadcrumbBase ? 'c' : 'n');
+                ss << (coins.fCoinBase ? 'c' : 'n');
                 ss << VARINT(coins.nHeight);
                 stats.nTransactions++;
                 for (unsigned int i=0; i<coins.vout.size(); i++) {

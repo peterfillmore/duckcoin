@@ -11,7 +11,7 @@
 // This is somewhat tricky, because we have to deal with
 // the situation where the user clicks on a link during
 // startup/initialization, when the splash-screen is up
-// but the main window (and the Send Breadcrumbs tab) is not.
+// but the main window (and the Send Coins tab) is not.
 //
 // So, the strategy is:
 //
@@ -93,7 +93,7 @@ public:
 
 signals:
     // Fired when a valid payment request is received
-    void receivedPaymentRequest(SendBreadcrumbsRecipient);
+    void receivedPaymentRequest(SendCoinsRecipient);
 
     // Fired when a valid PaymentACK is received
     void receivedPaymentACK(const QString &paymentACKMsg);
@@ -107,7 +107,7 @@ public slots:
     void uiReady();
 
     // Submit Payment message to a merchant, get back PaymentACK:
-    void fetchPaymentACK(CWallet* wallet, SendBreadcrumbsRecipient recipient, QByteArray transaction);
+    void fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction);
 
     // Handle an incoming URI, URI with local file scheme or file
     void handleURIOrFile(const QString& s);
@@ -124,7 +124,7 @@ protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private:
-    bool processPaymentRequest(PaymentRequestPlus& request, SendBreadcrumbsRecipient& recipient);
+    bool processPaymentRequest(PaymentRequestPlus& request, SendCoinsRecipient& recipient);
     void fetchRequest(const QUrl& url);
 
     // Setup networking

@@ -223,7 +223,7 @@ Wallet:
   the balance of wallets containing double-spent (or mutated) transactions
 - Store key creation time. Calculate whole-wallet birthday.
 - Optimize rescan to skip blocks prior to birthday
-- Let user select wallet file with -wallet=foo.dat
+- Let user select wallet file with -wallet=bar.dat
 - Consider generated coins mature at 101 instead of 120 blocks
 - Improve wallet load time
 - Don't count txins for priority to encourage sweeping

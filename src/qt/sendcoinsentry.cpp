@@ -14,14 +14,14 @@
 #include <QApplication>
 #include <QClipboard>
 
-SendBreadcrumbsEntry::SendBreadcrumbsEntry(QWidget *parent) :
+SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
     QStackedWidget(parent),
-    ui(new Ui::SendBreadcrumbsEntry),
+    ui(new Ui::SendCoinsEntry),
     model(0)
 {
     ui->setupUi(this);
 
-    setCurrentWidget(ui->SendBreadcrumbs);
+    setCurrentWidget(ui->SendCoins);
 
 #ifdef Q_OS_MAC
     ui->payToLayout->setSpacing(4);
@@ -42,18 +42,18 @@ SendBreadcrumbsEntry::SendBreadcrumbsEntry(QWidget *parent) :
     connect(ui->deleteButton_s, SIGNAL(clicked()), this, SLOT(deleteClicked()));
 }
 
-SendBreadcrumbsEntry::~SendBreadcrumbsEntry()
+SendCoinsEntry::~SendCoinsEntry()
 {
     delete ui;
 }
 
-void SendBreadcrumbsEntry::on_pasteButton_clicked()
+void SendCoinsEntry::on_pasteButton_clicked()
 {
     // Paste text from clipboard into recipient field
     ui->payTo->setText(QApplication::clipboard()->text());
 }
 
-void SendBreadcrumbsEntry::on_addressBookButton_clicked()
+void SendCoinsEntry::on_addressBookButton_clicked()
 {
     if(!model)
         return;
@@ -66,12 +66,12 @@ void SendBreadcrumbsEntry::on_addressBookButton_clicked()
     }
 }
 
-void SendBreadcrumbsEntry::on_payTo_textChanged(const QString &address)
+void SendCoinsEntry::on_payTo_textChanged(const QString &address)
 {
     updateLabel(address);
 }
 
-void SendBreadcrumbsEntry::setModel(WalletModel *model)
+void SendCoinsEntry::setModel(WalletModel *model)
 {
     this->model = model;
 
@@ -81,7 +81,7 @@ void SendBreadcrumbsEntry::setModel(WalletModel *model)
     clear();
 }
 
-void SendBreadcrumbsEntry::clear()
+void SendCoinsEntry::clear()
 {
     // clear UI elements for normal payment
     ui->payTo->clear();
@@ -103,12 +103,12 @@ void SendBreadcrumbsEntry::clear()
     updateDisplayUnit();
 }
 
-void SendBreadcrumbsEntry::deleteClicked()
+void SendCoinsEntry::deleteClicked()
 {
     emit removeEntry(this);
 }
 
-bool SendBreadcrumbsEntry::validate()
+bool SendCoinsEntry::validate()
 {
     if (!model)
         return false;
@@ -147,7 +147,7 @@ bool SendBreadcrumbsEntry::validate()
     return retval;
 }
 
-SendBreadcrumbsRecipient SendBreadcrumbsEntry::getValue()
+SendCoinsRecipient SendCoinsEntry::getValue()
 {
     // Payment request
     if (recipient.paymentRequest.IsInitialized())
@@ -162,7 +162,7 @@ SendBreadcrumbsRecipient SendBreadcrumbsEntry::getValue()
     return recipient;
 }
 
-QWidget *SendBreadcrumbsEntry::setupTabChain(QWidget *prev)
+QWidget *SendCoinsEntry::setupTabChain(QWidget *prev)
 {
     QWidget::setTabOrder(prev, ui->payTo);
     QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
@@ -173,7 +173,7 @@ QWidget *SendBreadcrumbsEntry::setupTabChain(QWidget *prev)
     return ui->deleteButton;
 }
 
-void SendBreadcrumbsEntry::setValue(const SendBreadcrumbsRecipient &value)
+void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
 {
     recipient = value;
 
@@ -185,7 +185,7 @@ void SendBreadcrumbsEntry::setValue(const SendBreadcrumbsRecipient &value)
             ui->memoTextLabel_is->setText(recipient.message);
             ui->payAmount_is->setValue(recipient.amount);
             ui->payAmount_is->setReadOnly(true);
-            setCurrentWidget(ui->SendBreadcrumbs_InsecurePaymentRequest);
+            setCurrentWidget(ui->SendCoins_InsecurePaymentRequest);
         }
         else // secure
         {
@@ -193,7 +193,7 @@ void SendBreadcrumbsEntry::setValue(const SendBreadcrumbsRecipient &value)
             ui->memoTextLabel_s->setText(recipient.message);
             ui->payAmount_s->setValue(recipient.amount);
             ui->payAmount_s->setReadOnly(true);
-            setCurrentWidget(ui->SendBreadcrumbs_SecurePaymentRequest);
+            setCurrentWidget(ui->SendCoins_SecurePaymentRequest);
         }
     }
     else // normal payment
@@ -211,23 +211,23 @@ void SendBreadcrumbsEntry::setValue(const SendBreadcrumbsRecipient &value)
     }
 }
 
-void SendBreadcrumbsEntry::setAddress(const QString &address)
+void SendCoinsEntry::setAddress(const QString &address)
 {
     ui->payTo->setText(address);
     ui->payAmount->setFocus();
 }
 
-bool SendBreadcrumbsEntry::isClear()
+bool SendCoinsEntry::isClear()
 {
     return ui->payTo->text().isEmpty() && ui->payTo_is->text().isEmpty() && ui->payTo_s->text().isEmpty();
 }
 
-void SendBreadcrumbsEntry::setFocus()
+void SendCoinsEntry::setFocus()
 {
     ui->payTo->setFocus();
 }
 
-void SendBreadcrumbsEntry::updateDisplayUnit()
+void SendCoinsEntry::updateDisplayUnit()
 {
     if(model && model->getOptionsModel())
     {
@@ -238,7 +238,7 @@ void SendBreadcrumbsEntry::updateDisplayUnit()
     }
 }
 
-bool SendBreadcrumbsEntry::updateLabel(const QString &address)
+bool SendCoinsEntry::updateLabel(const QString &address)
 {
     if(!model)
         return false;

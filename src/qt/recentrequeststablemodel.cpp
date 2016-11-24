@@ -168,7 +168,7 @@ Qt::ItemFlags RecentRequestsTableModel::flags(const QModelIndex &index) const
 }
 
 // called when adding a request from the GUI
-void RecentRequestsTableModel::addNewRequest(const SendBreadcrumbsRecipient &recipient)
+void RecentRequestsTableModel::addNewRequest(const SendCoinsRecipient &recipient)
 {
     RecentRequestEntry newEntry;
     newEntry.id = ++nReceiveRequestsMaxId;

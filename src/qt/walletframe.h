@@ -10,7 +10,7 @@
 
 class BitcoinGUI;
 class ClientModel;
-class SendBreadcrumbsRecipient;
+class SendCoinsRecipient;
 class WalletModel;
 class WalletView;
 
@@ -33,7 +33,7 @@ public:
     bool removeWallet(const QString &name);
     void removeAllWallets();
 
-    bool handlePaymentRequest(const SendBreadcrumbsRecipient& recipient);
+    bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
     void showOutOfSyncWarning(bool fShow);
 
@@ -53,9 +53,9 @@ public slots:
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
-    void gotoReceiveBreadcrumbsPage();
+    void gotoReceiveCoinsPage();
     /** Switch to send coins page */
-    void gotoSendBreadcrumbsPage(QString addr = "");
+    void gotoSendCoinsPage(QString addr = "");
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");

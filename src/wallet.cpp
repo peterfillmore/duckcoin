@@ -412,7 +412,7 @@ void CWallet::AddToSpends(const uint256& wtxid)
 {
     assert(mapWallet.count(wtxid));
     CWalletTx& thisTx = mapWallet[wtxid];
-    if (thisTx.IsBreadcrumbBase()) // Breadcrumbbases don't spend anything!
+    if (thisTx.IsCoinBase()) // Coinbases don't spend anything!
         return;
 
     BOOST_FOREACH(const CTxIn& txin, thisTx.vin)
@@ -795,7 +795,7 @@ int CWalletTx::GetRequestCount() const
     int nRequests = -1;
     {
         LOCK(pwallet->cs_wallet);
-        if (IsBreadcrumbBase())
+        if (IsCoinBase())
         {
             // Generated block
             if (hashBlock != 0)
@@ -980,7 +980,7 @@ void CWallet::ReacceptWalletTransactions()
 
         int nDepth = wtx.GetDepthInMainChain();
 
-        if (!wtx.IsBreadcrumbBase() && nDepth < 0)
+        if (!wtx.IsCoinBase() && nDepth < 0)
         {
             // Try to add to memory pool
             LOCK(mempool.cs);
@@ -991,7 +991,7 @@ void CWallet::ReacceptWalletTransactions()
 
 void CWalletTx::RelayWalletTransaction()
 {
-    if (!IsBreadcrumbBase())
+    if (!IsCoinBase())
     {
         if (GetDepthInMainChain() == 0) {
             LogPrintf("Relaying wtx %s\n", GetHash().ToString());
@@ -1152,11 +1152,11 @@ CAmount CWallet::GetImmatureWatchOnlyBalance() const
 }
 
 /**
- * populate vBreadcrumbs with vector of available COutputs.
+ * populate vCoins with vector of available COutputs.
  */
-void CWallet::AvailableBreadcrumbs(vector<COutput>& vBreadcrumbs, bool fOnlyConfirmed, const CBreadcrumbControl *coinControl) const
+void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const CCoinControl *coinControl) const
 {
-    vBreadcrumbs.clear();
+    vCoins.clear();
 
     {
         LOCK2(cs_main, cs_wallet);
@@ -1171,7 +1171,7 @@ void CWallet::AvailableBreadcrumbs(vector<COutput>& vBreadcrumbs, bool fOnlyConf
             if (fOnlyConfirmed && !pcoin->IsTrusted())
                 continue;
 
-            if (pcoin->IsBreadcrumbBase() && pcoin->GetBlocksToMaturity() > 0)
+            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
                 continue;
 
             int nDepth = pcoin->GetDepthInMainChain();
@@ -1181,9 +1181,9 @@ void CWallet::AvailableBreadcrumbs(vector<COutput>& vBreadcrumbs, bool fOnlyConf
             for (unsigned int i = 0; i < pcoin->vout.size(); i++) {
                 isminetype mine = IsMine(pcoin->vout[i]);
                 if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
-                    !IsLockedBreadcrumb((*it).first, i) && pcoin->vout[i].nValue >= nMinimumInputThreshold &&
+                    !IsLockedCoin((*it).first, i) && pcoin->vout[i].nValue >= nMinimumInputThreshold &&
                     (!coinControl || !coinControl->HasSelected() || coinControl->IsSelected((*it).first, i)))
-                        vBreadcrumbs.push_back(COutput(pcoin, i, nDepth, (mine & ISMINE_SPENDABLE) != ISMINE_NO));
+                        vCoins.push_back(COutput(pcoin, i, nDepth, (mine & ISMINE_SPENDABLE) != ISMINE_NO));
             }
         }
     }
@@ -1235,10 +1235,10 @@ static void ApproximateBestSubset(vector<pair<CAmount, pair<const CWalletTx*,uns
     }
 }
 
-bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMine, int nConfTheirs, vector<COutput> vBreadcrumbs,
-                                 set<pair<const CWalletTx*,unsigned int> >& setBreadcrumbsRet, CAmount& nValueRet) const
+bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, int nConfMine, int nConfTheirs, vector<COutput> vCoins,
+                                 set<pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet) const
 {
-    setBreadcrumbsRet.clear();
+    setCoinsRet.clear();
     nValueRet = 0;
 
     // List of values less than target
@@ -1248,9 +1248,9 @@ bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMin
     vector<pair<CAmount, pair<const CWalletTx*,unsigned int> > > vValue;
     CAmount nTotalLower = 0;
 
-    random_shuffle(vBreadcrumbs.begin(), vBreadcrumbs.end(), GetRandInt);
+    random_shuffle(vCoins.begin(), vCoins.end(), GetRandInt);
 
-    BOOST_FOREACH(const COutput &output, vBreadcrumbs)
+    BOOST_FOREACH(const COutput &output, vCoins)
     {
         if (!output.fSpendable)
             continue;
@@ -1267,7 +1267,7 @@ bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMin
 
         if (n == nTargetValue)
         {
-            setBreadcrumbsRet.insert(coin.second);
+            setCoinsRet.insert(coin.second);
             nValueRet += coin.first;
             return true;
         }
@@ -1286,7 +1286,7 @@ bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMin
     {
         for (unsigned int i = 0; i < vValue.size(); ++i)
         {
-            setBreadcrumbsRet.insert(vValue[i].second);
+            setCoinsRet.insert(vValue[i].second);
             nValueRet += vValue[i].first;
         }
         return true;
@@ -1296,7 +1296,7 @@ bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMin
     {
         if (coinLowestLarger.second.first == NULL)
             return false;
-        setBreadcrumbsRet.insert(coinLowestLarger.second);
+        setCoinsRet.insert(coinLowestLarger.second);
         nValueRet += coinLowestLarger.first;
         return true;
     }
@@ -1315,18 +1315,18 @@ bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMin
     if (coinLowestLarger.second.first &&
         ((nBest != nTargetValue && nBest < nTargetValue + CENT) || coinLowestLarger.first <= nBest))
     {
-        setBreadcrumbsRet.insert(coinLowestLarger.second);
+        setCoinsRet.insert(coinLowestLarger.second);
         nValueRet += coinLowestLarger.first;
     }
     else {
         for (unsigned int i = 0; i < vValue.size(); i++)
             if (vfBest[i])
             {
-                setBreadcrumbsRet.insert(vValue[i].second);
+                setCoinsRet.insert(vValue[i].second);
                 nValueRet += vValue[i].first;
             }
 
-        LogPrint("selectcoins", "SelectBreadcrumbs() best subset: ");
+        LogPrint("selectcoins", "SelectCoins() best subset: ");
         for (unsigned int i = 0; i < vValue.size(); i++)
             if (vfBest[i])
                 LogPrint("selectcoins", "%s ", FormatMoney(vValue[i].first));
@@ -1336,34 +1336,34 @@ bool CWallet::SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMin
     return true;
 }
 
-bool CWallet::SelectBreadcrumbs(const CAmount& nTargetValue, set<pair<const CWalletTx*,unsigned int> >& setBreadcrumbsRet, CAmount& nValueRet, const CBreadcrumbControl* coinControl) const
+bool CWallet::SelectCoins(const CAmount& nTargetValue, set<pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, const CCoinControl* coinControl) const
 {
-    vector<COutput> vBreadcrumbs;
-    AvailableBreadcrumbs(vBreadcrumbs, true, coinControl);
+    vector<COutput> vCoins;
+    AvailableCoins(vCoins, true, coinControl);
 
     // coin control -> return all selected outputs (we want all selected to go into the transaction for sure)
     if (coinControl && coinControl->HasSelected())
     {
-        BOOST_FOREACH(const COutput& out, vBreadcrumbs)
+        BOOST_FOREACH(const COutput& out, vCoins)
         {
             if(!out.fSpendable)
                 continue;
             nValueRet += out.tx->vout[out.i].nValue;
-            setBreadcrumbsRet.insert(make_pair(out.tx, out.i));
+            setCoinsRet.insert(make_pair(out.tx, out.i));
         }
         return (nValueRet >= nTargetValue);
     }
 
-    return (SelectBreadcrumbsMinConf(nTargetValue, 1, 6, vBreadcrumbs, setBreadcrumbsRet, nValueRet) ||
-            SelectBreadcrumbsMinConf(nTargetValue, 1, 1, vBreadcrumbs, setBreadcrumbsRet, nValueRet) ||
-            (bSpendZeroConfChange && SelectBreadcrumbsMinConf(nTargetValue, 0, 1, vBreadcrumbs, setBreadcrumbsRet, nValueRet)));
+    return (SelectCoinsMinConf(nTargetValue, 1, 6, vCoins, setCoinsRet, nValueRet) ||
+            SelectCoinsMinConf(nTargetValue, 1, 1, vCoins, setCoinsRet, nValueRet) ||
+            (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue, 0, 1, vCoins, setCoinsRet, nValueRet)));
 }
 
 
 
 
 bool CWallet::CreateTransaction(const vector<pair<CScript, CAmount> >& vecSend,
-                                CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CBreadcrumbControl* coinControl)
+                                CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl)
 {
     CAmount nValue = 0;
     BOOST_FOREACH (const PAIRTYPE(CScript, CAmount)& s, vecSend)
@@ -1415,14 +1415,14 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, CAmount> >& vecSend,
                 }
 
                 // Choose coins to use
-                set<pair<const CWalletTx*,unsigned int> > setBreadcrumbs;
+                set<pair<const CWalletTx*,unsigned int> > setCoins;
                 CAmount nValueIn = 0;
-                if (!SelectBreadcrumbs(nTotalValue, setBreadcrumbs, nValueIn, coinControl))
+                if (!SelectCoins(nTotalValue, setCoins, nValueIn, coinControl))
                 {
                     strFailReason = _("Insufficient funds");
                     return false;
                 }
-                BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setBreadcrumbs)
+                BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setCoins)
                 {
                     CAmount nCredit = pcoin.first->vout[pcoin.second].nValue;
                     //The coin age after the next block (depth+1) is used instead of the current,
@@ -1487,12 +1487,12 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, CAmount> >& vecSend,
                     reservekey.ReturnKey();
 
                 // Fill vin
-                BOOST_FOREACH(const PAIRTYPE(const CWalletTx*,unsigned int)& coin, setBreadcrumbs)
+                BOOST_FOREACH(const PAIRTYPE(const CWalletTx*,unsigned int)& coin, setCoins)
                     txNew.vin.push_back(CTxIn(coin.first->GetHash(),coin.second));
 
                 // Sign
                 int nIn = 0;
-                BOOST_FOREACH(const PAIRTYPE(const CWalletTx*,unsigned int)& coin, setBreadcrumbs)
+                BOOST_FOREACH(const PAIRTYPE(const CWalletTx*,unsigned int)& coin, setCoins)
                     if (!SignSignature(*this, *coin.first, txNew, nIn++))
                     {
                         strFailReason = _("Signing transaction failed");
@@ -1548,7 +1548,7 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, CAmount> >& vecSend,
 }
 
 bool CWallet::CreateTransaction(CScript scriptPubKey, const CAmount& nValue,
-                                CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CBreadcrumbControl* coinControl)
+                                CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl)
 {
     vector< pair<CScript, CAmount> > vecSend;
     vecSend.push_back(make_pair(scriptPubKey, nValue));
@@ -1577,7 +1577,7 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey)
             AddToWallet(wtxNew);
 
             // Notify that old coins are spent
-            set<CWalletTx*> setBreadcrumbs;
+            set<CWalletTx*> setCoins;
             BOOST_FOREACH(const CTxIn& txin, wtxNew.vin)
             {
                 CWalletTx &coin = mapWallet[txin.prevout.hash];
@@ -1888,7 +1888,7 @@ std::map<CTxDestination, CAmount> CWallet::GetAddressBalances()
             if (!IsFinalTx(*pcoin) || !pcoin->IsTrusted())
                 continue;
 
-            if (pcoin->IsBreadcrumbBase() && pcoin->GetBlocksToMaturity() > 0)
+            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
                 continue;
 
             int nDepth = pcoin->GetDepthInMainChain();
@@ -2086,37 +2086,37 @@ void CWallet::UpdatedTransaction(const uint256 &hashTx)
     }
 }
 
-void CWallet::LockBreadcrumb(COutPoint& output)
+void CWallet::LockCoin(COutPoint& output)
 {
-    AssertLockHeld(cs_wallet); // setLockedBreadcrumbs
-    setLockedBreadcrumbs.insert(output);
+    AssertLockHeld(cs_wallet); // setLockedCoins
+    setLockedCoins.insert(output);
 }
 
-void CWallet::UnlockBreadcrumb(COutPoint& output)
+void CWallet::UnlockCoin(COutPoint& output)
 {
-    AssertLockHeld(cs_wallet); // setLockedBreadcrumbs
-    setLockedBreadcrumbs.erase(output);
+    AssertLockHeld(cs_wallet); // setLockedCoins
+    setLockedCoins.erase(output);
 }
 
-void CWallet::UnlockAllBreadcrumbs()
+void CWallet::UnlockAllCoins()
 {
-    AssertLockHeld(cs_wallet); // setLockedBreadcrumbs
-    setLockedBreadcrumbs.clear();
+    AssertLockHeld(cs_wallet); // setLockedCoins
+    setLockedCoins.clear();
 }
 
-bool CWallet::IsLockedBreadcrumb(uint256 hash, unsigned int n) const
+bool CWallet::IsLockedCoin(uint256 hash, unsigned int n) const
 {
-    AssertLockHeld(cs_wallet); // setLockedBreadcrumbs
+    AssertLockHeld(cs_wallet); // setLockedCoins
     COutPoint outpt(hash, n);
 
-    return (setLockedBreadcrumbs.count(outpt) > 0);
+    return (setLockedCoins.count(outpt) > 0);
 }
 
-void CWallet::ListLockedBreadcrumbs(std::vector<COutPoint>& vOutpts)
+void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts)
 {
-    AssertLockHeld(cs_wallet); // setLockedBreadcrumbs
-    for (std::set<COutPoint>::iterator it = setLockedBreadcrumbs.begin();
-         it != setLockedBreadcrumbs.end(); it++) {
+    AssertLockHeld(cs_wallet); // setLockedCoins
+    for (std::set<COutPoint>::iterator it = setLockedCoins.begin();
+         it != setLockedCoins.end(); it++) {
         COutPoint outpt = (*it);
         vOutpts.push_back(outpt);
     }
@@ -2339,7 +2339,7 @@ int CMerkleTx::GetDepthInMainChain(const CBlockIndex* &pindexRet) const
 
 int CMerkleTx::GetBlocksToMaturity() const
 {
-    if (!IsBreadcrumbBase())
+    if (!IsCoinBase())
         return 0;
     return max(0, (BREADCRUMBBASE_MATURITY+1) - GetDepthInMainChain());
 }

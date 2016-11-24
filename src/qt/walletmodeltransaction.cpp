@@ -6,7 +6,7 @@
 
 #include "wallet.h"
 
-WalletModelTransaction::WalletModelTransaction(const QList<SendBreadcrumbsRecipient> &recipients) :
+WalletModelTransaction::WalletModelTransaction(const QList<SendCoinsRecipient> &recipients) :
     recipients(recipients),
     walletTransaction(0),
     keyChange(0),
@@ -21,7 +21,7 @@ WalletModelTransaction::~WalletModelTransaction()
     delete walletTransaction;
 }
 
-QList<SendBreadcrumbsRecipient> WalletModelTransaction::getRecipients()
+QList<SendCoinsRecipient> WalletModelTransaction::getRecipients()
 {
     return recipients;
 }
@@ -49,7 +49,7 @@ void WalletModelTransaction::setTransactionFee(const CAmount& newFee)
 CAmount WalletModelTransaction::getTotalTransactionAmount()
 {
     CAmount totalTransactionAmount = 0;
-    foreach(const SendBreadcrumbsRecipient &rcp, recipients)
+    foreach(const SendCoinsRecipient &rcp, recipients)
     {
         totalTransactionAmount += rcp.amount;
     }

@@ -15,7 +15,7 @@ gradually.
 
 Block style example:
 ```c++
-namespace foo
+namespace bar
 {
 class Class
 {

@@ -12,11 +12,11 @@
 
 class ClientModel;
 class OptionsModel;
-class SendBreadcrumbsEntry;
-class SendBreadcrumbsRecipient;
+class SendCoinsEntry;
+class SendCoinsRecipient;
 
 namespace Ui {
-    class SendBreadcrumbsDialog;
+    class SendCoinsDialog;
 }
 
 QT_BEGIN_NAMESPACE
@@ -24,13 +24,13 @@ class QUrl;
 QT_END_NAMESPACE
 
 /** Dialog for sending bitcoins */
-class SendBreadcrumbsDialog : public QDialog
+class SendCoinsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SendBreadcrumbsDialog(QWidget *parent = 0);
-    ~SendBreadcrumbsDialog();
+    explicit SendCoinsDialog(QWidget *parent = 0);
+    ~SendCoinsDialog();
 
     void setClientModel(ClientModel *clientModel);
     void setModel(WalletModel *model);
@@ -40,29 +40,29 @@ public:
     QWidget *setupTabChain(QWidget *prev);
 
     void setAddress(const QString &address);
-    void pasteEntry(const SendBreadcrumbsRecipient &rv);
-    bool handlePaymentRequest(const SendBreadcrumbsRecipient &recipient);
+    void pasteEntry(const SendCoinsRecipient &rv);
+    bool handlePaymentRequest(const SendCoinsRecipient &recipient);
 
 public slots:
     void clear();
     void reject();
     void accept();
-    SendBreadcrumbsEntry *addEntry();
+    SendCoinsEntry *addEntry();
     void updateTabsAndLabels();
     void setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance,
                     const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance);
 
 private:
-    Ui::SendBreadcrumbsDialog *ui;
+    Ui::SendCoinsDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
     bool fNewRecipientAllowed;
     bool fFeeMinimized;
 
-    // Process WalletModel::SendBreadcrumbsReturn and generate a pair consisting
+    // Process WalletModel::SendCoinsReturn and generate a pair consisting
     // of a message and message flags for use in emit message().
     // Additional parameter msgArg can be used via .arg(msgArg).
-    void processSendBreadcrumbsReturn(const WalletModel::SendBreadcrumbsReturn &sendBreadcrumbsReturn, const QString &msgArg = QString());
+    void processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg = QString());
     void minimizeFeeSection(bool fMinimize);
     void updateFeeMinimizedLabel();
 
@@ -70,7 +70,7 @@ private slots:
     void on_sendButton_clicked();
     void on_buttonChooseFee_clicked();
     void on_buttonMinimizeFee_clicked();
-    void removeEntry(SendBreadcrumbsEntry* entry);
+    void removeEntry(SendCoinsEntry* entry);
     void updateDisplayUnit();
     void coinControlFeatureChanged(bool);
     void coinControlButtonClicked();

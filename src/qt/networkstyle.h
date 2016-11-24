@@ -9,7 +9,7 @@
 #include <QPixmap>
 #include <QString>
 
-/* Breadcrumb network-specific GUI style information */
+/* Coin network-specific GUI style information */
 class NetworkStyle
 {
 public:

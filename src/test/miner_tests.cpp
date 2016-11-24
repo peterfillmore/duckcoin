@@ -70,12 +70,12 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         CBlock *pblock = &pblocktemplate->block; // pointer for convenience
         pblock->nVersion = 1;
         pblock->nTime = chainActive.Tip()->GetMedianTimePast()+1;
-        CMutableTransaction txBreadcrumbbase(pblock->vtx[0]);
-        txBreadcrumbbase.vin[0].scriptSig = CScript();
-        txBreadcrumbbase.vin[0].scriptSig.push_back(blockinfo[i].extranonce);
-        txBreadcrumbbase.vin[0].scriptSig.push_back(chainActive.Height());
-        txBreadcrumbbase.vout[0].scriptPubKey = CScript();
-        pblock->vtx[0] = CTransaction(txBreadcrumbbase);
+        CMutableTransaction txCoinbase(pblock->vtx[0]);
+        txCoinbase.vin[0].scriptSig = CScript();
+        txCoinbase.vin[0].scriptSig.push_back(blockinfo[i].extranonce);
+        txCoinbase.vin[0].scriptSig.push_back(chainActive.Height());
+        txCoinbase.vout[0].scriptPubKey = CScript();
+        pblock->vtx[0] = CTransaction(txCoinbase);
         if (txFirst.size() < 2)
             txFirst.push_back(new CTransaction(pblock->vtx[0]));
         pblock->hashMerkleRoot = pblock->BuildMerkleTree();

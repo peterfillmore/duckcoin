@@ -14,7 +14,7 @@
 #include <utility>
 #include <vector>
 
-class CBreadcrumbs;
+class CCoins;
 class uint256;
 
 //! -dbcache default (MiB)
@@ -24,19 +24,19 @@ static const int64_t nMaxDbCache = sizeof(void*) > 4 ? 4096 : 1024;
 //! min. -dbcache in (MiB)
 static const int64_t nMinDbCache = 4;
 
-/** CBreadcrumbsView backed by the LevelDB coin database (chainstate/) */
-class CBreadcrumbsViewDB : public CBreadcrumbsView
+/** CCoinsView backed by the LevelDB coin database (chainstate/) */
+class CCoinsViewDB : public CCoinsView
 {
 protected:
     CLevelDBWrapper db;
 public:
-    CBreadcrumbsViewDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
+    CCoinsViewDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
 
-    bool GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const;
-    bool HaveBreadcrumbs(const uint256 &txid) const;
+    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
-    bool BatchWrite(CBreadcrumbsMap &mapBreadcrumbs, const uint256 &hashBlock);
-    bool GetStats(CBreadcrumbsStats &stats) const;
+    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
+    bool GetStats(CCoinsStats &stats) const;
 };
 
 /** Access to the block database (blocks/index/) */

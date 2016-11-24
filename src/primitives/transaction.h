@@ -211,7 +211,7 @@ public:
 
     // Return sum of txouts.
     CAmount GetValueOut() const;
-    // GetValueIn() is a method on CBreadcrumbsViewCache, because
+    // GetValueIn() is a method on CCoinsViewCache, because
     // inputs must be known to compute value in.
 
     // Compute priority, given priority of inputs and (optionally) tx size
@@ -220,7 +220,7 @@ public:
     // Compute modified tx size for priority calculation (optionally given tx size)
     unsigned int CalculateModifiedSize(unsigned int nTxSize=0) const;
 
-    bool IsBreadcrumbBase() const
+    bool IsCoinBase() const
     {
         return (vin.size() == 1 && vin[0].prevout.IsNull());
     }

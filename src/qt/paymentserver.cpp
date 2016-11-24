@@ -206,7 +206,7 @@ void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
         {
             savedPaymentRequests.append(arg);
 
-            SendBreadcrumbsRecipient r;
+            SendCoinsRecipient r;
             if (GUIUtil::parseBitcoinURI(arg, &r) && !r.address.isEmpty())
             {
                 CBitcoinAddress address(r.address.toStdString());
@@ -428,7 +428,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
         }
         else // normal URI
         {
-            SendBreadcrumbsRecipient recipient;
+            SendCoinsRecipient recipient;
             if (GUIUtil::parseBitcoinURI(s, &recipient))
             {
                 CBitcoinAddress address(recipient.address.toStdString());
@@ -451,7 +451,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
     if (QFile::exists(s)) // payment request file
     {
         PaymentRequestPlus request;
-        SendBreadcrumbsRecipient recipient;
+        SendCoinsRecipient recipient;
         if (!readPaymentRequestFromFile(s, request))
         {
             emit message(tr("Payment request file handling"),
@@ -513,7 +513,7 @@ bool PaymentServer::readPaymentRequestFromFile(const QString& filename, PaymentR
     return request.parse(data);
 }
 
-bool PaymentServer::processPaymentRequest(PaymentRequestPlus& request, SendBreadcrumbsRecipient& recipient)
+bool PaymentServer::processPaymentRequest(PaymentRequestPlus& request, SendCoinsRecipient& recipient)
 {
     if (!optionsModel)
         return false;
@@ -606,7 +606,7 @@ void PaymentServer::fetchRequest(const QUrl& url)
     netManager->get(netRequest);
 }
 
-void PaymentServer::fetchPaymentACK(CWallet* wallet, SendBreadcrumbsRecipient recipient, QByteArray transaction)
+void PaymentServer::fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction)
 {
     const payments::PaymentDetails& details = recipient.paymentRequest.getDetails();
     if (!details.has_payment_url())
@@ -693,7 +693,7 @@ void PaymentServer::netRequestFinished(QNetworkReply* reply)
     if (requestType == BIP70_MESSAGE_PAYMENTREQUEST)
     {
         PaymentRequestPlus request;
-        SendBreadcrumbsRecipient recipient;
+        SendCoinsRecipient recipient;
         if (!request.parse(data))
         {
             qWarning() << "PaymentServer::netRequestFinished : Error parsing payment request";

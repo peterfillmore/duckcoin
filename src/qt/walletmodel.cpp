@@ -54,14 +54,14 @@ WalletModel::~WalletModel()
     unsubscribeFromCoreSignals();
 }
 
-CAmount WalletModel::getBalance(const CBreadcrumbControl *coinControl) const
+CAmount WalletModel::getBalance(const CCoinControl *coinControl) const
 {
     if (coinControl)
     {
         CAmount nBalance = 0;
-        std::vector<COutput> vBreadcrumbs;
-        wallet->AvailableBreadcrumbs(vBreadcrumbs, true, coinControl);
-        BOOST_FOREACH(const COutput& out, vBreadcrumbs)
+        std::vector<COutput> vCoins;
+        wallet->AvailableCoins(vCoins, true, coinControl);
+        BOOST_FOREACH(const COutput& out, vCoins)
             if(out.fSpendable)
                 nBalance += out.tx->vout[out.i].nValue;
 
@@ -188,10 +188,10 @@ bool WalletModel::validateAddress(const QString &address)
     return addressParsed.IsValid();
 }
 
-WalletModel::SendBreadcrumbsReturn WalletModel::prepareTransaction(WalletModelTransaction &transaction, const CBreadcrumbControl *coinControl)
+WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransaction &transaction, const CCoinControl *coinControl)
 {
     CAmount total = 0;
-    QList<SendBreadcrumbsRecipient> recipients = transaction.getRecipients();
+    QList<SendCoinsRecipient> recipients = transaction.getRecipients();
     std::vector<std::pair<CScript, CAmount> > vecSend;
 
     if(recipients.empty())
@@ -203,7 +203,7 @@ WalletModel::SendBreadcrumbsReturn WalletModel::prepareTransaction(WalletModelTr
     int nAddresses = 0;
 
     // Pre-check input data for validity
-    foreach(const SendBreadcrumbsRecipient &rcp, recipients)
+    foreach(const SendCoinsRecipient &rcp, recipients)
     {
         if (rcp.paymentRequest.IsInitialized())
         {   // PaymentRequest...
@@ -271,9 +271,9 @@ WalletModel::SendBreadcrumbsReturn WalletModel::prepareTransaction(WalletModelTr
         {
             if((total + nFeeRequired) > nBalance)
             {
-                return SendBreadcrumbsReturn(AmountWithFeeExceedsBalance);
+                return SendCoinsReturn(AmountWithFeeExceedsBalance);
             }
-            emit message(tr("Send Breadcrumbs"), QString::fromStdString(strFailReason),
+            emit message(tr("Send Coins"), QString::fromStdString(strFailReason),
                          CClientUIInterface::MSG_ERROR);
             return TransactionCreationFailed;
         }
@@ -283,10 +283,10 @@ WalletModel::SendBreadcrumbsReturn WalletModel::prepareTransaction(WalletModelTr
             return InsaneFee;
     }
 
-    return SendBreadcrumbsReturn(OK);
+    return SendCoinsReturn(OK);
 }
 
-WalletModel::SendBreadcrumbsReturn WalletModel::sendBreadcrumbs(WalletModelTransaction &transaction)
+WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &transaction)
 {
     QByteArray transaction_array; /* store serialized transaction */
 
@@ -295,7 +295,7 @@ WalletModel::SendBreadcrumbsReturn WalletModel::sendBreadcrumbs(WalletModelTrans
         CWalletTx *newTx = transaction.getTransaction();
 
         // Store PaymentRequests in wtx.vOrderForm in wallet.
-        foreach(const SendBreadcrumbsRecipient &rcp, transaction.getRecipients())
+        foreach(const SendCoinsRecipient &rcp, transaction.getRecipients())
         {
             if (rcp.paymentRequest.IsInitialized())
             {
@@ -320,7 +320,7 @@ WalletModel::SendBreadcrumbsReturn WalletModel::sendBreadcrumbs(WalletModelTrans
 
     // Add addresses / update labels that we've sent to to the address book,
     // and emit coinsSent signal for each recipient
-    foreach(const SendBreadcrumbsRecipient &rcp, transaction.getRecipients())
+    foreach(const SendCoinsRecipient &rcp, transaction.getRecipients())
     {
         // Don't touch the address book when we have a payment request
         if (!rcp.paymentRequest.IsInitialized())
@@ -348,7 +348,7 @@ WalletModel::SendBreadcrumbsReturn WalletModel::sendBreadcrumbs(WalletModelTrans
     }
     checkBalanceChanged(); // update balance immediately, otherwise there could be a short noticeable delay until pollBalanceChanged hits
 
-    return SendBreadcrumbsReturn(OK);
+    return SendCoinsReturn(OK);
 }
 
 OptionsModel *WalletModel::getOptionsModel()
@@ -559,28 +559,28 @@ bool WalletModel::isSpent(const COutPoint& outpoint) const
     return wallet->IsSpent(outpoint.hash, outpoint.n);
 }
 
-// AvailableBreadcrumbs + LockedBreadcrumbs grouped by wallet address (put change in one group with wallet address)
-void WalletModel::listBreadcrumbs(std::map<QString, std::vector<COutput> >& mapBreadcrumbs) const
+// AvailableCoins + LockedCoins grouped by wallet address (put change in one group with wallet address)
+void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const
 {
-    std::vector<COutput> vBreadcrumbs;
-    wallet->AvailableBreadcrumbs(vBreadcrumbs);
+    std::vector<COutput> vCoins;
+    wallet->AvailableCoins(vCoins);
 
-    LOCK2(cs_main, wallet->cs_wallet); // ListLockedBreadcrumbs, mapWallet
-    std::vector<COutPoint> vLockedBreadcrumbs;
-    wallet->ListLockedBreadcrumbs(vLockedBreadcrumbs);
+    LOCK2(cs_main, wallet->cs_wallet); // ListLockedCoins, mapWallet
+    std::vector<COutPoint> vLockedCoins;
+    wallet->ListLockedCoins(vLockedCoins);
 
     // add locked coins
-    BOOST_FOREACH(const COutPoint& outpoint, vLockedBreadcrumbs)
+    BOOST_FOREACH(const COutPoint& outpoint, vLockedCoins)
     {
         if (!wallet->mapWallet.count(outpoint.hash)) continue;
         int nDepth = wallet->mapWallet[outpoint.hash].GetDepthInMainChain();
         if (nDepth < 0) continue;
         COutput out(&wallet->mapWallet[outpoint.hash], outpoint.n, nDepth, true);
         if (outpoint.n < out.tx->vout.size() && wallet->IsMine(out.tx->vout[outpoint.n]) == ISMINE_SPENDABLE)
-            vBreadcrumbs.push_back(out);
+            vCoins.push_back(out);
     }
 
-    BOOST_FOREACH(const COutput& out, vBreadcrumbs)
+    BOOST_FOREACH(const COutput& out, vCoins)
     {
         COutput cout = out;
 
@@ -593,32 +593,32 @@ void WalletModel::listBreadcrumbs(std::map<QString, std::vector<COutput> >& mapB
         CTxDestination address;
         if(!out.fSpendable || !ExtractDestination(cout.tx->vout[cout.i].scriptPubKey, address))
             continue;
-        mapBreadcrumbs[QString::fromStdString(CBitcoinAddress(address).ToString())].push_back(out);
+        mapCoins[QString::fromStdString(CBitcoinAddress(address).ToString())].push_back(out);
     }
 }
 
-bool WalletModel::isLockedBreadcrumb(uint256 hash, unsigned int n) const
+bool WalletModel::isLockedCoin(uint256 hash, unsigned int n) const
 {
     LOCK2(cs_main, wallet->cs_wallet);
-    return wallet->IsLockedBreadcrumb(hash, n);
+    return wallet->IsLockedCoin(hash, n);
 }
 
-void WalletModel::lockBreadcrumb(COutPoint& output)
+void WalletModel::lockCoin(COutPoint& output)
 {
     LOCK2(cs_main, wallet->cs_wallet);
-    wallet->LockBreadcrumb(output);
+    wallet->LockCoin(output);
 }
 
-void WalletModel::unlockBreadcrumb(COutPoint& output)
+void WalletModel::unlockCoin(COutPoint& output)
 {
     LOCK2(cs_main, wallet->cs_wallet);
-    wallet->UnlockBreadcrumb(output);
+    wallet->UnlockCoin(output);
 }
 
-void WalletModel::listLockedBreadcrumbs(std::vector<COutPoint>& vOutpts)
+void WalletModel::listLockedCoins(std::vector<COutPoint>& vOutpts)
 {
     LOCK2(cs_main, wallet->cs_wallet);
-    wallet->ListLockedBreadcrumbs(vOutpts);
+    wallet->ListLockedCoins(vOutpts);
 }
 
 void WalletModel::loadReceiveRequests(std::vector<std::string>& vReceiveRequests)

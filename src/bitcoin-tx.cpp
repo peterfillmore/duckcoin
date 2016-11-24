@@ -344,8 +344,8 @@ static void MutateTxSign(CMutableTransaction& tx, const string& flagStr)
     // starts as a clone of the raw tx:
     CMutableTransaction mergedTx(txVariants[0]);
     bool fComplete = true;
-    CBreadcrumbsView viewDummy;
-    CBreadcrumbsViewCache view(&viewDummy);
+    CCoinsView viewDummy;
+    CCoinsViewCache view(&viewDummy);
 
     if (!registers.count("privatekeys"))
         throw runtime_error("privatekeys register variable must be set.");
@@ -390,7 +390,7 @@ static void MutateTxSign(CMutableTransaction& tx, const string& flagStr)
             CScript scriptPubKey(pkData.begin(), pkData.end());
 
             {
-                CBreadcrumbsModifier coins = view.ModifyBreadcrumbs(txid);
+                CCoinsModifier coins = view.ModifyCoins(txid);
                 if (coins->IsAvailable(nOut) && coins->vout[nOut].scriptPubKey != scriptPubKey) {
                     string err("Previous output scriptPubKey mismatch:\n");
                     err = err + coins->vout[nOut].scriptPubKey.ToString() + "\nvs:\n"+
@@ -422,7 +422,7 @@ static void MutateTxSign(CMutableTransaction& tx, const string& flagStr)
     // Sign what we can:
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++) {
         CTxIn& txin = mergedTx.vin[i];
-        const CBreadcrumbs* coins = view.AccessBreadcrumbs(txin.prevout.hash);
+        const CCoins* coins = view.AccessCoins(txin.prevout.hash);
         if (!coins || !coins->IsAvailable(txin.prevout.n)) {
             fComplete = false;
             continue;

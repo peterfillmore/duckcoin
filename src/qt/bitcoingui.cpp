@@ -75,13 +75,13 @@ BitcoinGUI::BitcoinGUI(const NetworkStyle *networkStyle, QWidget *parent) :
     overviewAction(0),
     historyAction(0),
     quitAction(0),
-    sendBreadcrumbsAction(0),
+    sendCoinsAction(0),
     usedSendingAddressesAction(0),
     usedReceivingAddressesAction(0),
     signMessageAction(0),
     verifyMessageAction(0),
     aboutAction(0),
-    receiveBreadcrumbsAction(0),
+    receiveCoinsAction(0),
     optionsAction(0),
     toggleHideAction(0),
     encryptWalletAction(0),
@@ -242,19 +242,19 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
-    sendBreadcrumbsAction = new QAction(QIcon(":/icons/send"), tr("&Send"), this);
-    sendBreadcrumbsAction->setStatusTip(tr("Send coins to a Duckcoin address"));
-    sendBreadcrumbsAction->setToolTip(sendBreadcrumbsAction->statusTip());
-    sendBreadcrumbsAction->setCheckable(true);
-    sendBreadcrumbsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
-    tabGroup->addAction(sendBreadcrumbsAction);
+    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send"), this);
+    sendCoinsAction->setStatusTip(tr("Send coins to a Duckcoin address"));
+    sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
+    sendCoinsAction->setCheckable(true);
+    sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
+    tabGroup->addAction(sendCoinsAction);
 
-    receiveBreadcrumbsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive"), this);
-    receiveBreadcrumbsAction->setStatusTip(tr("Request payments (generates QR codes and duckcoin: URIs)"));
-    receiveBreadcrumbsAction->setToolTip(receiveBreadcrumbsAction->statusTip());
-    receiveBreadcrumbsAction->setCheckable(true);
-    receiveBreadcrumbsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
-    tabGroup->addAction(receiveBreadcrumbsAction);
+    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive"), this);
+    receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and duckcoin: URIs)"));
+    receiveCoinsAction->setToolTip(receiveCoinsAction->statusTip());
+    receiveCoinsAction->setCheckable(true);
+    receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
+    tabGroup->addAction(receiveCoinsAction);
 
     historyAction = new QAction(QIcon(":/icons/history"), tr("&Transactions"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
@@ -264,14 +264,14 @@ void BitcoinGUI::createActions(const NetworkStyle *networkStyle)
     tabGroup->addAction(historyAction);
 
 #ifdef ENABLE_WALLET
-    // These showNormalIfMinimized are needed because Send Breadcrumbs and Receive Breadcrumbs
+    // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
-    connect(sendBreadcrumbsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(sendBreadcrumbsAction, SIGNAL(triggered()), this, SLOT(gotoSendBreadcrumbsPage()));
-    connect(receiveBreadcrumbsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(receiveBreadcrumbsAction, SIGNAL(triggered()), this, SLOT(gotoReceiveBreadcrumbsPage()));
+    connect(sendCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(sendCoinsAction, SIGNAL(triggered()), this, SLOT(gotoSendCoinsPage()));
+    connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
 #endif // ENABLE_WALLET
@@ -400,8 +400,8 @@ void BitcoinGUI::createToolBars()
         QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         toolbar->addAction(overviewAction);
-        toolbar->addAction(sendBreadcrumbsAction);
-        toolbar->addAction(receiveBreadcrumbsAction);
+        toolbar->addAction(sendCoinsAction);
+        toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
         overviewAction->setChecked(true);
     }
@@ -476,8 +476,8 @@ void BitcoinGUI::removeAllWallets()
 void BitcoinGUI::setWalletActionsEnabled(bool enabled)
 {
     overviewAction->setEnabled(enabled);
-    sendBreadcrumbsAction->setEnabled(enabled);
-    receiveBreadcrumbsAction->setEnabled(enabled);
+    sendCoinsAction->setEnabled(enabled);
+    receiveCoinsAction->setEnabled(enabled);
     historyAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
@@ -524,8 +524,8 @@ void BitcoinGUI::createTrayIconMenu()
     // Configuration of the tray icon (or dock icon) icon menu
     trayIconMenu->addAction(toggleHideAction);
     trayIconMenu->addSeparator();
-    trayIconMenu->addAction(sendBreadcrumbsAction);
-    trayIconMenu->addAction(receiveBreadcrumbsAction);
+    trayIconMenu->addAction(sendCoinsAction);
+    trayIconMenu->addAction(receiveCoinsAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(signMessageAction);
     trayIconMenu->addAction(verifyMessageAction);
@@ -605,16 +605,16 @@ void BitcoinGUI::gotoHistoryPage()
     if (walletFrame) walletFrame->gotoHistoryPage();
 }
 
-void BitcoinGUI::gotoReceiveBreadcrumbsPage()
+void BitcoinGUI::gotoReceiveCoinsPage()
 {
-    receiveBreadcrumbsAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoReceiveBreadcrumbsPage();
+    receiveCoinsAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoReceiveCoinsPage();
 }
 
-void BitcoinGUI::gotoSendBreadcrumbsPage(QString addr)
+void BitcoinGUI::gotoSendCoinsPage(QString addr)
 {
-    sendBreadcrumbsAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoSendBreadcrumbsPage(addr);
+    sendCoinsAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoSendCoinsPage(addr);
 }
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)
@@ -894,13 +894,13 @@ bool BitcoinGUI::eventFilter(QObject *object, QEvent *event)
 }
 
 #ifdef ENABLE_WALLET
-bool BitcoinGUI::handlePaymentRequest(const SendBreadcrumbsRecipient& recipient)
+bool BitcoinGUI::handlePaymentRequest(const SendCoinsRecipient& recipient)
 {
     // URI has to be valid
     if (walletFrame && walletFrame->handlePaymentRequest(recipient))
     {
         showNormalIfMinimized();
-        gotoSendBreadcrumbsPage();
+        gotoSendCoinsPage();
         return true;
     }
     return false;

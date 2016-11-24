@@ -11,7 +11,7 @@
 
 void URITests::uriTests()
 {
-    SendBreadcrumbsRecipient rv;
+    SendCoinsRecipient rv;
     QUrl uri;
     uri.setUrl(QString("duckcoin:Ler4HnaEFwYhBmGXCfP2po1NPRueIk8km2?req-dontexist="));
     QVERIFY(!GUIUtil::parseBitcoinURI(uri, &rv));

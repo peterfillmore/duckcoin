@@ -18,7 +18,7 @@
 #include <boost/filesystem.hpp>
 
 class QValidatedLineEdit;
-class SendBreadcrumbsRecipient;
+class SendCoinsRecipient;
 
 QT_BEGIN_NAMESPACE
 class QAbstractItemView;
@@ -45,9 +45,9 @@ namespace GUIUtil
     void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
     // Parse "bitcoin:" URI into recipient object, return true on successful parsing
-    bool parseBitcoinURI(const QUrl &uri, SendBreadcrumbsRecipient *out);
-    bool parseBitcoinURI(QString uri, SendBreadcrumbsRecipient *out);
-    QString formatBitcoinURI(const SendBreadcrumbsRecipient &info);
+    bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
+    bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
+    QString formatBitcoinURI(const SendCoinsRecipient &info);
 
     // Returns true if given address+amount meets "dust" definition
     bool isDust(const QString& address, const CAmount& amount);

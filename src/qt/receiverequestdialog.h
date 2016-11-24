@@ -53,7 +53,7 @@ public:
     ~ReceiveRequestDialog();
 
     void setModel(OptionsModel *model);
-    void setInfo(const SendBreadcrumbsRecipient &info);
+    void setInfo(const SendCoinsRecipient &info);
 
 private slots:
     void on_btnCopyURI_clicked();
@@ -64,7 +64,7 @@ private slots:
 private:
     Ui::ReceiveRequestDialog *ui;
     OptionsModel *model;
-    SendBreadcrumbsRecipient info;
+    SendCoinsRecipient info;
 };
 
 #endif // BITBREADCRUMB_QT_RECEIVEREQUESTDIALOG_H

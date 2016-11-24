@@ -121,13 +121,13 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
     widget->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 }
 
-bool parseBitcoinURI(const QUrl &uri, SendBreadcrumbsRecipient *out)
+bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no bitcoin: URI
     if(!uri.isValid() || uri.scheme() != QString("duckcoin"))
         return false;
 
-    SendBreadcrumbsRecipient rv;
+    SendCoinsRecipient rv;
     rv.address = uri.path();
     // Trim any following forward slash which may have been added by the OS
     if (rv.address.endsWith("/")) {
@@ -182,7 +182,7 @@ bool parseBitcoinURI(const QUrl &uri, SendBreadcrumbsRecipient *out)
     return true;
 }
 
-bool parseBitcoinURI(QString uri, SendBreadcrumbsRecipient *out)
+bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
 {
     // Convert bitcoin:// to bitcoin:
     //
@@ -196,7 +196,7 @@ bool parseBitcoinURI(QString uri, SendBreadcrumbsRecipient *out)
     return parseBitcoinURI(uriInstance, out);
 }
 
-QString formatBitcoinURI(const SendBreadcrumbsRecipient &info)
+QString formatBitcoinURI(const SendCoinsRecipient &info)
 {
     QString ret = QString("duckcoin:%1").arg(info.address);
     int paramCount = 0;

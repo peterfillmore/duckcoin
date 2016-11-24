@@ -31,11 +31,11 @@ X509 *parse_b64der_cert(const char* cert_data)
 // Test payment request handling
 //
 
-static SendBreadcrumbsRecipient handleRequest(PaymentServer* server, std::vector<unsigned char>& data)
+static SendCoinsRecipient handleRequest(PaymentServer* server, std::vector<unsigned char>& data)
 {
     RecipientCatcher sigCatcher;
-    QObject::connect(server, SIGNAL(receivedPaymentRequest(SendBreadcrumbsRecipient)),
-        &sigCatcher, SLOT(getRecipient(SendBreadcrumbsRecipient)));
+    QObject::connect(server, SIGNAL(receivedPaymentRequest(SendCoinsRecipient)),
+        &sigCatcher, SLOT(getRecipient(SendCoinsRecipient)));
 
     // Write data to a temp file:
     QTemporaryFile f;
@@ -52,8 +52,8 @@ static SendBreadcrumbsRecipient handleRequest(PaymentServer* server, std::vector
     // which will lead to a test failure anyway.
     QCoreApplication::sendEvent(&object, &event);
 
-    QObject::disconnect(server, SIGNAL(receivedPaymentRequest(SendBreadcrumbsRecipient)),
-        &sigCatcher, SLOT(getRecipient(SendBreadcrumbsRecipient)));
+    QObject::disconnect(server, SIGNAL(receivedPaymentRequest(SendCoinsRecipient)),
+        &sigCatcher, SLOT(getRecipient(SendCoinsRecipient)));
 
     // Return results from sigCatcher
     return sigCatcher.recipient;
@@ -72,7 +72,7 @@ void PaymentServerTests::paymentServerTests()
 
     // Now feed PaymentRequests to server, and observe signals it produces:
     std::vector<unsigned char> data = DecodeBase64(paymentrequest1_BASE64);
-    SendBreadcrumbsRecipient r = handleRequest(server, data);
+    SendCoinsRecipient r = handleRequest(server, data);
     QString merchant;
     r.paymentRequest.getMerchant(caStore, merchant);
     QCOMPARE(merchant, QString("testmerchant.org"));
@@ -123,7 +123,7 @@ void PaymentServerTests::paymentServerTests()
     delete server;
 }
 
-void RecipientCatcher::getRecipient(SendBreadcrumbsRecipient r)
+void RecipientCatcher::getRecipient(SendCoinsRecipient r)
 {
     recipient = r;
 }

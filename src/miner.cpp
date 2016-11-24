@@ -136,7 +136,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
         LOCK2(cs_main, mempool.cs);
         CBlockIndex* pindexPrev = chainActive.Tip();
         const int nHeight = pindexPrev->nHeight + 1;
-        CBreadcrumbsViewCache view(pcoinsTip);
+        CCoinsViewCache view(pcoinsTip);
 
         // Priority order to process transactions
         list<COrphan> vOrphan; // list memory doesn't move
@@ -150,7 +150,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
              mi != mempool.mapTx.end(); ++mi)
         {
             const CTransaction& tx = mi->second.GetTx();
-            if (tx.IsBreadcrumbBase() || !IsFinalTx(tx, nHeight))
+            if (tx.IsCoinBase() || !IsFinalTx(tx, nHeight))
                 continue;
 
             COrphan* porphan = NULL;
@@ -160,7 +160,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
             BOOST_FOREACH(const CTxIn& txin, tx.vin)
             {
                 // Read prev transaction
-                if (!view.HaveBreadcrumbs(txin.prevout.hash))
+                if (!view.HaveCoins(txin.prevout.hash))
                 {
                     // This should never happen; all transactions in the memory
                     // pool should connect to either transactions in the chain
@@ -187,7 +187,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
                     nTotalIn += mempool.mapTx[txin.prevout.hash].GetTx().vout[txin.prevout.n].nValue;
                     continue;
                 }
-                const CBreadcrumbs* coins = view.AccessBreadcrumbs(txin.prevout.hash);
+                const CCoins* coins = view.AccessCoins(txin.prevout.hash);
                 assert(coins);
 
                 CAmount nValueIn = coins->vout[txin.prevout.n].nValue;
@@ -281,7 +281,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
                 continue;
 
             CTxUndo txundo;
-            UpdateBreadcrumbs(tx, state, view, txundo, nHeight);
+            UpdateCoins(tx, state, view, txundo, nHeight);
 
             // Added
             pblock->vtx.push_back(tx);
@@ -352,11 +352,11 @@ void IncrementExtraNonce(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& 
     }
     ++nExtraNonce;
     unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
-    CMutableTransaction txBreadcrumbbase(pblock->vtx[0]);
-    txBreadcrumbbase.vin[0].scriptSig = (CScript() << nHeight << CScriptNum(nExtraNonce)) + BREADCRUMBBASE_FLAGS;
-    assert(txBreadcrumbbase.vin[0].scriptSig.size() <= 100);
+    CMutableTransaction txCoinbase(pblock->vtx[0]);
+    txCoinbase.vin[0].scriptSig = (CScript() << nHeight << CScriptNum(nExtraNonce)) + BREADCRUMBBASE_FLAGS;
+    assert(txCoinbase.vin[0].scriptSig.size() <= 100);
 
-    pblock->vtx[0] = txBreadcrumbbase;
+    pblock->vtx[0] = txCoinbase;
     pblock->hashMerkleRoot = pblock->BuildMerkleTree();
 }
 

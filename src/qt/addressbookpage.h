@@ -81,7 +81,7 @@ private slots:
     void selectNewAddress(const QModelIndex &parent, int begin, int /*end*/);
 
 signals:
-    void sendBreadcrumbs(QString addr);
+    void sendCoins(QString addr);
 };
 
 #endif // BITBREADCRUMB_QT_ADDRESSBOOKPAGE_H

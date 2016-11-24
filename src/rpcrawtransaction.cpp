@@ -62,7 +62,7 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, Object& entry)
     Array vin;
     BOOST_FOREACH(const CTxIn& txin, tx.vin) {
         Object in;
-        if (tx.IsBreadcrumbBase())
+        if (tx.IsCoinBase())
             in.push_back(Pair("coinbase", HexStr(txin.scriptSig.begin(), txin.scriptSig.end())));
         else {
             in.push_back(Pair("txid", txin.prevout.hash.GetHex()));
@@ -258,7 +258,7 @@ Value listunspent(const Array& params, bool fHelp)
     Array results;
     vector<COutput> vecOutputs;
     assert(pwalletMain != NULL);
-    pwalletMain->AvailableBreadcrumbs(vecOutputs, false);
+    pwalletMain->AvailableCoins(vecOutputs, false);
     BOOST_FOREACH(const COutput& out, vecOutputs) {
         if (out.nDepth < nMinDepth || out.nDepth > nMaxDepth)
             continue;
@@ -559,18 +559,18 @@ Value signrawtransaction(const Array& params, bool fHelp)
     bool fComplete = true;
 
     // Fetch previous transactions (inputs):
-    CBreadcrumbsView viewDummy;
-    CBreadcrumbsViewCache view(&viewDummy);
+    CCoinsView viewDummy;
+    CCoinsViewCache view(&viewDummy);
     {
         LOCK(mempool.cs);
-        CBreadcrumbsViewCache &viewChain = *pcoinsTip;
-        CBreadcrumbsViewMemPool viewMempool(&viewChain, mempool);
+        CCoinsViewCache &viewChain = *pcoinsTip;
+        CCoinsViewMemPool viewMempool(&viewChain, mempool);
         view.SetBackend(viewMempool); // temporarily switch cache backend to db+mempool view
 
         BOOST_FOREACH(const CTxIn& txin, mergedTx.vin) {
             const uint256& prevHash = txin.prevout.hash;
-            CBreadcrumbs coins;
-            view.AccessBreadcrumbs(prevHash); // this is certainly allowed to fail
+            CCoins coins;
+            view.AccessCoins(prevHash); // this is certainly allowed to fail
         }
 
         view.SetBackend(viewDummy); // switch back to avoid locking mempool for too long
@@ -618,7 +618,7 @@ Value signrawtransaction(const Array& params, bool fHelp)
             CScript scriptPubKey(pkData.begin(), pkData.end());
 
             {
-                CBreadcrumbsModifier coins = view.ModifyBreadcrumbs(txid);
+                CCoinsModifier coins = view.ModifyCoins(txid);
                 if (coins->IsAvailable(nOut) && coins->vout[nOut].scriptPubKey != scriptPubKey) {
                     string err("Previous output scriptPubKey mismatch:\n");
                     err = err + coins->vout[nOut].scriptPubKey.ToString() + "\nvs:\n"+
@@ -674,7 +674,7 @@ Value signrawtransaction(const Array& params, bool fHelp)
     // Sign what we can:
     for (unsigned int i = 0; i < mergedTx.vin.size(); i++) {
         CTxIn& txin = mergedTx.vin[i];
-        const CBreadcrumbs* coins = view.AccessBreadcrumbs(txin.prevout.hash);
+        const CCoins* coins = view.AccessCoins(txin.prevout.hash);
         if (coins == NULL || !coins->IsAvailable(txin.prevout.n)) {
             fComplete = false;
             continue;
@@ -736,10 +736,10 @@ Value sendrawtransaction(const Array& params, bool fHelp)
     if (params.size() > 1)
         fOverrideFees = params[1].get_bool();
 
-    CBreadcrumbsViewCache &view = *pcoinsTip;
-    const CBreadcrumbs* existingBreadcrumbs = view.AccessBreadcrumbs(hashTx);
+    CCoinsViewCache &view = *pcoinsTip;
+    const CCoins* existingCoins = view.AccessCoins(hashTx);
     bool fHaveMempool = mempool.exists(hashTx);
-    bool fHaveChain = existingBreadcrumbs && existingBreadcrumbs->nHeight < 1000000000;
+    bool fHaveChain = existingCoins && existingCoins->nHeight < 1000000000;
     if (!fHaveMempool && !fHaveChain) {
         // push to local node and sync with wallets
         CValidationState state;

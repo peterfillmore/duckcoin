@@ -47,7 +47,7 @@ void WalletTxToJSON(const CWalletTx& wtx, Object& entry)
 {
     int confirms = wtx.GetDepthInMainChain();
     entry.push_back(Pair("confirmations", confirms));
-    if (wtx.IsBreadcrumbBase())
+    if (wtx.IsCoinBase())
         entry.push_back(Pair("generated", true));
     if (confirms > 0)
     {
@@ -526,7 +526,7 @@ Value getreceivedbyaddress(const Array& params, bool fHelp)
     for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsBreadcrumbBase() || !IsFinalTx(wtx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx))
             continue;
 
         BOOST_FOREACH(const CTxOut& txout, wtx.vout)
@@ -575,7 +575,7 @@ Value getreceivedbyaccount(const Array& params, bool fHelp)
     for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsBreadcrumbBase() || !IsFinalTx(wtx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx))
             continue;
 
         BOOST_FOREACH(const CTxOut& txout, wtx.vout)
@@ -994,7 +994,7 @@ Value ListReceived(const Array& params, bool fByAccounts)
     {
         const CWalletTx& wtx = (*it).second;
 
-        if (wtx.IsBreadcrumbBase() || !IsFinalTx(wtx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx))
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
@@ -1206,7 +1206,7 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
                     entry.push_back(Pair("involvesWatchonly", true));
                 entry.push_back(Pair("account", account));
                 MaybePushAddress(entry, r.destination);
-                if (wtx.IsBreadcrumbBase())
+                if (wtx.IsCoinBase())
                 {
                     if (wtx.GetDepthInMainChain() < 1)
                         entry.push_back(Pair("category", "orphan"));
@@ -1881,7 +1881,7 @@ Value lockunspent(const Array& params, bool fHelp)
 
     if (params.size() == 1) {
         if (fUnlock)
-            pwalletMain->UnlockAllBreadcrumbs();
+            pwalletMain->UnlockAllCoins();
         return true;
     }
 
@@ -1905,9 +1905,9 @@ Value lockunspent(const Array& params, bool fHelp)
         COutPoint outpt(uint256(txid), nOutput);
 
         if (fUnlock)
-            pwalletMain->UnlockBreadcrumb(outpt);
+            pwalletMain->UnlockCoin(outpt);
         else
-            pwalletMain->LockBreadcrumb(outpt);
+            pwalletMain->LockCoin(outpt);
     }
 
     return true;
@@ -1942,7 +1942,7 @@ Value listlockunspent(const Array& params, bool fHelp)
         );
 
     vector<COutPoint> vOutpts;
-    pwalletMain->ListLockedBreadcrumbs(vOutpts);
+    pwalletMain->ListLockedCoins(vOutpts);
 
     Array ret;
 

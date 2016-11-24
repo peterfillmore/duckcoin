@@ -23,7 +23,7 @@ class NetworkStyle;
 class Notificator;
 class OptionsModel;
 class RPCConsole;
-class SendBreadcrumbsRecipient;
+class SendCoinsRecipient;
 class UnitDisplayStatusBarControl;
 class WalletFrame;
 class WalletModel;
@@ -89,13 +89,13 @@ private:
     QAction *overviewAction;
     QAction *historyAction;
     QAction *quitAction;
-    QAction *sendBreadcrumbsAction;
+    QAction *sendCoinsAction;
     QAction *usedSendingAddressesAction;
     QAction *usedReceivingAddressesAction;
     QAction *signMessageAction;
     QAction *verifyMessageAction;
     QAction *aboutAction;
-    QAction *receiveBreadcrumbsAction;
+    QAction *receiveCoinsAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
     QAction *encryptWalletAction;
@@ -160,7 +160,7 @@ public slots:
     */
     void setEncryptionStatus(int status);
 
-    bool handlePaymentRequest(const SendBreadcrumbsRecipient& recipient);
+    bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
     /** Show incoming transaction notification for new transactions. */
     void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address);
@@ -173,9 +173,9 @@ private slots:
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
-    void gotoReceiveBreadcrumbsPage();
+    void gotoReceiveCoinsPage();
     /** Switch to send coins page */
-    void gotoSendBreadcrumbsPage(QString addr = "");
+    void gotoSendCoinsPage(QString addr = "");
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");

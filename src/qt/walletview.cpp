@@ -51,13 +51,13 @@ WalletView::WalletView(QWidget *parent):
     vbox->addLayout(hbox_buttons);
     transactionsPage->setLayout(vbox);
 
-    receiveBreadcrumbsPage = new ReceiveBreadcrumbsDialog();
-    sendBreadcrumbsPage = new SendBreadcrumbsDialog();
+    receiveCoinsPage = new ReceiveCoinsDialog();
+    sendCoinsPage = new SendCoinsDialog();
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
-    addWidget(receiveBreadcrumbsPage);
-    addWidget(sendBreadcrumbsPage);
+    addWidget(receiveCoinsPage);
+    addWidget(sendCoinsPage);
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -68,8 +68,8 @@ WalletView::WalletView(QWidget *parent):
     // Clicking on "Export" allows to export the transaction list
     connect(exportButton, SIGNAL(clicked()), transactionView, SLOT(exportClicked()));
 
-    // Pass through messages from sendBreadcrumbsPage
-    connect(sendBreadcrumbsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    // Pass through messages from sendCoinsPage
+    connect(sendCoinsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from transactionView
     connect(transactionView, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
 }
@@ -101,7 +101,7 @@ void WalletView::setClientModel(ClientModel *clientModel)
     this->clientModel = clientModel;
 
     overviewPage->setClientModel(clientModel);
-    sendBreadcrumbsPage->setClientModel(clientModel);
+    sendCoinsPage->setClientModel(clientModel);
 }
 
 void WalletView::setWalletModel(WalletModel *walletModel)
@@ -111,8 +111,8 @@ void WalletView::setWalletModel(WalletModel *walletModel)
     // Put transaction list in tabs
     transactionView->setModel(walletModel);
     overviewPage->setWalletModel(walletModel);
-    receiveBreadcrumbsPage->setModel(walletModel);
-    sendBreadcrumbsPage->setModel(walletModel);
+    receiveCoinsPage->setModel(walletModel);
+    sendCoinsPage->setModel(walletModel);
 
     if (walletModel)
     {
@@ -163,17 +163,17 @@ void WalletView::gotoHistoryPage()
     setCurrentWidget(transactionsPage);
 }
 
-void WalletView::gotoReceiveBreadcrumbsPage()
+void WalletView::gotoReceiveCoinsPage()
 {
-    setCurrentWidget(receiveBreadcrumbsPage);
+    setCurrentWidget(receiveCoinsPage);
 }
 
-void WalletView::gotoSendBreadcrumbsPage(QString addr)
+void WalletView::gotoSendCoinsPage(QString addr)
 {
-    setCurrentWidget(sendBreadcrumbsPage);
+    setCurrentWidget(sendCoinsPage);
 
     if (!addr.isEmpty())
-        sendBreadcrumbsPage->setAddress(addr);
+        sendCoinsPage->setAddress(addr);
 }
 
 void WalletView::gotoSignMessageTab(QString addr)
@@ -200,9 +200,9 @@ void WalletView::gotoVerifyMessageTab(QString addr)
         signVerifyMessageDialog->setAddress_VM(addr);
 }
 
-bool WalletView::handlePaymentRequest(const SendBreadcrumbsRecipient& recipient)
+bool WalletView::handlePaymentRequest(const SendCoinsRecipient& recipient)
 {
-    return sendBreadcrumbsPage->handlePaymentRequest(recipient);
+    return sendCoinsPage->handlePaymentRequest(recipient);
 }
 
 void WalletView::showOutOfSyncWarning(bool fShow)

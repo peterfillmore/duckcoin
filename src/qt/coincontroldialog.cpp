@@ -30,12 +30,12 @@
 #include <QTreeWidgetItem>
 
 using namespace std;
-QList<CAmount> BreadcrumbControlDialog::payAmounts;
-CBreadcrumbControl* BreadcrumbControlDialog::coinControl = new CBreadcrumbControl();
+QList<CAmount> CoinControlDialog::payAmounts;
+CCoinControl* CoinControlDialog::coinControl = new CCoinControl();
 
-BreadcrumbControlDialog::BreadcrumbControlDialog(QWidget *parent) :
+CoinControlDialog::CoinControlDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::BreadcrumbControlDialog),
+    ui(new Ui::CoinControlDialog),
     model(0)
 {
     ui->setupUi(this);
@@ -64,8 +64,8 @@ BreadcrumbControlDialog::BreadcrumbControlDialog(QWidget *parent) :
     connect(copyLabelAction, SIGNAL(triggered()), this, SLOT(copyLabel()));
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
     connect(copyTransactionHashAction, SIGNAL(triggered()), this, SLOT(copyTransactionHash()));
-    connect(lockAction, SIGNAL(triggered()), this, SLOT(lockBreadcrumb()));
-    connect(unlockAction, SIGNAL(triggered()), this, SLOT(unlockBreadcrumb()));
+    connect(lockAction, SIGNAL(triggered()), this, SLOT(lockCoin()));
+    connect(unlockAction, SIGNAL(triggered()), this, SLOT(unlockCoin()));
 
     // clipboard actions
     QAction *clipboardQuantityAction = new QAction(tr("Copy quantity"), this);
@@ -86,14 +86,14 @@ BreadcrumbControlDialog::BreadcrumbControlDialog(QWidget *parent) :
     connect(clipboardLowOutputAction, SIGNAL(triggered()), this, SLOT(clipboardLowOutput()));
     connect(clipboardChangeAction, SIGNAL(triggered()), this, SLOT(clipboardChange()));
 
-    ui->labelBreadcrumbControlQuantity->addAction(clipboardQuantityAction);
-    ui->labelBreadcrumbControlAmount->addAction(clipboardAmountAction);
-    ui->labelBreadcrumbControlFee->addAction(clipboardFeeAction);
-    ui->labelBreadcrumbControlAfterFee->addAction(clipboardAfterFeeAction);
-    ui->labelBreadcrumbControlBytes->addAction(clipboardBytesAction);
-    ui->labelBreadcrumbControlPriority->addAction(clipboardPriorityAction);
-    ui->labelBreadcrumbControlLowOutput->addAction(clipboardLowOutputAction);
-    ui->labelBreadcrumbControlChange->addAction(clipboardChangeAction);
+    ui->labelCoinControlQuantity->addAction(clipboardQuantityAction);
+    ui->labelCoinControlAmount->addAction(clipboardAmountAction);
+    ui->labelCoinControlFee->addAction(clipboardFeeAction);
+    ui->labelCoinControlAfterFee->addAction(clipboardAfterFeeAction);
+    ui->labelCoinControlBytes->addAction(clipboardBytesAction);
+    ui->labelCoinControlPriority->addAction(clipboardPriorityAction);
+    ui->labelCoinControlLowOutput->addAction(clipboardLowOutputAction);
+    ui->labelCoinControlChange->addAction(clipboardChangeAction);
 
     // toggle tree/list mode
     connect(ui->radioTreeMode, SIGNAL(toggled(bool)), this, SLOT(radioTreeMode(bool)));
@@ -138,23 +138,23 @@ BreadcrumbControlDialog::BreadcrumbControlDialog(QWidget *parent) :
 
     // restore list mode and sortorder as a convenience feature
     QSettings settings;
-    if (settings.contains("nBreadcrumbControlMode") && !settings.value("nBreadcrumbControlMode").toBool())
+    if (settings.contains("nCoinControlMode") && !settings.value("nCoinControlMode").toBool())
         ui->radioTreeMode->click();
-    if (settings.contains("nBreadcrumbControlSortColumn") && settings.contains("nBreadcrumbControlSortOrder"))
-        sortView(settings.value("nBreadcrumbControlSortColumn").toInt(), ((Qt::SortOrder)settings.value("nBreadcrumbControlSortOrder").toInt()));
+    if (settings.contains("nCoinControlSortColumn") && settings.contains("nCoinControlSortOrder"))
+        sortView(settings.value("nCoinControlSortColumn").toInt(), ((Qt::SortOrder)settings.value("nCoinControlSortOrder").toInt()));
 }
 
-BreadcrumbControlDialog::~BreadcrumbControlDialog()
+CoinControlDialog::~CoinControlDialog()
 {
     QSettings settings;
-    settings.setValue("nBreadcrumbControlMode", ui->radioListMode->isChecked());
-    settings.setValue("nBreadcrumbControlSortColumn", sortColumn);
-    settings.setValue("nBreadcrumbControlSortOrder", (int)sortOrder);
+    settings.setValue("nCoinControlMode", ui->radioListMode->isChecked());
+    settings.setValue("nCoinControlSortColumn", sortColumn);
+    settings.setValue("nCoinControlSortOrder", (int)sortOrder);
 
     delete ui;
 }
 
-void BreadcrumbControlDialog::setModel(WalletModel *model)
+void CoinControlDialog::setModel(WalletModel *model)
 {
     this->model = model;
 
@@ -162,12 +162,12 @@ void BreadcrumbControlDialog::setModel(WalletModel *model)
     {
         updateView();
         updateLabelLocked();
-        BreadcrumbControlDialog::updateLabels(model, this);
+        CoinControlDialog::updateLabels(model, this);
     }
 }
 
 // helper function str_pad
-QString BreadcrumbControlDialog::strPad(QString s, int nPadLength, QString sPadding)
+QString CoinControlDialog::strPad(QString s, int nPadLength, QString sPadding)
 {
     while (s.length() < nPadLength)
         s = sPadding + s;
@@ -176,14 +176,14 @@ QString BreadcrumbControlDialog::strPad(QString s, int nPadLength, QString sPadd
 }
 
 // ok button
-void BreadcrumbControlDialog::buttonBoxClicked(QAbstractButton* button)
+void CoinControlDialog::buttonBoxClicked(QAbstractButton* button)
 {
     if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
         done(QDialog::Accepted); // closes the dialog
 }
 
 // (un)select all
-void BreadcrumbControlDialog::buttonSelectAllClicked()
+void CoinControlDialog::buttonSelectAllClicked()
 {
     Qt::CheckState state = Qt::Checked;
     for (int i = 0; i < ui->treeWidget->topLevelItemCount(); i++)
@@ -201,11 +201,11 @@ void BreadcrumbControlDialog::buttonSelectAllClicked()
     ui->treeWidget->setEnabled(true);
     if (state == Qt::Unchecked)
         coinControl->UnSelectAll(); // just to be sure
-    BreadcrumbControlDialog::updateLabels(model, this);
+    CoinControlDialog::updateLabels(model, this);
 }
 
 // context menu
-void BreadcrumbControlDialog::showMenu(const QPoint &point)
+void CoinControlDialog::showMenu(const QPoint &point)
 {
     QTreeWidgetItem *item = ui->treeWidget->itemAt(point);
     if(item)
@@ -216,7 +216,7 @@ void BreadcrumbControlDialog::showMenu(const QPoint &point)
         if (item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
         {
             copyTransactionHashAction->setEnabled(true);
-            if (model->isLockedBreadcrumb(uint256(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt()))
+            if (model->isLockedCoin(uint256(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt()))
             {
                 lockAction->setEnabled(false);
                 unlockAction->setEnabled(true);
@@ -240,13 +240,13 @@ void BreadcrumbControlDialog::showMenu(const QPoint &point)
 }
 
 // context menu action: copy amount
-void BreadcrumbControlDialog::copyAmount()
+void CoinControlDialog::copyAmount()
 {
     GUIUtil::setClipboard(BitcoinUnits::removeSpaces(contextMenuItem->text(COLUMN_AMOUNT)));
 }
 
 // context menu action: copy label
-void BreadcrumbControlDialog::copyLabel()
+void CoinControlDialog::copyLabel()
 {
     if (ui->radioTreeMode->isChecked() && contextMenuItem->text(COLUMN_LABEL).length() == 0 && contextMenuItem->parent())
         GUIUtil::setClipboard(contextMenuItem->parent()->text(COLUMN_LABEL));
@@ -255,7 +255,7 @@ void BreadcrumbControlDialog::copyLabel()
 }
 
 // context menu action: copy address
-void BreadcrumbControlDialog::copyAddress()
+void CoinControlDialog::copyAddress()
 {
     if (ui->radioTreeMode->isChecked() && contextMenuItem->text(COLUMN_ADDRESS).length() == 0 && contextMenuItem->parent())
         GUIUtil::setClipboard(contextMenuItem->parent()->text(COLUMN_ADDRESS));
@@ -264,84 +264,84 @@ void BreadcrumbControlDialog::copyAddress()
 }
 
 // context menu action: copy transaction id
-void BreadcrumbControlDialog::copyTransactionHash()
+void CoinControlDialog::copyTransactionHash()
 {
     GUIUtil::setClipboard(contextMenuItem->text(COLUMN_TXHASH));
 }
 
 // context menu action: lock coin
-void BreadcrumbControlDialog::lockBreadcrumb()
+void CoinControlDialog::lockCoin()
 {
     if (contextMenuItem->checkState(COLUMN_CHECKBOX) == Qt::Checked)
         contextMenuItem->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
 
     COutPoint outpt(uint256(contextMenuItem->text(COLUMN_TXHASH).toStdString()), contextMenuItem->text(COLUMN_VOUT_INDEX).toUInt());
-    model->lockBreadcrumb(outpt);
+    model->lockCoin(outpt);
     contextMenuItem->setDisabled(true);
     contextMenuItem->setIcon(COLUMN_CHECKBOX, QIcon(":/icons/lock_closed"));
     updateLabelLocked();
 }
 
 // context menu action: unlock coin
-void BreadcrumbControlDialog::unlockBreadcrumb()
+void CoinControlDialog::unlockCoin()
 {
     COutPoint outpt(uint256(contextMenuItem->text(COLUMN_TXHASH).toStdString()), contextMenuItem->text(COLUMN_VOUT_INDEX).toUInt());
-    model->unlockBreadcrumb(outpt);
+    model->unlockCoin(outpt);
     contextMenuItem->setDisabled(false);
     contextMenuItem->setIcon(COLUMN_CHECKBOX, QIcon());
     updateLabelLocked();
 }
 
 // copy label "Quantity" to clipboard
-void BreadcrumbControlDialog::clipboardQuantity()
+void CoinControlDialog::clipboardQuantity()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlQuantity->text());
+    GUIUtil::setClipboard(ui->labelCoinControlQuantity->text());
 }
 
 // copy label "Amount" to clipboard
-void BreadcrumbControlDialog::clipboardAmount()
+void CoinControlDialog::clipboardAmount()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlAmount->text().left(ui->labelBreadcrumbControlAmount->text().indexOf(" ")));
+    GUIUtil::setClipboard(ui->labelCoinControlAmount->text().left(ui->labelCoinControlAmount->text().indexOf(" ")));
 }
 
 // copy label "Fee" to clipboard
-void BreadcrumbControlDialog::clipboardFee()
+void CoinControlDialog::clipboardFee()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlFee->text().left(ui->labelBreadcrumbControlFee->text().indexOf(" ")).replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlFee->text().left(ui->labelCoinControlFee->text().indexOf(" ")).replace("~", ""));
 }
 
 // copy label "After fee" to clipboard
-void BreadcrumbControlDialog::clipboardAfterFee()
+void CoinControlDialog::clipboardAfterFee()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlAfterFee->text().left(ui->labelBreadcrumbControlAfterFee->text().indexOf(" ")).replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlAfterFee->text().left(ui->labelCoinControlAfterFee->text().indexOf(" ")).replace("~", ""));
 }
 
 // copy label "Bytes" to clipboard
-void BreadcrumbControlDialog::clipboardBytes()
+void CoinControlDialog::clipboardBytes()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlBytes->text().replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlBytes->text().replace("~", ""));
 }
 
 // copy label "Priority" to clipboard
-void BreadcrumbControlDialog::clipboardPriority()
+void CoinControlDialog::clipboardPriority()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlPriority->text());
+    GUIUtil::setClipboard(ui->labelCoinControlPriority->text());
 }
 
 // copy label "Dust" to clipboard
-void BreadcrumbControlDialog::clipboardLowOutput()
+void CoinControlDialog::clipboardLowOutput()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlLowOutput->text());
+    GUIUtil::setClipboard(ui->labelCoinControlLowOutput->text());
 }
 
 // copy label "Change" to clipboard
-void BreadcrumbControlDialog::clipboardChange()
+void CoinControlDialog::clipboardChange()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlChange->text().left(ui->labelBreadcrumbControlChange->text().indexOf(" ")).replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlChange->text().left(ui->labelCoinControlChange->text().indexOf(" ")).replace("~", ""));
 }
 
 // treeview: sort
-void BreadcrumbControlDialog::sortView(int column, Qt::SortOrder order)
+void CoinControlDialog::sortView(int column, Qt::SortOrder order)
 {
     sortColumn = column;
     sortOrder = order;
@@ -350,7 +350,7 @@ void BreadcrumbControlDialog::sortView(int column, Qt::SortOrder order)
 }
 
 // treeview: clicked on header
-void BreadcrumbControlDialog::headerSectionClicked(int logicalIndex)
+void CoinControlDialog::headerSectionClicked(int logicalIndex)
 {
     if (logicalIndex == COLUMN_CHECKBOX) // click on most left column -> do nothing
     {
@@ -373,21 +373,21 @@ void BreadcrumbControlDialog::headerSectionClicked(int logicalIndex)
 }
 
 // toggle tree mode
-void BreadcrumbControlDialog::radioTreeMode(bool checked)
+void CoinControlDialog::radioTreeMode(bool checked)
 {
     if (checked && model)
         updateView();
 }
 
 // toggle list mode
-void BreadcrumbControlDialog::radioListMode(bool checked)
+void CoinControlDialog::radioListMode(bool checked)
 {
     if (checked && model)
         updateView();
 }
 
 // checkbox clicked by user
-void BreadcrumbControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
+void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 {
     if (column == COLUMN_CHECKBOX && item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
     {
@@ -402,7 +402,7 @@ void BreadcrumbControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 
         // selection changed -> update labels
         if (ui->treeWidget->isEnabled()) // do not update on every click for (un)select all
-            BreadcrumbControlDialog::updateLabels(model, this);
+            CoinControlDialog::updateLabels(model, this);
     }
 
     // todo: this is a temporary qt5 fix: when clicking a parent node in tree mode, the parent node
@@ -419,7 +419,7 @@ void BreadcrumbControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 }
 
 // return human readable label for priority number
-QString BreadcrumbControlDialog::getPriorityLabel(double dPriority, double mempoolEstimatePriority)
+QString CoinControlDialog::getPriorityLabel(double dPriority, double mempoolEstimatePriority)
 {
     double dPriorityMedium = mempoolEstimatePriority;
 
@@ -438,10 +438,10 @@ QString BreadcrumbControlDialog::getPriorityLabel(double dPriority, double mempo
 }
 
 // shows count of locked unspent outputs
-void BreadcrumbControlDialog::updateLabelLocked()
+void CoinControlDialog::updateLabelLocked()
 {
     vector<COutPoint> vOutpts;
-    model->listLockedBreadcrumbs(vOutpts);
+    model->listLockedCoins(vOutpts);
     if (vOutpts.size() > 0)
     {
        ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
@@ -450,7 +450,7 @@ void BreadcrumbControlDialog::updateLabelLocked()
     else ui->labelLocked->setVisible(false);
 }
 
-void BreadcrumbControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
+void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
 {
     if (!model)
         return;
@@ -460,7 +460,7 @@ void BreadcrumbControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     bool fDust = false;
     unsigned int nBytesPenalty = 0;
     CMutableTransaction txDummy;
-    foreach(const CAmount &amount, BreadcrumbControlDialog::payAmounts)
+    foreach(const CAmount &amount, CoinControlDialog::payAmounts)
     {
         nPayAmount += amount;
 
@@ -492,10 +492,10 @@ void BreadcrumbControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     int nQuantityUncompressed   = 0;
     bool fAllowFree             = false;
 
-    vector<COutPoint> vBreadcrumbControl;
+    vector<COutPoint> vCoinControl;
     vector<COutput>   vOutputs;
-    coinControl->ListSelected(vBreadcrumbControl);
-    model->getOutputs(vBreadcrumbControl, vOutputs);
+    coinControl->ListSelected(vCoinControl);
+    model->getOutputs(vCoinControl, vOutputs);
 
     BOOST_FOREACH(const COutput& out, vOutputs)
     {
@@ -540,12 +540,12 @@ void BreadcrumbControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     if (nQuantity > 0)
     {
         // Bytes
-        nBytes = nBytesInputs + ((BreadcrumbControlDialog::payAmounts.size() > 0 ? BreadcrumbControlDialog::payAmounts.size() + 1 : 2) * 34) + 10; // always assume +1 output for change here
+        nBytes = nBytesInputs + ((CoinControlDialog::payAmounts.size() > 0 ? CoinControlDialog::payAmounts.size() + 1 : 2) * 34) + 10; // always assume +1 output for change here
 
         // Priority
         double mempoolEstimatePriority = mempool.estimatePriority(nTxConfirmTarget);
         dPriority = dPriorityInputs / (nBytes - nBytesInputs + (nQuantityUncompressed * 29)); // 29 = 180 - 151 (uncompressed public keys are over the limit. max 151 bytes of the input are ignored for priority)
-        sPriorityLabel = BreadcrumbControlDialog::getPriorityLabel(dPriority, mempoolEstimatePriority);
+        sPriorityLabel = CoinControlDialog::getPriorityLabel(dPriority, mempoolEstimatePriority);
 
         // Fee
         nPayFee = CWallet::GetMinimumFee(nBytes + nBytesPenalty, nTxConfirmTarget, mempool);
@@ -590,20 +590,20 @@ void BreadcrumbControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
-    QLabel *l1 = dialog->findChild<QLabel *>("labelBreadcrumbControlQuantity");
-    QLabel *l2 = dialog->findChild<QLabel *>("labelBreadcrumbControlAmount");
-    QLabel *l3 = dialog->findChild<QLabel *>("labelBreadcrumbControlFee");
-    QLabel *l4 = dialog->findChild<QLabel *>("labelBreadcrumbControlAfterFee");
-    QLabel *l5 = dialog->findChild<QLabel *>("labelBreadcrumbControlBytes");
-    QLabel *l6 = dialog->findChild<QLabel *>("labelBreadcrumbControlPriority");
-    QLabel *l7 = dialog->findChild<QLabel *>("labelBreadcrumbControlLowOutput");
-    QLabel *l8 = dialog->findChild<QLabel *>("labelBreadcrumbControlChange");
+    QLabel *l1 = dialog->findChild<QLabel *>("labelCoinControlQuantity");
+    QLabel *l2 = dialog->findChild<QLabel *>("labelCoinControlAmount");
+    QLabel *l3 = dialog->findChild<QLabel *>("labelCoinControlFee");
+    QLabel *l4 = dialog->findChild<QLabel *>("labelCoinControlAfterFee");
+    QLabel *l5 = dialog->findChild<QLabel *>("labelCoinControlBytes");
+    QLabel *l6 = dialog->findChild<QLabel *>("labelCoinControlPriority");
+    QLabel *l7 = dialog->findChild<QLabel *>("labelCoinControlLowOutput");
+    QLabel *l8 = dialog->findChild<QLabel *>("labelCoinControlChange");
 
     // enable/disable "dust" and "change"
-    dialog->findChild<QLabel *>("labelBreadcrumbControlLowOutputText")->setEnabled(nPayAmount > 0);
-    dialog->findChild<QLabel *>("labelBreadcrumbControlLowOutput")    ->setEnabled(nPayAmount > 0);
-    dialog->findChild<QLabel *>("labelBreadcrumbControlChangeText")   ->setEnabled(nPayAmount > 0);
-    dialog->findChild<QLabel *>("labelBreadcrumbControlChange")       ->setEnabled(nPayAmount > 0);
+    dialog->findChild<QLabel *>("labelCoinControlLowOutputText")->setEnabled(nPayAmount > 0);
+    dialog->findChild<QLabel *>("labelCoinControlLowOutput")    ->setEnabled(nPayAmount > 0);
+    dialog->findChild<QLabel *>("labelCoinControlChangeText")   ->setEnabled(nPayAmount > 0);
+    dialog->findChild<QLabel *>("labelCoinControlChange")       ->setEnabled(nPayAmount > 0);
 
     // stats
     l1->setText(QString::number(nQuantity));                                 // Quantity
@@ -652,20 +652,20 @@ void BreadcrumbControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     l6->setToolTip(toolTip2);
     l7->setToolTip(toolTip3);
     l8->setToolTip(toolTip4);
-    dialog->findChild<QLabel *>("labelBreadcrumbControlFeeText")      ->setToolTip(l3->toolTip());
-    dialog->findChild<QLabel *>("labelBreadcrumbControlAfterFeeText") ->setToolTip(l4->toolTip());
-    dialog->findChild<QLabel *>("labelBreadcrumbControlBytesText")    ->setToolTip(l5->toolTip());
-    dialog->findChild<QLabel *>("labelBreadcrumbControlPriorityText") ->setToolTip(l6->toolTip());
-    dialog->findChild<QLabel *>("labelBreadcrumbControlLowOutputText")->setToolTip(l7->toolTip());
-    dialog->findChild<QLabel *>("labelBreadcrumbControlChangeText")   ->setToolTip(l8->toolTip());
+    dialog->findChild<QLabel *>("labelCoinControlFeeText")      ->setToolTip(l3->toolTip());
+    dialog->findChild<QLabel *>("labelCoinControlAfterFeeText") ->setToolTip(l4->toolTip());
+    dialog->findChild<QLabel *>("labelCoinControlBytesText")    ->setToolTip(l5->toolTip());
+    dialog->findChild<QLabel *>("labelCoinControlPriorityText") ->setToolTip(l6->toolTip());
+    dialog->findChild<QLabel *>("labelCoinControlLowOutputText")->setToolTip(l7->toolTip());
+    dialog->findChild<QLabel *>("labelCoinControlChangeText")   ->setToolTip(l8->toolTip());
 
     // Insufficient funds
-    QLabel *label = dialog->findChild<QLabel *>("labelBreadcrumbControlInsuffFunds");
+    QLabel *label = dialog->findChild<QLabel *>("labelCoinControlInsuffFunds");
     if (label)
         label->setVisible(nChange < 0);
 }
 
-void BreadcrumbControlDialog::updateView()
+void CoinControlDialog::updateView()
 {
     if (!model || !model->getOptionsModel() || !model->getAddressTableModel())
         return;
@@ -681,10 +681,10 @@ void BreadcrumbControlDialog::updateView()
     int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
     double mempoolEstimatePriority = mempool.estimatePriority(nTxConfirmTarget);
 
-    map<QString, vector<COutput> > mapBreadcrumbs;
-    model->listBreadcrumbs(mapBreadcrumbs);
+    map<QString, vector<COutput> > mapCoins;
+    model->listCoins(mapCoins);
 
-    BOOST_FOREACH(PAIRTYPE(QString, vector<COutput>) coins, mapBreadcrumbs)
+    BOOST_FOREACH(PAIRTYPE(QString, vector<COutput>) coins, mapCoins)
     {
         QTreeWidgetItem *itemWalletAddress = new QTreeWidgetItem();
         itemWalletAddress->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
@@ -769,7 +769,7 @@ void BreadcrumbControlDialog::updateView()
 
             // priority
             double dPriority = ((double)out.tx->vout[out.i].nValue  / (nInputSize + 78)) * (out.nDepth+1); // 78 = 2 * 34 + 10
-            itemOutput->setText(COLUMN_PRIORITY, BreadcrumbControlDialog::getPriorityLabel(dPriority, mempoolEstimatePriority));
+            itemOutput->setText(COLUMN_PRIORITY, CoinControlDialog::getPriorityLabel(dPriority, mempoolEstimatePriority));
             itemOutput->setText(COLUMN_PRIORITY_INT64, strPad(QString::number((int64_t)dPriority), 20, " "));
             dPrioritySum += (double)out.tx->vout[out.i].nValue  * (out.nDepth+1);
             nInputSum    += nInputSize;
@@ -782,7 +782,7 @@ void BreadcrumbControlDialog::updateView()
             itemOutput->setText(COLUMN_VOUT_INDEX, QString::number(out.i));
 
              // disable locked coins
-            if (model->isLockedBreadcrumb(txhash, out.i))
+            if (model->isLockedCoin(txhash, out.i))
             {
                 COutPoint outpt(txhash, out.i);
                 coinControl->UnSelect(outpt); // just to be sure
@@ -802,7 +802,7 @@ void BreadcrumbControlDialog::updateView()
             itemWalletAddress->setText(COLUMN_CHECKBOX, "(" + QString::number(nChildren) + ")");
             itemWalletAddress->setText(COLUMN_AMOUNT, BitcoinUnits::format(nDisplayUnit, nSum));
             itemWalletAddress->setText(COLUMN_AMOUNT_INT64, strPad(QString::number(nSum), 15, " "));
-            itemWalletAddress->setText(COLUMN_PRIORITY, BreadcrumbControlDialog::getPriorityLabel(dPrioritySum, mempoolEstimatePriority));
+            itemWalletAddress->setText(COLUMN_PRIORITY, CoinControlDialog::getPriorityLabel(dPrioritySum, mempoolEstimatePriority));
             itemWalletAddress->setText(COLUMN_PRIORITY_INT64, strPad(QString::number((int64_t)dPrioritySum), 20, " "));
         }
     }

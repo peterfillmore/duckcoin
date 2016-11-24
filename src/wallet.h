@@ -50,7 +50,7 @@ static const CAmount nHighTransactionMaxFeeWarning = 100 * nHighTransactionFeeWa
 static const unsigned int MAX_FREE_TRANSACTION_CREATE_SIZE = 5000;
 
 class CAccountingEntry;
-class CBreadcrumbControl;
+class CCoinControl;
 class COutput;
 class CReserveKey;
 class CScript;
@@ -112,7 +112,7 @@ public:
 class CWallet : public CCryptoKeyStore, public CValidationInterface
 {
 private:
-    bool SelectBreadcrumbs(const CAmount& nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setBreadcrumbsRet, CAmount& nValueRet, const CBreadcrumbControl *coinControl = NULL) const;
+    bool SelectCoins(const CAmount& nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, const CCoinControl *coinControl = NULL) const;
 
     CWalletDB *pwalletdbEncryption;
 
@@ -198,7 +198,7 @@ public:
 
     CPubKey vchDefaultKey;
 
-    std::set<COutPoint> setLockedBreadcrumbs;
+    std::set<COutPoint> setLockedCoins;
 
     int64_t nTimeFirstKey;
 
@@ -207,16 +207,16 @@ public:
     //! check whether we are allowed to upgrade (or already support) to the named feature
     bool CanSupportFeature(enum WalletFeature wf) { AssertLockHeld(cs_wallet); return nWalletMaxVersion >= wf; }
 
-    void AvailableBreadcrumbs(std::vector<COutput>& vBreadcrumbs, bool fOnlyConfirmed=true, const CBreadcrumbControl *coinControl = NULL) const;
-    bool SelectBreadcrumbsMinConf(const CAmount& nTargetValue, int nConfMine, int nConfTheirs, std::vector<COutput> vBreadcrumbs, std::set<std::pair<const CWalletTx*,unsigned int> >& setBreadcrumbsRet, CAmount& nValueRet) const;
+    void AvailableCoins(std::vector<COutput>& vCoins, bool fOnlyConfirmed=true, const CCoinControl *coinControl = NULL) const;
+    bool SelectCoinsMinConf(const CAmount& nTargetValue, int nConfMine, int nConfTheirs, std::vector<COutput> vCoins, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet) const;
 
     bool IsSpent(const uint256& hash, unsigned int n) const;
 
-    bool IsLockedBreadcrumb(uint256 hash, unsigned int n) const;
-    void LockBreadcrumb(COutPoint& output);
-    void UnlockBreadcrumb(COutPoint& output);
-    void UnlockAllBreadcrumbs();
-    void ListLockedBreadcrumbs(std::vector<COutPoint>& vOutpts);
+    bool IsLockedCoin(uint256 hash, unsigned int n) const;
+    void LockCoin(COutPoint& output);
+    void UnlockCoin(COutPoint& output);
+    void UnlockAllCoins();
+    void ListLockedCoins(std::vector<COutPoint>& vOutpts);
 
     /**
      * keystore implementation
@@ -291,9 +291,9 @@ public:
     CAmount GetUnconfirmedWatchOnlyBalance() const;
     CAmount GetImmatureWatchOnlyBalance() const;
     bool CreateTransaction(const std::vector<std::pair<CScript, CAmount> >& vecSend,
-                           CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CBreadcrumbControl *coinControl = NULL);
+                           CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl *coinControl = NULL);
     bool CreateTransaction(CScript scriptPubKey, const CAmount& nValue,
-                           CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CBreadcrumbControl *coinControl = NULL);
+                           CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl *coinControl = NULL);
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey);
 
     static CFeeRate minTxFee;
@@ -741,7 +741,7 @@ public:
     CAmount GetCredit(const isminefilter& filter) const
     {
         // Must wait until coinbase is safely deep enough in the chain before valuing it
-        if (IsBreadcrumbBase() && GetBlocksToMaturity() > 0)
+        if (IsCoinBase() && GetBlocksToMaturity() > 0)
             return 0;
 
         int64_t credit = 0;
@@ -773,7 +773,7 @@ public:
 
     CAmount GetImmatureCredit(bool fUseCache=true) const
     {
-        if (IsBreadcrumbBase() && GetBlocksToMaturity() > 0 && IsInMainChain())
+        if (IsCoinBase() && GetBlocksToMaturity() > 0 && IsInMainChain())
         {
             if (fUseCache && fImmatureCreditCached)
                 return nImmatureCreditCached;
@@ -791,7 +791,7 @@ public:
             return 0;
 
         // Must wait until coinbase is safely deep enough in the chain before valuing it
-        if (IsBreadcrumbBase() && GetBlocksToMaturity() > 0)
+        if (IsCoinBase() && GetBlocksToMaturity() > 0)
             return 0;
 
         if (fUseCache && fAvailableCreditCached)
@@ -817,7 +817,7 @@ public:
 
     CAmount GetImmatureWatchOnlyCredit(const bool& fUseCache=true) const
     {
-        if (IsBreadcrumbBase() && GetBlocksToMaturity() > 0 && IsInMainChain())
+        if (IsCoinBase() && GetBlocksToMaturity() > 0 && IsInMainChain())
         {
             if (fUseCache && fImmatureWatchCreditCached)
                 return nImmatureWatchCreditCached;
@@ -835,7 +835,7 @@ public:
             return 0;
 
         // Must wait until coinbase is safely deep enough in the chain before valuing it
-        if (IsBreadcrumbBase() && GetBlocksToMaturity() > 0)
+        if (IsCoinBase() && GetBlocksToMaturity() > 0)
             return 0;
 
         if (fUseCache && fAvailableWatchCreditCached)

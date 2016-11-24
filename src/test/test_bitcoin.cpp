@@ -25,7 +25,7 @@ extern bool fPrintToConsole;
 extern void noui_connect();
 
 struct TestingSetup {
-    CBreadcrumbsViewDB *pcoinsdbview;
+    CCoinsViewDB *pcoinsdbview;
     boost::filesystem::path pathTemp;
     boost::thread_group threadGroup;
 
@@ -42,8 +42,8 @@ struct TestingSetup {
         boost::filesystem::create_directories(pathTemp);
         mapArgs["-datadir"] = pathTemp.string();
         pblocktree = new CBlockTreeDB(1 << 20, true);
-        pcoinsdbview = new CBreadcrumbsViewDB(1 << 23, true);
-        pcoinsTip = new CBreadcrumbsViewCache(pcoinsdbview);
+        pcoinsdbview = new CCoinsViewDB(1 << 23, true);
+        pcoinsTip = new CCoinsViewCache(pcoinsdbview);
         InitBlockIndex();
 #ifdef ENABLE_WALLET
         bool fFirstRun;

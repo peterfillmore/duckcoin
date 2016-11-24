@@ -393,7 +393,7 @@ CTxMemPool::~CTxMemPool()
     delete minerPolicyEstimator;
 }
 
-void CTxMemPool::pruneSpent(const uint256 &hashTx, CBreadcrumbs &coins)
+void CTxMemPool::pruneSpent(const uint256 &hashTx, CCoins &coins)
 {
     LOCK(cs);
 
@@ -482,7 +482,7 @@ void CTxMemPool::remove(const CTransaction &origTx, std::list<CTransaction>& rem
     }
 }
 
-void CTxMemPool::removeBreadcrumbbaseSpends(const CBreadcrumbsViewCache *pcoins, unsigned int nMemPoolHeight)
+void CTxMemPool::removeCoinbaseSpends(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight)
 {
     // Remove transactions spending a coinbase which are now immature
     LOCK(cs);
@@ -493,9 +493,9 @@ void CTxMemPool::removeBreadcrumbbaseSpends(const CBreadcrumbsViewCache *pcoins,
             std::map<uint256, CTxMemPoolEntry>::const_iterator it2 = mapTx.find(txin.prevout.hash);
             if (it2 != mapTx.end())
                 continue;
-            const CBreadcrumbs *coins = pcoins->AccessBreadcrumbs(txin.prevout.hash);
+            const CCoins *coins = pcoins->AccessCoins(txin.prevout.hash);
             if (fSanityCheck) assert(coins);
-            if (!coins || (coins->IsBreadcrumbBase() && nMemPoolHeight - coins->nHeight < BREADCRUMBBASE_MATURITY)) {
+            if (!coins || (coins->IsCoinBase() && nMemPoolHeight - coins->nHeight < BREADCRUMBBASE_MATURITY)) {
                 transactionsToRemove.push_back(tx);
                 break;
             }
@@ -558,7 +558,7 @@ void CTxMemPool::clear()
     ++nTransactionsUpdated;
 }
 
-void CTxMemPool::check(const CBreadcrumbsViewCache *pcoins) const
+void CTxMemPool::check(const CCoinsViewCache *pcoins) const
 {
     if (!fSanityCheck)
         return;
@@ -567,7 +567,7 @@ void CTxMemPool::check(const CBreadcrumbsViewCache *pcoins) const
 
     uint64_t checkTotal = 0;
 
-    CBreadcrumbsViewCache mempoolDuplicate(const_cast<CBreadcrumbsViewCache*>(pcoins));
+    CCoinsViewCache mempoolDuplicate(const_cast<CCoinsViewCache*>(pcoins));
 
     LOCK(cs);
     list<const CTxMemPoolEntry*> waitingOnDependants;
@@ -584,7 +584,7 @@ void CTxMemPool::check(const CBreadcrumbsViewCache *pcoins) const
                 assert(tx2.vout.size() > txin.prevout.n && !tx2.vout[txin.prevout.n].IsNull());
                 fDependsWait = true;
             } else {
-                const CBreadcrumbs* coins = pcoins->AccessBreadcrumbs(txin.prevout.hash);
+                const CCoins* coins = pcoins->AccessCoins(txin.prevout.hash);
                 assert(coins && coins->IsAvailable(txin.prevout.n));
             }
             // Check whether its inputs are marked in mapNextTx.
@@ -599,7 +599,7 @@ void CTxMemPool::check(const CBreadcrumbsViewCache *pcoins) const
         else {
             CValidationState state; CTxUndo undo;
             assert(CheckInputs(tx, state, mempoolDuplicate, false, 0, false, NULL));
-            UpdateBreadcrumbs(tx, state, mempoolDuplicate, undo, 1000000);
+            UpdateCoins(tx, state, mempoolDuplicate, undo, 1000000);
         }
     }
     unsigned int stepsSinceLastRemove = 0;
@@ -614,7 +614,7 @@ void CTxMemPool::check(const CBreadcrumbsViewCache *pcoins) const
         } else {
             assert(CheckInputs(entry->GetTx(), state, mempoolDuplicate, false, 0, false, NULL));
             CTxUndo undo;
-            UpdateBreadcrumbs(entry->GetTx(), state, mempoolDuplicate, undo, 1000000);
+            UpdateCoins(entry->GetTx(), state, mempoolDuplicate, undo, 1000000);
             stepsSinceLastRemove = 0;
         }
     }
@@ -725,20 +725,20 @@ void CTxMemPool::ClearPrioritisation(const uint256 hash)
 }
 
 
-CBreadcrumbsViewMemPool::CBreadcrumbsViewMemPool(CBreadcrumbsView *baseIn, CTxMemPool &mempoolIn) : CBreadcrumbsViewBacked(baseIn), mempool(mempoolIn) { }
+CCoinsViewMemPool::CCoinsViewMemPool(CCoinsView *baseIn, CTxMemPool &mempoolIn) : CCoinsViewBacked(baseIn), mempool(mempoolIn) { }
 
-bool CBreadcrumbsViewMemPool::GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const {
+bool CCoinsViewMemPool::GetCoins(const uint256 &txid, CCoins &coins) const {
     // If an entry in the mempool exists, always return that one, as it's guaranteed to never
     // conflict with the underlying cache, and it cannot have pruned entries (as it contains full)
     // transactions. First checking the underlying cache risks returning a pruned entry instead.
     CTransaction tx;
     if (mempool.lookup(txid, tx)) {
-        coins = CBreadcrumbs(tx, MEMPOOL_HEIGHT);
+        coins = CCoins(tx, MEMPOOL_HEIGHT);
         return true;
     }
-    return (base->GetBreadcrumbs(txid, coins) && !coins.IsPruned());
+    return (base->GetCoins(txid, coins) && !coins.IsPruned());
 }
 
-bool CBreadcrumbsViewMemPool::HaveBreadcrumbs(const uint256 &txid) const {
-    return mempool.exists(txid) || base->HaveBreadcrumbs(txid);
+bool CCoinsViewMemPool::HaveCoins(const uint256 &txid) const {
+    return mempool.exists(txid) || base->HaveCoins(txid);
 }

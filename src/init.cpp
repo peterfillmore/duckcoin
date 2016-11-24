@@ -112,13 +112,13 @@ bool ShutdownRequested()
     return fRequestShutdown;
 }
 
-class CBreadcrumbsViewErrorCatcher : public CBreadcrumbsViewBacked
+class CCoinsViewErrorCatcher : public CCoinsViewBacked
 {
 public:
-    CBreadcrumbsViewErrorCatcher(CBreadcrumbsView* view) : CBreadcrumbsViewBacked(view) {}
-    bool GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const {
+    CCoinsViewErrorCatcher(CCoinsView* view) : CCoinsViewBacked(view) {}
+    bool GetCoins(const uint256 &txid, CCoins &coins) const {
         try {
-            return CBreadcrumbsViewBacked::GetBreadcrumbs(txid, coins);
+            return CCoinsViewBacked::GetCoins(txid, coins);
         } catch(const std::runtime_error& e) {
             uiInterface.ThreadSafeMessageBox(_("Error reading from database, shutting down."), "", CClientUIInterface::MSG_ERROR);
             LogPrintf("Error reading from database: %s\n", e.what());
@@ -132,8 +132,8 @@ public:
     // Writes do not need similar protection, as failure to write is handled by the caller.
 };
 
-static CBreadcrumbsViewDB *pcoinsdbview = NULL;
-static CBreadcrumbsViewErrorCatcher *pcoinscatcher = NULL;
+static CCoinsViewDB *pcoinsdbview = NULL;
+static CCoinsViewErrorCatcher *pcoinscatcher = NULL;
 
 void Shutdown()
 {
@@ -1010,9 +1010,9 @@ bool AppInit2(boost::thread_group& threadGroup)
     if (nBlockTreeDBCache > (1 << 21) && !GetBoolArg("-txindex", false))
         nBlockTreeDBCache = (1 << 21); // block tree db cache shouldn't be larger than 2 MiB
     nTotalCache -= nBlockTreeDBCache;
-    size_t nBreadcrumbDBCache = nTotalCache / 2; // use half of the remaining cache for coindb cache
-    nTotalCache -= nBreadcrumbDBCache;
-    nBreadcrumbCacheSize = nTotalCache / 300; // coins in memory require around 300 bytes
+    size_t nCoinDBCache = nTotalCache / 2; // use half of the remaining cache for coindb cache
+    nTotalCache -= nCoinDBCache;
+    nCoinCacheSize = nTotalCache / 300; // coins in memory require around 300 bytes
 
     bool fLoaded = false;
     while (!fLoaded) {
@@ -1031,9 +1031,9 @@ bool AppInit2(boost::thread_group& threadGroup)
                 delete pblocktree;
 
                 pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex);
-                pcoinsdbview = new CBreadcrumbsViewDB(nBreadcrumbDBCache, false, fReindex);
-                pcoinscatcher = new CBreadcrumbsViewErrorCatcher(pcoinsdbview);
-                pcoinsTip = new CBreadcrumbsViewCache(pcoinscatcher);
+                pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex);
+                pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
+                pcoinsTip = new CCoinsViewCache(pcoinscatcher);
 
                 if (fReindex)
                     pblocktree->WriteReindexing(true);

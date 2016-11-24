@@ -12,7 +12,7 @@
 class WalletModel;
 
 namespace Ui {
-    class SendBreadcrumbsEntry;
+    class SendCoinsEntry;
 }
 
 /**
@@ -20,22 +20,22 @@ namespace Ui {
  * Stacked widget, with different UIs for payment requests
  * with a strong payee identity.
  */
-class SendBreadcrumbsEntry : public QStackedWidget
+class SendCoinsEntry : public QStackedWidget
 {
     Q_OBJECT
 
 public:
-    explicit SendBreadcrumbsEntry(QWidget *parent = 0);
-    ~SendBreadcrumbsEntry();
+    explicit SendCoinsEntry(QWidget *parent = 0);
+    ~SendCoinsEntry();
 
     void setModel(WalletModel *model);
     bool validate();
-    SendBreadcrumbsRecipient getValue();
+    SendCoinsRecipient getValue();
 
     /** Return whether the entry is still empty and unedited */
     bool isClear();
 
-    void setValue(const SendBreadcrumbsRecipient &value);
+    void setValue(const SendCoinsRecipient &value);
     void setAddress(const QString &address);
 
     /** Set up the tab chain manually, as Qt messes up the tab chain by default in some cases
@@ -49,7 +49,7 @@ public slots:
     void clear();
 
 signals:
-    void removeEntry(SendBreadcrumbsEntry *entry);
+    void removeEntry(SendCoinsEntry *entry);
     void payAmountChanged();
 
 private slots:
@@ -60,8 +60,8 @@ private slots:
     void updateDisplayUnit();
 
 private:
-    SendBreadcrumbsRecipient recipient;
-    Ui::SendBreadcrumbsEntry *ui;
+    SendCoinsRecipient recipient;
+    Ui::SendCoinsEntry *ui;
     WalletModel *model;
 
     bool updateLabel(const QString &address);

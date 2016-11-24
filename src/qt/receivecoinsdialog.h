@@ -19,7 +19,7 @@ class OptionsModel;
 class WalletModel;
 
 namespace Ui {
-    class ReceiveBreadcrumbsDialog;
+    class ReceiveCoinsDialog;
 }
 
 QT_BEGIN_NAMESPACE
@@ -27,7 +27,7 @@ class QModelIndex;
 QT_END_NAMESPACE
 
 /** Dialog for requesting payment of bitcoins */
-class ReceiveBreadcrumbsDialog : public QDialog
+class ReceiveCoinsDialog : public QDialog
 {
     Q_OBJECT
 
@@ -39,8 +39,8 @@ public:
         MINIMUM_COLUMN_WIDTH = 130
     };
 
-    explicit ReceiveBreadcrumbsDialog(QWidget *parent = 0);
-    ~ReceiveBreadcrumbsDialog();
+    explicit ReceiveCoinsDialog(QWidget *parent = 0);
+    ~ReceiveCoinsDialog();
 
     void setModel(WalletModel *model);
 
@@ -53,7 +53,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent *event);
 
 private:
-    Ui::ReceiveBreadcrumbsDialog *ui;
+    Ui::ReceiveCoinsDialog *ui;
     GUIUtil::TableViewLastColumnResizingFixer *columnResizingFixer;
     WalletModel *model;
     QMenu *contextMenu;

@@ -52,7 +52,7 @@ bool fReindex = false;
 bool fTxIndex = false;
 bool fIsBareMultisigStd = true;
 bool fCheckBlockIndex = false;
-unsigned int nBreadcrumbCacheSize = 5000;
+unsigned int nCoinCacheSize = 5000;
 bool fAlerts = DEFAULT_ALERTS;
 
 /** Fees smaller than this (in satoshi) are considered zero fee (for relaying and mining) */
@@ -541,7 +541,7 @@ CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& loc
     return chain.Genesis();
 }
 
-CBreadcrumbsViewCache *pcoinsTip = NULL;
+CCoinsViewCache *pcoinsTip = NULL;
 CBlockTreeDB *pblocktree = NULL;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -749,10 +749,10 @@ bool IsFinalTx(const CTransaction &tx, int nBlockHeight, int64_t nBlockTime)
  * 2. P2SH scripts with a crazy number of expensive
  *    CHECKSIG/CHECKMULTISIG operations
  */
-bool AreInputsStandard(const CTransaction& tx, const CBreadcrumbsViewCache& mapInputs)
+bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs)
 {
-    if (tx.IsBreadcrumbBase())
-        return true; // Breadcrumbbases don't use vin normally
+    if (tx.IsCoinBase())
+        return true; // Coinbases don't use vin normally
 
     for (unsigned int i = 0; i < tx.vin.size(); i++)
     {
@@ -822,9 +822,9 @@ unsigned int GetLegacySigOpCount(const CTransaction& tx)
     return nSigOps;
 }
 
-unsigned int GetP2SHSigOpCount(const CTransaction& tx, const CBreadcrumbsViewCache& inputs)
+unsigned int GetP2SHSigOpCount(const CTransaction& tx, const CCoinsViewCache& inputs)
 {
-    if (tx.IsBreadcrumbBase())
+    if (tx.IsCoinBase())
         return 0;
 
     unsigned int nSigOps = 0;
@@ -884,7 +884,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state)
         vInOutPoints.insert(txin.prevout);
     }
 
-    if (tx.IsBreadcrumbBase())
+    if (tx.IsCoinBase())
     {
         if (tx.vin[0].scriptSig.size() < 2 || tx.vin[0].scriptSig.size() > 100)
             return state.DoS(100, error("CheckTransaction() : coinbase script size"),
@@ -950,8 +950,8 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
     if (!CheckTransaction(tx, state))
         return error("AcceptToMemoryPool: : CheckTransaction failed");
 
-    // Breadcrumbbase is only valid in a block, not as a loose transaction
-    if (tx.IsBreadcrumbBase())
+    // Coinbase is only valid in a block, not as a loose transaction
+    if (tx.IsCoinBase())
         return state.DoS(100, error("AcceptToMemoryPool: : coinbase as individual tx"),
                          REJECT_INVALID, "coinbase");
 
@@ -982,24 +982,24 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
     }
 
     {
-        CBreadcrumbsView dummy;
-        CBreadcrumbsViewCache view(&dummy);
+        CCoinsView dummy;
+        CCoinsViewCache view(&dummy);
 
         CAmount nValueIn = 0;
         {
         LOCK(pool.cs);
-        CBreadcrumbsViewMemPool viewMemPool(pcoinsTip, pool);
+        CCoinsViewMemPool viewMemPool(pcoinsTip, pool);
         view.SetBackend(viewMemPool);
 
         // do we already have it?
-        if (view.HaveBreadcrumbs(hash))
+        if (view.HaveCoins(hash))
             return false;
 
         // do all inputs exist?
         // Note that this does not check for the presence of actual outputs (see the next check for that),
         // only helps filling in pfMissingInputs (to determine missing vs spent).
         BOOST_FOREACH(const CTxIn txin, tx.vin) {
-            if (!view.HaveBreadcrumbs(txin.prevout.hash)) {
+            if (!view.HaveCoins(txin.prevout.hash)) {
                 if (pfMissingInputs)
                     *pfMissingInputs = true;
                 return false;
@@ -1151,8 +1151,8 @@ bool GetTransaction(const uint256 &hash, CTransaction &txOut, uint256 &hashBlock
     if (fAllowSlow) { // use coin database to locate block that contains transaction, and scan it
         int nHeight = -1;
         {
-            CBreadcrumbsViewCache &view = *pcoinsTip;
-            const CBreadcrumbs* coins = view.AccessBreadcrumbs(hash);
+            CCoinsViewCache &view = *pcoinsTip;
+            const CCoins* coins = view.AccessCoins(hash);
             if (coins)
                 nHeight = coins->nHeight;
         }
@@ -1403,20 +1403,20 @@ void static InvalidBlockFound(CBlockIndex *pindex, const CValidationState &state
     }
 }
 
-void UpdateBreadcrumbs(const CTransaction& tx, CValidationState &state, CBreadcrumbsViewCache &inputs, CTxUndo &txundo, int nHeight)
+void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCache &inputs, CTxUndo &txundo, int nHeight)
 {
     // mark inputs spent
-    if (!tx.IsBreadcrumbBase()) {
+    if (!tx.IsCoinBase()) {
         txundo.vprevout.reserve(tx.vin.size());
         BOOST_FOREACH(const CTxIn &txin, tx.vin) {
             txundo.vprevout.push_back(CTxInUndo());
-            bool ret = inputs.ModifyBreadcrumbs(txin.prevout.hash)->Spend(txin.prevout, txundo.vprevout.back());
+            bool ret = inputs.ModifyCoins(txin.prevout.hash)->Spend(txin.prevout, txundo.vprevout.back());
             assert(ret);
         }
     }
 
     // add outputs
-    inputs.ModifyBreadcrumbs(tx.GetHash())->FromTx(tx, nHeight);
+    inputs.ModifyCoins(tx.GetHash())->FromTx(tx, nHeight);
 }
 
 bool CScriptCheck::operator()() {
@@ -1427,9 +1427,9 @@ bool CScriptCheck::operator()() {
     return true;
 }
 
-bool CheckInputs(const CTransaction& tx, CValidationState &state, const CBreadcrumbsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheStore, std::vector<CScriptCheck> *pvChecks)
+bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheStore, std::vector<CScriptCheck> *pvChecks)
 {
-    if (!tx.IsBreadcrumbBase())
+    if (!tx.IsCoinBase())
     {
         if (pvChecks)
             pvChecks->reserve(tx.vin.size());
@@ -1448,11 +1448,11 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CBreadcr
         for (unsigned int i = 0; i < tx.vin.size(); i++)
         {
             const COutPoint &prevout = tx.vin[i].prevout;
-            const CBreadcrumbs *coins = inputs.AccessBreadcrumbs(prevout.hash);
+            const CCoins *coins = inputs.AccessCoins(prevout.hash);
             assert(coins);
 
             // If prev is coinbase, check that it's matured
-            if (coins->IsBreadcrumbBase()) {
+            if (coins->IsCoinBase()) {
                 if (nSpendHeight - coins->nHeight < BREADCRUMBBASE_MATURITY)
                     return state.Invalid(
                         error("CheckInputs() : tried to spend coinbase at depth %d", nSpendHeight - coins->nHeight),
@@ -1492,7 +1492,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CBreadcr
         if (fScriptChecks) {
             for (unsigned int i = 0; i < tx.vin.size(); i++) {
                 const COutPoint &prevout = tx.vin[i].prevout;
-                const CBreadcrumbs* coins = inputs.AccessBreadcrumbs(prevout.hash);
+                const CCoins* coins = inputs.AccessCoins(prevout.hash);
                 assert(coins);
 
                 // Verify signature
@@ -1531,7 +1531,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CBreadcr
 
 
 
-bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, CBreadcrumbsViewCache& view, bool* pfClean)
+bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, bool* pfClean)
 {
     assert(pindex->GetBlockHash() == view.GetBestBlock());
 
@@ -1560,12 +1560,12 @@ bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex
         // have outputs available even in the block itself, so we handle that case
         // specially with outsEmpty.
         {
-        CBreadcrumbs outsEmpty;
-        CBreadcrumbsModifier outs = view.ModifyBreadcrumbs(hash);
+        CCoins outsEmpty;
+        CCoinsModifier outs = view.ModifyCoins(hash);
         outs->ClearUnspendable();
 
-        CBreadcrumbs outsBlock(tx, pindex->nHeight);
-        // The CBreadcrumbs serialization does not serialize negative numbers.
+        CCoins outsBlock(tx, pindex->nHeight);
+        // The CCoins serialization does not serialize negative numbers.
         // No network rules currently depend on the version here, so an inconsistency is harmless
         // but it must be corrected before txout nversion ever influences a network rule.
         if (outsBlock.nVersion < 0)
@@ -1585,13 +1585,13 @@ bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex
             for (unsigned int j = tx.vin.size(); j-- > 0;) {
                 const COutPoint &out = tx.vin[j].prevout;
                 const CTxInUndo &undo = txundo.vprevout[j];
-                CBreadcrumbsModifier coins = view.ModifyBreadcrumbs(out.hash);
+                CCoinsModifier coins = view.ModifyCoins(out.hash);
                 if (undo.nHeight != 0) {
                     // undo data contains height: this is the last output of the prevout tx being spent
                     if (!coins->IsPruned())
                         fClean = fClean && error("DisconnectBlock() : undo data overwriting existing transaction");
                     coins->Clear();
-                    coins->fBreadcrumbBase = undo.fBreadcrumbBase;
+                    coins->fCoinBase = undo.fCoinBase;
                     coins->nHeight = undo.nHeight;
                     coins->nVersion = undo.nVersion;
                 } else {
@@ -1656,7 +1656,7 @@ static int64_t nTimeIndex = 0;
 static int64_t nTimeCallbacks = 0;
 static int64_t nTimeTotal = 0;
 
-bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CBreadcrumbsViewCache& view, bool fJustCheck)
+bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, bool fJustCheck)
 {
     AssertLockHeld(cs_main);
     // Check it again in case a previous version let a bad block in
@@ -1691,7 +1691,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     bool fEnforceBIP30 = true;
     if (fEnforceBIP30) {
         BOOST_FOREACH(const CTransaction& tx, block.vtx) {
-            const CBreadcrumbs* coins = view.AccessBreadcrumbs(tx.GetHash());
+            const CCoins* coins = view.AccessCoins(tx.GetHash());
             if (coins && !coins->IsPruned())
                 return state.DoS(100, error("ConnectBlock() : tried to overwrite transaction"),
                                  REJECT_INVALID, "bad-txns-BIP30");
@@ -1738,7 +1738,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
             return state.DoS(100, error("ConnectBlock() : too many sigops"),
                              REJECT_INVALID, "bad-blk-sigops");
 
-        if (!tx.IsBreadcrumbBase())
+        if (!tx.IsCoinBase())
         {
             if (!view.HaveInputs(tx))
                 return state.DoS(100, error("ConnectBlock() : inputs missing/spent"),
@@ -1767,7 +1767,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         if (i > 0) {
             blockundo.vtxundo.push_back(CTxUndo());
         }
-        UpdateBreadcrumbs(tx, state, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
+        UpdateCoins(tx, state, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
 
         vPos.push_back(std::make_pair(tx.GetHash(), pos));
         pos.nTxOffset += ::GetSerializeSize(tx, SER_DISK, CLIENT_VERSION);
@@ -1819,9 +1819,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     LogPrint("bench", "    - Index writing: %.2fms [%.2fs]\n", 0.001 * (nTime3 - nTime2), nTimeIndex * 0.000001);
 
     // Watch for changes to the previous coinbase transaction.
-    static uint256 hashPrevBestBreadcrumbBase;
-    g_signals.UpdatedTransaction(hashPrevBestBreadcrumbBase);
-    hashPrevBestBreadcrumbBase = block.vtx[0].GetHash();
+    static uint256 hashPrevBestCoinBase;
+    g_signals.UpdatedTransaction(hashPrevBestCoinBase);
+    hashPrevBestCoinBase = block.vtx[0].GetHash();
 
     int64_t nTime4 = GetTimeMicros(); nTimeCallbacks += nTime4 - nTime3;
     LogPrint("bench", "    - Callbacks: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeCallbacks * 0.000001);
@@ -1845,9 +1845,9 @@ bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode) {
     static int64_t nLastWrite = 0;
     try {
     if ((mode == FLUSH_STATE_ALWAYS) ||
-        ((mode == FLUSH_STATE_PERIODIC || mode == FLUSH_STATE_IF_NEEDED) && pcoinsTip->GetCacheSize() > nBreadcrumbCacheSize) ||
+        ((mode == FLUSH_STATE_PERIODIC || mode == FLUSH_STATE_IF_NEEDED) && pcoinsTip->GetCacheSize() > nCoinCacheSize) ||
         (mode == FLUSH_STATE_PERIODIC && GetTimeMicros() > nLastWrite + DATABASE_WRITE_INTERVAL * 1000000)) {
-        // Typical CBreadcrumbs structures on disk are around 100 bytes in size.
+        // Typical CCoins structures on disk are around 100 bytes in size.
         // Pushing a new one to the database can cause it to be written
         // twice (once in the log, and once in the tables). This is already
         // an overestimation, as most will delete an existing entry or
@@ -1946,7 +1946,7 @@ bool static DisconnectTip(CValidationState &state) {
     // Apply the block atomically to the chain state.
     int64_t nStart = GetTimeMicros();
     {
-        CBreadcrumbsViewCache view(pcoinsTip);
+        CCoinsViewCache view(pcoinsTip);
         if (!DisconnectBlock(block, state, pindexDelete, view))
             return error("DisconnectTip() : DisconnectBlock %s failed", pindexDelete->GetBlockHash().ToString());
         assert(view.Flush());
@@ -1960,10 +1960,10 @@ bool static DisconnectTip(CValidationState &state) {
         // ignore validation errors in resurrected transactions
         list<CTransaction> removed;
         CValidationState stateDummy;
-        if (tx.IsBreadcrumbBase() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, NULL))
+        if (tx.IsCoinBase() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, NULL))
             mempool.remove(tx, removed, true);
     }
-    mempool.removeBreadcrumbbaseSpends(pcoinsTip, pindexDelete->nHeight);
+    mempool.removeCoinbaseSpends(pcoinsTip, pindexDelete->nHeight);
     mempool.check(pcoinsTip);
     // Update chainActive and related variables.
     UpdateTip(pindexDelete->pprev);
@@ -2001,7 +2001,7 @@ bool static ConnectTip(CValidationState &state, CBlockIndex *pindexNew, CBlock *
     int64_t nTime3;
     LogPrint("bench", "  - Load block from disk: %.2fms [%.2fs]\n", (nTime2 - nTime1) * 0.001, nTimeReadFromDisk * 0.000001);
     {
-        CBreadcrumbsViewCache view(pcoinsTip);
+        CCoinsViewCache view(pcoinsTip);
         CInv inv(MSG_BLOCK, pindexNew->GetBlockHash());
         bool rv = ConnectBlock(*pblock, state, pindexNew, view);
         g_signals.BlockChecked(*pblock, state);
@@ -2497,11 +2497,11 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                          REJECT_INVALID, "bad-blk-length");
 
     // First transaction must be coinbase, the rest must not be
-    if (block.vtx.empty() || !block.vtx[0].IsBreadcrumbBase())
+    if (block.vtx.empty() || !block.vtx[0].IsCoinBase())
         return state.DoS(100, error("CheckBlock() : first tx is not coinbase"),
                          REJECT_INVALID, "bad-cb-missing");
     for (unsigned int i = 1; i < block.vtx.size(); i++)
-        if (block.vtx[i].IsBreadcrumbBase())
+        if (block.vtx[i].IsCoinBase())
             return state.DoS(100, error("CheckBlock() : more than one coinbase"),
                              REJECT_INVALID, "bad-cb-multiple");
 
@@ -2818,7 +2818,7 @@ bool TestBlockValidity(CValidationState &state, const CBlock& block, CBlockIndex
     AssertLockHeld(cs_main);
     assert(pindexPrev == chainActive.Tip());
 
-    CBreadcrumbsViewCache viewNew(pcoinsTip);
+    CCoinsViewCache viewNew(pcoinsTip);
     CBlockIndex indexDummy(block);
     indexDummy.pprev = pindexPrev;
     indexDummy.nHeight = pindexPrev->nHeight + 1;
@@ -3033,7 +3033,7 @@ CVerifyDB::~CVerifyDB()
     uiInterface.ShowProgress("", 100);
 }
 
-bool CVerifyDB::VerifyDB(CBreadcrumbsView *coinsview, int nCheckLevel, int nCheckDepth)
+bool CVerifyDB::VerifyDB(CCoinsView *coinsview, int nCheckLevel, int nCheckDepth)
 {
     LOCK(cs_main);
     if (chainActive.Tip() == NULL || chainActive.Tip()->pprev == NULL)
@@ -3046,7 +3046,7 @@ bool CVerifyDB::VerifyDB(CBreadcrumbsView *coinsview, int nCheckLevel, int nChec
         nCheckDepth = chainActive.Height();
     nCheckLevel = std::max(0, std::min(4, nCheckLevel));
     LogPrintf("Verifying last %i blocks at level %i\n", nCheckDepth, nCheckLevel);
-    CBreadcrumbsViewCache coins(coinsview);
+    CCoinsViewCache coins(coinsview);
     CBlockIndex* pindexState = chainActive.Tip();
     CBlockIndex* pindexFailure = NULL;
     int nGoodTransactions = 0;
@@ -3074,7 +3074,7 @@ bool CVerifyDB::VerifyDB(CBreadcrumbsView *coinsview, int nCheckLevel, int nChec
             }
         }
         // check level 3: check for inconsistencies during memory-only disconnect of tip blocks
-        if (nCheckLevel >= 3 && pindex == pindexState && (coins.GetCacheSize() + pcoinsTip->GetCacheSize()) <= nBreadcrumbCacheSize) {
+        if (nCheckLevel >= 3 && pindex == pindexState && (coins.GetCacheSize() + pcoinsTip->GetCacheSize()) <= nCoinCacheSize) {
             bool fClean = true;
             if (!DisconnectBlock(block, state, pindex, coins, &fClean))
                 return error("VerifyDB() : *** irrecoverable inconsistency in block data at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
@@ -3498,7 +3498,7 @@ bool static AlreadyHave(const CInv& inv)
             bool txInMap = false;
             txInMap = mempool.exists(inv.hash);
             return txInMap || mapOrphanTransactions.count(inv.hash) ||
-                pcoinsTip->HaveBreadcrumbs(inv.hash);
+                pcoinsTip->HaveCoins(inv.hash);
         }
     case MSG_BLOCK:
         return mapBlockIndex.count(inv.hash);

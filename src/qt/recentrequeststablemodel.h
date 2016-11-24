@@ -22,7 +22,7 @@ public:
     int nVersion;
     int64_t id;
     QDateTime date;
-    SendBreadcrumbsRecipient recipient;
+    SendCoinsRecipient recipient;
 
     ADD_SERIALIZE_METHODS;
 
@@ -85,7 +85,7 @@ public:
     /*@}*/
 
     const RecentRequestEntry &entry(int row) const { return list[row]; }
-    void addNewRequest(const SendBreadcrumbsRecipient &recipient);
+    void addNewRequest(const SendCoinsRecipient &recipient);
     void addNewRequest(const std::string &recipient);
     void addNewRequest(RecentRequestEntry &recipient);
 

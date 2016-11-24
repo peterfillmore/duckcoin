@@ -28,7 +28,7 @@
  * - VARINT(nHeight)
  *
  * The nCode value consists of:
- * - bit 1: IsBreadcrumbBase()
+ * - bit 1: IsCoinBase()
  * - bit 2: vout[0] is not spent
  * - bit 4: vout[1] is not spent
  * - The higher bits encode N, the number of non-zero bytes in the following bitvector.
@@ -69,11 +69,11 @@
  *              * 8c988f1a4a4de2161e0f50aac7f17e7f9555caa4: address uint160
  *  - height = 120891
  */
-class CBreadcrumbs
+class CCoins
 {
 public:
     //! whether transaction is a coinbase
-    bool fBreadcrumbBase;
+    bool fCoinBase;
 
     //! unspent transaction outputs; spent outputs are .IsNull(); spent outputs at the end of the array are dropped
     std::vector<CTxOut> vout;
@@ -86,27 +86,27 @@ public:
     int nVersion;
 
     void FromTx(const CTransaction &tx, int nHeightIn) {
-        fBreadcrumbBase = tx.IsBreadcrumbBase();
+        fCoinBase = tx.IsCoinBase();
         vout = tx.vout;
         nHeight = nHeightIn;
         nVersion = tx.nVersion;
         ClearUnspendable();
     }
 
-    //! construct a CBreadcrumbs from a CTransaction, at a given height
-    CBreadcrumbs(const CTransaction &tx, int nHeightIn) {
+    //! construct a CCoins from a CTransaction, at a given height
+    CCoins(const CTransaction &tx, int nHeightIn) {
         FromTx(tx, nHeightIn);
     }
 
     void Clear() {
-        fBreadcrumbBase = false;
+        fCoinBase = false;
         std::vector<CTxOut>().swap(vout);
         nHeight = 0;
         nVersion = 0;
     }
 
     //! empty constructor
-    CBreadcrumbs() : fBreadcrumbBase(false), vout(0), nHeight(0), nVersion(0) { }
+    CCoins() : fCoinBase(false), vout(0), nHeight(0), nVersion(0) { }
 
     //!remove spent outputs at the end of vout
     void Cleanup() {
@@ -124,31 +124,31 @@ public:
         Cleanup();
     }
 
-    void swap(CBreadcrumbs &to) {
-        std::swap(to.fBreadcrumbBase, fBreadcrumbBase);
+    void swap(CCoins &to) {
+        std::swap(to.fCoinBase, fCoinBase);
         to.vout.swap(vout);
         std::swap(to.nHeight, nHeight);
         std::swap(to.nVersion, nVersion);
     }
 
     //! equality test
-    friend bool operator==(const CBreadcrumbs &a, const CBreadcrumbs &b) {
-         // Empty CBreadcrumbs objects are always equal.
+    friend bool operator==(const CCoins &a, const CCoins &b) {
+         // Empty CCoins objects are always equal.
          if (a.IsPruned() && b.IsPruned())
              return true;
-         return a.fBreadcrumbBase == b.fBreadcrumbBase &&
+         return a.fCoinBase == b.fCoinBase &&
                 a.nHeight == b.nHeight &&
                 a.nVersion == b.nVersion &&
                 a.vout == b.vout;
     }
-    friend bool operator!=(const CBreadcrumbs &a, const CBreadcrumbs &b) {
+    friend bool operator!=(const CCoins &a, const CCoins &b) {
         return !(a == b);
     }
 
     void CalcMaskSize(unsigned int &nBytes, unsigned int &nNonzeroBytes) const;
 
-    bool IsBreadcrumbBase() const {
-        return fBreadcrumbBase;
+    bool IsCoinBase() const {
+        return fCoinBase;
     }
 
     unsigned int GetSerializeSize(int nType, int nVersion) const {
@@ -158,7 +158,7 @@ public:
         bool fFirst = vout.size() > 0 && !vout[0].IsNull();
         bool fSecond = vout.size() > 1 && !vout[1].IsNull();
         assert(fFirst || fSecond || nMaskCode);
-        unsigned int nCode = 8*(nMaskCode - (fFirst || fSecond ? 0 : 1)) + (fBreadcrumbBase ? 1 : 0) + (fFirst ? 2 : 0) + (fSecond ? 4 : 0);
+        unsigned int nCode = 8*(nMaskCode - (fFirst || fSecond ? 0 : 1)) + (fCoinBase ? 1 : 0) + (fFirst ? 2 : 0) + (fSecond ? 4 : 0);
         // version
         nSize += ::GetSerializeSize(VARINT(this->nVersion), nType, nVersion);
         // size of header code
@@ -181,7 +181,7 @@ public:
         bool fFirst = vout.size() > 0 && !vout[0].IsNull();
         bool fSecond = vout.size() > 1 && !vout[1].IsNull();
         assert(fFirst || fSecond || nMaskCode);
-        unsigned int nCode = 8*(nMaskCode - (fFirst || fSecond ? 0 : 1)) + (fBreadcrumbBase ? 1 : 0) + (fFirst ? 2 : 0) + (fSecond ? 4 : 0);
+        unsigned int nCode = 8*(nMaskCode - (fFirst || fSecond ? 0 : 1)) + (fCoinBase ? 1 : 0) + (fFirst ? 2 : 0) + (fSecond ? 4 : 0);
         // version
         ::Serialize(s, VARINT(this->nVersion), nType, nVersion);
         // header code
@@ -210,7 +210,7 @@ public:
         ::Unserialize(s, VARINT(this->nVersion), nType, nVersion);
         // header code
         ::Unserialize(s, VARINT(nCode), nType, nVersion);
-        fBreadcrumbBase = nCode & 1;
+        fCoinBase = nCode & 1;
         std::vector<bool> vAvail(2, false);
         vAvail[0] = (nCode & 2) != 0;
         vAvail[1] = (nCode & 4) != 0;
@@ -248,8 +248,8 @@ public:
         return (nPos < vout.size() && !vout[nPos].IsNull());
     }
 
-    //! check whether the entire CBreadcrumbs is spent
-    //! note that only !IsPruned() CBreadcrumbs can be serialized
+    //! check whether the entire CCoins is spent
+    //! note that only !IsPruned() CCoins can be serialized
     bool IsPruned() const {
         BOOST_FOREACH(const CTxOut &out, vout)
             if (!out.IsNull())
@@ -258,13 +258,13 @@ public:
     }
 };
 
-class CBreadcrumbsKeyHasher
+class CCoinsKeyHasher
 {
 private:
     uint256 salt;
 
 public:
-    CBreadcrumbsKeyHasher();
+    CCoinsKeyHasher();
 
     /**
      * This *must* return size_t. With Boost 1.46 on 32-bit systems the
@@ -276,9 +276,9 @@ public:
     }
 };
 
-struct CBreadcrumbsCacheEntry
+struct CCoinsCacheEntry
 {
-    CBreadcrumbs coins; // The actual cached data.
+    CCoins coins; // The actual cached data.
     unsigned char flags;
 
     enum Flags {
@@ -286,12 +286,12 @@ struct CBreadcrumbsCacheEntry
         FRESH = (1 << 1), // The parent view does not have this entry (or it is pruned).
     };
 
-    CBreadcrumbsCacheEntry() : coins(), flags(0) {}
+    CCoinsCacheEntry() : coins(), flags(0) {}
 };
 
-typedef boost::unordered_map<uint256, CBreadcrumbsCacheEntry, CBreadcrumbsKeyHasher> CBreadcrumbsMap;
+typedef boost::unordered_map<uint256, CCoinsCacheEntry, CCoinsKeyHasher> CCoinsMap;
 
-struct CBreadcrumbsStats
+struct CCoinsStats
 {
     int nHeight;
     uint256 hashBlock;
@@ -301,76 +301,76 @@ struct CBreadcrumbsStats
     uint256 hashSerialized;
     CAmount nTotalAmount;
 
-    CBreadcrumbsStats() : nHeight(0), hashBlock(0), nTransactions(0), nTransactionOutputs(0), nSerializedSize(0), hashSerialized(0), nTotalAmount(0) {}
+    CCoinsStats() : nHeight(0), hashBlock(0), nTransactions(0), nTransactionOutputs(0), nSerializedSize(0), hashSerialized(0), nTotalAmount(0) {}
 };
 
 
 /** Abstract view on the open txout dataset. */
-class CBreadcrumbsView
+class CCoinsView
 {
 public:
-    //! Retrieve the CBreadcrumbs (unspent transaction outputs) for a given txid
-    virtual bool GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const;
+    //! Retrieve the CCoins (unspent transaction outputs) for a given txid
+    virtual bool GetCoins(const uint256 &txid, CCoins &coins) const;
 
     //! Just check whether we have data for a given txid.
     //! This may (but cannot always) return true for fully spent transactions
-    virtual bool HaveBreadcrumbs(const uint256 &txid) const;
+    virtual bool HaveCoins(const uint256 &txid) const;
 
-    //! Retrieve the block hash whose state this CBreadcrumbsView currently represents
+    //! Retrieve the block hash whose state this CCoinsView currently represents
     virtual uint256 GetBestBlock() const;
 
-    //! Do a bulk modification (multiple CBreadcrumbs changes + BestBlock change).
-    //! The passed mapBreadcrumbs can be modified.
-    virtual bool BatchWrite(CBreadcrumbsMap &mapBreadcrumbs, const uint256 &hashBlock);
+    //! Do a bulk modification (multiple CCoins changes + BestBlock change).
+    //! The passed mapCoins can be modified.
+    virtual bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
 
     //! Calculate statistics about the unspent transaction output set
-    virtual bool GetStats(CBreadcrumbsStats &stats) const;
+    virtual bool GetStats(CCoinsStats &stats) const;
 
-    //! As we use CBreadcrumbsViews polymorphically, have a virtual destructor
-    virtual ~CBreadcrumbsView() {}
+    //! As we use CCoinsViews polymorphically, have a virtual destructor
+    virtual ~CCoinsView() {}
 };
 
 
-/** CBreadcrumbsView backed by another CBreadcrumbsView */
-class CBreadcrumbsViewBacked : public CBreadcrumbsView
+/** CCoinsView backed by another CCoinsView */
+class CCoinsViewBacked : public CCoinsView
 {
 protected:
-    CBreadcrumbsView *base;
+    CCoinsView *base;
 
 public:
-    CBreadcrumbsViewBacked(CBreadcrumbsView *viewIn);
-    bool GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const;
-    bool HaveBreadcrumbs(const uint256 &txid) const;
+    CCoinsViewBacked(CCoinsView *viewIn);
+    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
-    void SetBackend(CBreadcrumbsView &viewIn);
-    bool BatchWrite(CBreadcrumbsMap &mapBreadcrumbs, const uint256 &hashBlock);
-    bool GetStats(CBreadcrumbsStats &stats) const;
+    void SetBackend(CCoinsView &viewIn);
+    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
+    bool GetStats(CCoinsStats &stats) const;
 };
 
 
-class CBreadcrumbsViewCache;
+class CCoinsViewCache;
 
 /** 
  * A reference to a mutable cache entry. Encapsulating it allows us to run
  *  cleanup code after the modification is finished, and keeping track of
  *  concurrent modifications. 
  */
-class CBreadcrumbsModifier
+class CCoinsModifier
 {
 private:
-    CBreadcrumbsViewCache& cache;
-    CBreadcrumbsMap::iterator it;
-    CBreadcrumbsModifier(CBreadcrumbsViewCache& cache_, CBreadcrumbsMap::iterator it_);
+    CCoinsViewCache& cache;
+    CCoinsMap::iterator it;
+    CCoinsModifier(CCoinsViewCache& cache_, CCoinsMap::iterator it_);
 
 public:
-    CBreadcrumbs* operator->() { return &it->second.coins; }
-    CBreadcrumbs& operator*() { return it->second.coins; }
-    ~CBreadcrumbsModifier();
-    friend class CBreadcrumbsViewCache;
+    CCoins* operator->() { return &it->second.coins; }
+    CCoins& operator*() { return it->second.coins; }
+    ~CCoinsModifier();
+    friend class CCoinsViewCache;
 };
 
-/** CBreadcrumbsView that adds a memory cache for transactions to another CBreadcrumbsView */
-class CBreadcrumbsViewCache : public CBreadcrumbsViewBacked
+/** CCoinsView that adds a memory cache for transactions to another CCoinsView */
+class CCoinsViewCache : public CCoinsViewBacked
 {
 protected:
     /* Whether this cache has an active modifier. */
@@ -381,32 +381,32 @@ protected:
      * declared as "const".  
      */
     mutable uint256 hashBlock;
-    mutable CBreadcrumbsMap cacheBreadcrumbs;
+    mutable CCoinsMap cacheCoins;
 
 public:
-    CBreadcrumbsViewCache(CBreadcrumbsView *baseIn);
-    ~CBreadcrumbsViewCache();
+    CCoinsViewCache(CCoinsView *baseIn);
+    ~CCoinsViewCache();
 
-    // Standard CBreadcrumbsView methods
-    bool GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const;
-    bool HaveBreadcrumbs(const uint256 &txid) const;
+    // Standard CCoinsView methods
+    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
     void SetBestBlock(const uint256 &hashBlock);
-    bool BatchWrite(CBreadcrumbsMap &mapBreadcrumbs, const uint256 &hashBlock);
+    bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
 
     /**
-     * Return a pointer to CBreadcrumbs in the cache, or NULL if not found. This is
-     * more efficient than GetBreadcrumbs. Modifications to other cache entries are
+     * Return a pointer to CCoins in the cache, or NULL if not found. This is
+     * more efficient than GetCoins. Modifications to other cache entries are
      * allowed while accessing the returned pointer.
      */
-    const CBreadcrumbs* AccessBreadcrumbs(const uint256 &txid) const;
+    const CCoins* AccessCoins(const uint256 &txid) const;
 
     /**
-     * Return a modifiable reference to a CBreadcrumbs. If no entry with the given
+     * Return a modifiable reference to a CCoins. If no entry with the given
      * txid exists, a new one is created. Simultaneous modifications are not
      * allowed.
      */
-    CBreadcrumbsModifier ModifyBreadcrumbs(const uint256 &txid);
+    CCoinsModifier ModifyCoins(const uint256 &txid);
 
     /**
      * Push the modifications applied to this cache to its base.
@@ -436,11 +436,11 @@ public:
 
     const CTxOut &GetOutputFor(const CTxIn& input) const;
 
-    friend class CBreadcrumbsModifier;
+    friend class CCoinsModifier;
 
 private:
-    CBreadcrumbsMap::iterator FetchBreadcrumbs(const uint256 &txid);
-    CBreadcrumbsMap::const_iterator FetchBreadcrumbs(const uint256 &txid) const;
+    CCoinsMap::iterator FetchCoins(const uint256 &txid);
+    CCoinsMap::const_iterator FetchCoins(const uint256 &txid) const;
 };
 
 #endif // BITBREADCRUMB_BREADCRUMBS_H

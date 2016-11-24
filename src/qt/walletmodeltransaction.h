@@ -9,7 +9,7 @@
 
 #include <QObject>
 
-class SendBreadcrumbsRecipient;
+class SendCoinsRecipient;
 
 class CReserveKey;
 class CWallet;
@@ -19,10 +19,10 @@ class CWalletTx;
 class WalletModelTransaction
 {
 public:
-    explicit WalletModelTransaction(const QList<SendBreadcrumbsRecipient> &recipients);
+    explicit WalletModelTransaction(const QList<SendCoinsRecipient> &recipients);
     ~WalletModelTransaction();
 
-    QList<SendBreadcrumbsRecipient> getRecipients();
+    QList<SendCoinsRecipient> getRecipients();
 
     CWalletTx *getTransaction();
     unsigned int getTransactionSize();
@@ -36,7 +36,7 @@ public:
     CReserveKey *getPossibleKeyChange();
 
 private:
-    const QList<SendBreadcrumbsRecipient> recipients;
+    const QList<SendCoinsRecipient> recipients;
     CWalletTx *walletTransaction;
     CReserveKey *keyChange;
     CAmount fee;

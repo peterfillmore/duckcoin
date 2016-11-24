@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(basic_transaction_tests)
 // paid to a TX_PUBKEYHASH.
 //
 static std::vector<CMutableTransaction>
-SetupDummyInputs(CBasicKeyStore& keystoreRet, CBreadcrumbsViewCache& coinsRet)
+SetupDummyInputs(CBasicKeyStore& keystoreRet, CCoinsViewCache& coinsRet)
 {
     std::vector<CMutableTransaction> dummyTransactions;
     dummyTransactions.resize(2);
@@ -271,14 +271,14 @@ SetupDummyInputs(CBasicKeyStore& keystoreRet, CBreadcrumbsViewCache& coinsRet)
     dummyTransactions[0].vout[0].scriptPubKey << ToByteVector(key[0].GetPubKey()) << OP_CHECKSIG;
     dummyTransactions[0].vout[1].nValue = 50*CENT;
     dummyTransactions[0].vout[1].scriptPubKey << ToByteVector(key[1].GetPubKey()) << OP_CHECKSIG;
-    coinsRet.ModifyBreadcrumbs(dummyTransactions[0].GetHash())->FromTx(dummyTransactions[0], 0);
+    coinsRet.ModifyCoins(dummyTransactions[0].GetHash())->FromTx(dummyTransactions[0], 0);
 
     dummyTransactions[1].vout.resize(2);
     dummyTransactions[1].vout[0].nValue = 21*CENT;
     dummyTransactions[1].vout[0].scriptPubKey = GetScriptForDestination(key[2].GetPubKey().GetID());
     dummyTransactions[1].vout[1].nValue = 22*CENT;
     dummyTransactions[1].vout[1].scriptPubKey = GetScriptForDestination(key[3].GetPubKey().GetID());
-    coinsRet.ModifyBreadcrumbs(dummyTransactions[1].GetHash())->FromTx(dummyTransactions[1], 0);
+    coinsRet.ModifyCoins(dummyTransactions[1].GetHash())->FromTx(dummyTransactions[1], 0);
 
     return dummyTransactions;
 }
@@ -286,8 +286,8 @@ SetupDummyInputs(CBasicKeyStore& keystoreRet, CBreadcrumbsViewCache& coinsRet)
 BOOST_AUTO_TEST_CASE(test_Get)
 {
     CBasicKeyStore keystore;
-    CBreadcrumbsView coinsDummy;
-    CBreadcrumbsViewCache coins(&coinsDummy);
+    CCoinsView coinsDummy;
+    CCoinsViewCache coins(&coinsDummy);
     std::vector<CMutableTransaction> dummyTransactions = SetupDummyInputs(keystore, coins);
 
     CMutableTransaction t1;
@@ -321,8 +321,8 @@ BOOST_AUTO_TEST_CASE(test_IsStandard)
 {
     LOCK(cs_main);
     CBasicKeyStore keystore;
-    CBreadcrumbsView coinsDummy;
-    CBreadcrumbsViewCache coins(&coinsDummy);
+    CCoinsView coinsDummy;
+    CCoinsViewCache coins(&coinsDummy);
     std::vector<CMutableTransaction> dummyTransactions = SetupDummyInputs(keystore, coins);
 
     CMutableTransaction t;

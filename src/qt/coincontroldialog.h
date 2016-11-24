@@ -2,8 +2,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITBREADCRUMB_QT_BREADCRUMBCONTROLDIALOG_H
-#define BITBREADCRUMB_QT_BREADCRUMBCONTROLDIALOG_H
+#ifndef BITCOIN_QT_COINCONTROLDIALOG_H
+#define BITCOIN_QT_COINCONTROLDIALOG_H
 
 #include "amount.h"
 
@@ -18,20 +18,20 @@
 
 class WalletModel;
 
-class CBreadcrumbControl;
+class CCoinControl;
 class CTxMemPool;
 
 namespace Ui {
-    class BreadcrumbControlDialog;
+    class CoinControlDialog;
 }
 
-class BreadcrumbControlDialog : public QDialog
+class CoinControlDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit BreadcrumbControlDialog(QWidget *parent = 0);
-    ~BreadcrumbControlDialog();
+    explicit CoinControlDialog(QWidget *parent = 0);
+    ~CoinControlDialog();
 
     void setModel(WalletModel *model);
 
@@ -40,10 +40,10 @@ public:
     static QString getPriorityLabel(double dPriority, double mempoolEstimatePriority);
 
     static QList<CAmount> payAmounts;
-    static CBreadcrumbControl *coinControl;
+    static CCoinControl *coinControl;
 
 private:
-    Ui::BreadcrumbControlDialog *ui;
+    Ui::CoinControlDialog *ui;
     WalletModel *model;
     int sortColumn;
     Qt::SortOrder sortOrder;
@@ -105,8 +105,8 @@ private slots:
     void copyLabel();
     void copyAddress();
     void copyTransactionHash();
-    void lockBreadcrumb();
-    void unlockBreadcrumb();
+    void lockCoin();
+    void unlockCoin();
     void clipboardQuantity();
     void clipboardAmount();
     void clipboardFee();
@@ -124,4 +124,4 @@ private slots:
     void updateLabelLocked();
 };
 
-#endif // BITBREADCRUMB_QT_BREADCRUMBCONTROLDIALOG_H
+#endif // BITCOIN_QT_COINCONTROLDIALOG_H

@@ -24,9 +24,9 @@
 #include <QSettings>
 #include <QTextDocument>
 
-SendBreadcrumbsDialog::SendBreadcrumbsDialog(QWidget *parent) :
+SendCoinsDialog::SendCoinsDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SendBreadcrumbsDialog),
+    ui(new Ui::SendCoinsDialog),
     clientModel(0),
     model(0),
     fNewRecipientAllowed(true),
@@ -40,19 +40,19 @@ SendBreadcrumbsDialog::SendBreadcrumbsDialog(QWidget *parent) :
     ui->sendButton->setIcon(QIcon());
 #endif
 
-    GUIUtil::setupAddressWidget(ui->lineEditBreadcrumbControlChange, this);
+    GUIUtil::setupAddressWidget(ui->lineEditCoinControlChange, this);
 
     addEntry();
 
     connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addEntry()));
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
-    // Breadcrumb Control
-    connect(ui->pushButtonBreadcrumbControl, SIGNAL(clicked()), this, SLOT(coinControlButtonClicked()));
-    connect(ui->checkBoxBreadcrumbControlChange, SIGNAL(stateChanged(int)), this, SLOT(coinControlChangeChecked(int)));
-    connect(ui->lineEditBreadcrumbControlChange, SIGNAL(textEdited(const QString &)), this, SLOT(coinControlChangeEdited(const QString &)));
+    // Coin Control
+    connect(ui->pushButtonCoinControl, SIGNAL(clicked()), this, SLOT(coinControlButtonClicked()));
+    connect(ui->checkBoxCoinControlChange, SIGNAL(stateChanged(int)), this, SLOT(coinControlChangeChecked(int)));
+    connect(ui->lineEditCoinControlChange, SIGNAL(textEdited(const QString &)), this, SLOT(coinControlChangeEdited(const QString &)));
 
-    // Breadcrumb Control: clipboard actions
+    // Coin Control: clipboard actions
     QAction *clipboardQuantityAction = new QAction(tr("Copy quantity"), this);
     QAction *clipboardAmountAction = new QAction(tr("Copy amount"), this);
     QAction *clipboardFeeAction = new QAction(tr("Copy fee"), this);
@@ -69,14 +69,14 @@ SendBreadcrumbsDialog::SendBreadcrumbsDialog(QWidget *parent) :
     connect(clipboardPriorityAction, SIGNAL(triggered()), this, SLOT(coinControlClipboardPriority()));
     connect(clipboardLowOutputAction, SIGNAL(triggered()), this, SLOT(coinControlClipboardLowOutput()));
     connect(clipboardChangeAction, SIGNAL(triggered()), this, SLOT(coinControlClipboardChange()));
-    ui->labelBreadcrumbControlQuantity->addAction(clipboardQuantityAction);
-    ui->labelBreadcrumbControlAmount->addAction(clipboardAmountAction);
-    ui->labelBreadcrumbControlFee->addAction(clipboardFeeAction);
-    ui->labelBreadcrumbControlAfterFee->addAction(clipboardAfterFeeAction);
-    ui->labelBreadcrumbControlBytes->addAction(clipboardBytesAction);
-    ui->labelBreadcrumbControlPriority->addAction(clipboardPriorityAction);
-    ui->labelBreadcrumbControlLowOutput->addAction(clipboardLowOutputAction);
-    ui->labelBreadcrumbControlChange->addAction(clipboardChangeAction);
+    ui->labelCoinControlQuantity->addAction(clipboardQuantityAction);
+    ui->labelCoinControlAmount->addAction(clipboardAmountAction);
+    ui->labelCoinControlFee->addAction(clipboardFeeAction);
+    ui->labelCoinControlAfterFee->addAction(clipboardAfterFeeAction);
+    ui->labelCoinControlBytes->addAction(clipboardBytesAction);
+    ui->labelCoinControlPriority->addAction(clipboardPriorityAction);
+    ui->labelCoinControlLowOutput->addAction(clipboardLowOutputAction);
+    ui->labelCoinControlChange->addAction(clipboardChangeAction);
 
     // init transaction fee section
     QSettings settings;
@@ -111,7 +111,7 @@ SendBreadcrumbsDialog::SendBreadcrumbsDialog(QWidget *parent) :
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
 }
 
-void SendBreadcrumbsDialog::setClientModel(ClientModel *clientModel)
+void SendCoinsDialog::setClientModel(ClientModel *clientModel)
 {
     this->clientModel = clientModel;
 
@@ -120,7 +120,7 @@ void SendBreadcrumbsDialog::setClientModel(ClientModel *clientModel)
     }
 }
 
-void SendBreadcrumbsDialog::setModel(WalletModel *model)
+void SendCoinsDialog::setModel(WalletModel *model)
 {
     this->model = model;
 
@@ -128,7 +128,7 @@ void SendBreadcrumbsDialog::setModel(WalletModel *model)
     {
         for(int i = 0; i < ui->entries->count(); ++i)
         {
-            SendBreadcrumbsEntry *entry = qobject_cast<SendBreadcrumbsEntry*>(ui->entries->itemAt(i)->widget());
+            SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
             if(entry)
             {
                 entry->setModel(model);
@@ -141,10 +141,10 @@ void SendBreadcrumbsDialog::setModel(WalletModel *model)
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
         updateDisplayUnit();
 
-        // Breadcrumb Control
+        // Coin Control
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(coinControlUpdateLabels()));
         connect(model->getOptionsModel(), SIGNAL(coinControlFeaturesChanged(bool)), this, SLOT(coinControlFeatureChanged(bool)));
-        ui->frameBreadcrumbControl->setVisible(model->getOptionsModel()->getBreadcrumbControlFeatures());
+        ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures());
         coinControlUpdateLabels();
 
         // fee section
@@ -172,7 +172,7 @@ void SendBreadcrumbsDialog::setModel(WalletModel *model)
     }
 }
 
-SendBreadcrumbsDialog::~SendBreadcrumbsDialog()
+SendCoinsDialog::~SendCoinsDialog()
 {
     QSettings settings;
     settings.setValue("fFeeSectionMinimized", fFeeMinimized);
@@ -186,17 +186,17 @@ SendBreadcrumbsDialog::~SendBreadcrumbsDialog()
     delete ui;
 }
 
-void SendBreadcrumbsDialog::on_sendButton_clicked()
+void SendCoinsDialog::on_sendButton_clicked()
 {
     if(!model || !model->getOptionsModel())
         return;
 
-    QList<SendBreadcrumbsRecipient> recipients;
+    QList<SendCoinsRecipient> recipients;
     bool valid = true;
 
     for(int i = 0; i < ui->entries->count(); ++i)
     {
-        SendBreadcrumbsEntry *entry = qobject_cast<SendBreadcrumbsEntry*>(ui->entries->itemAt(i)->widget());
+        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
         if(entry)
         {
             if(entry->validate())
@@ -217,7 +217,7 @@ void SendBreadcrumbsDialog::on_sendButton_clicked()
 
     // Format confirmation message
     QStringList formatted;
-    foreach(const SendBreadcrumbsRecipient &rcp, recipients)
+    foreach(const SendCoinsRecipient &rcp, recipients)
     {
         // generate bold amount string
         QString amount = "<b>" + BitcoinUnits::formatHtmlWithUnit(model->getOptionsModel()->getDisplayUnit(), rcp.amount);
@@ -265,14 +265,14 @@ void SendBreadcrumbsDialog::on_sendButton_clicked()
 
     // prepare transaction for getting txFee earlier
     WalletModelTransaction currentTransaction(recipients);
-    WalletModel::SendBreadcrumbsReturn prepareStatus;
-    if (model->getOptionsModel()->getBreadcrumbControlFeatures()) // coin control enabled
-        prepareStatus = model->prepareTransaction(currentTransaction, BreadcrumbControlDialog::coinControl);
+    WalletModel::SendCoinsReturn prepareStatus;
+    if (model->getOptionsModel()->getCoinControlFeatures()) // coin control enabled
+        prepareStatus = model->prepareTransaction(currentTransaction, CoinControlDialog::coinControl);
     else
         prepareStatus = model->prepareTransaction(currentTransaction);
 
     // process prepareStatus and on error generate message shown to user
-    processSendBreadcrumbsReturn(prepareStatus,
+    processSendCoinsReturn(prepareStatus,
         BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), currentTransaction.getTransactionFee()));
 
     if(prepareStatus.status != WalletModel::OK) {
@@ -321,20 +321,20 @@ void SendBreadcrumbsDialog::on_sendButton_clicked()
     }
 
     // now send the prepared transaction
-    WalletModel::SendBreadcrumbsReturn sendStatus = model->sendBreadcrumbs(currentTransaction);
+    WalletModel::SendCoinsReturn sendStatus = model->sendCoins(currentTransaction);
     // process sendStatus and on error generate message shown to user
-    processSendBreadcrumbsReturn(sendStatus);
+    processSendCoinsReturn(sendStatus);
 
     if (sendStatus.status == WalletModel::OK)
     {
         accept();
-        BreadcrumbControlDialog::coinControl->UnSelectAll();
+        CoinControlDialog::coinControl->UnSelectAll();
         coinControlUpdateLabels();
     }
     fNewRecipientAllowed = true;
 }
 
-void SendBreadcrumbsDialog::clear()
+void SendCoinsDialog::clear()
 {
     // Remove entries until only one left
     while(ui->entries->count())
@@ -346,22 +346,22 @@ void SendBreadcrumbsDialog::clear()
     updateTabsAndLabels();
 }
 
-void SendBreadcrumbsDialog::reject()
+void SendCoinsDialog::reject()
 {
     clear();
 }
 
-void SendBreadcrumbsDialog::accept()
+void SendCoinsDialog::accept()
 {
     clear();
 }
 
-SendBreadcrumbsEntry *SendBreadcrumbsDialog::addEntry()
+SendCoinsEntry *SendCoinsDialog::addEntry()
 {
-    SendBreadcrumbsEntry *entry = new SendBreadcrumbsEntry(this);
+    SendCoinsEntry *entry = new SendCoinsEntry(this);
     entry->setModel(model);
     ui->entries->addWidget(entry);
-    connect(entry, SIGNAL(removeEntry(SendBreadcrumbsEntry*)), this, SLOT(removeEntry(SendBreadcrumbsEntry*)));
+    connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));
     connect(entry, SIGNAL(payAmountChanged()), this, SLOT(coinControlUpdateLabels()));
 
     updateTabsAndLabels();
@@ -377,13 +377,13 @@ SendBreadcrumbsEntry *SendBreadcrumbsDialog::addEntry()
     return entry;
 }
 
-void SendBreadcrumbsDialog::updateTabsAndLabels()
+void SendCoinsDialog::updateTabsAndLabels()
 {
     setupTabChain(0);
     coinControlUpdateLabels();
 }
 
-void SendBreadcrumbsDialog::removeEntry(SendBreadcrumbsEntry* entry)
+void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
 {
     entry->hide();
 
@@ -396,11 +396,11 @@ void SendBreadcrumbsDialog::removeEntry(SendBreadcrumbsEntry* entry)
     updateTabsAndLabels();
 }
 
-QWidget *SendBreadcrumbsDialog::setupTabChain(QWidget *prev)
+QWidget *SendCoinsDialog::setupTabChain(QWidget *prev)
 {
     for(int i = 0; i < ui->entries->count(); ++i)
     {
-        SendBreadcrumbsEntry *entry = qobject_cast<SendBreadcrumbsEntry*>(ui->entries->itemAt(i)->widget());
+        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
         if(entry)
         {
             prev = entry->setupTabChain(prev);
@@ -412,13 +412,13 @@ QWidget *SendBreadcrumbsDialog::setupTabChain(QWidget *prev)
     return ui->addButton;
 }
 
-void SendBreadcrumbsDialog::setAddress(const QString &address)
+void SendCoinsDialog::setAddress(const QString &address)
 {
-    SendBreadcrumbsEntry *entry = 0;
+    SendCoinsEntry *entry = 0;
     // Replace the first entry if it is still unused
     if(ui->entries->count() == 1)
     {
-        SendBreadcrumbsEntry *first = qobject_cast<SendBreadcrumbsEntry*>(ui->entries->itemAt(0)->widget());
+        SendCoinsEntry *first = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(0)->widget());
         if(first->isClear())
         {
             entry = first;
@@ -432,16 +432,16 @@ void SendBreadcrumbsDialog::setAddress(const QString &address)
     entry->setAddress(address);
 }
 
-void SendBreadcrumbsDialog::pasteEntry(const SendBreadcrumbsRecipient &rv)
+void SendCoinsDialog::pasteEntry(const SendCoinsRecipient &rv)
 {
     if(!fNewRecipientAllowed)
         return;
 
-    SendBreadcrumbsEntry *entry = 0;
+    SendCoinsEntry *entry = 0;
     // Replace the first entry if it is still unused
     if(ui->entries->count() == 1)
     {
-        SendBreadcrumbsEntry *first = qobject_cast<SendBreadcrumbsEntry*>(ui->entries->itemAt(0)->widget());
+        SendCoinsEntry *first = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(0)->widget());
         if(first->isClear())
         {
             entry = first;
@@ -456,7 +456,7 @@ void SendBreadcrumbsDialog::pasteEntry(const SendBreadcrumbsRecipient &rv)
     updateTabsAndLabels();
 }
 
-bool SendBreadcrumbsDialog::handlePaymentRequest(const SendBreadcrumbsRecipient &rv)
+bool SendCoinsDialog::handlePaymentRequest(const SendCoinsRecipient &rv)
 {
     // Just paste the entry, all pre-checks
     // are done in paymentserver.cpp.
@@ -464,7 +464,7 @@ bool SendBreadcrumbsDialog::handlePaymentRequest(const SendBreadcrumbsRecipient 
     return true;
 }
 
-void SendBreadcrumbsDialog::setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance,
+void SendCoinsDialog::setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance,
                                  const CAmount& watchBalance, const CAmount& watchUnconfirmedBalance, const CAmount& watchImmatureBalance)
 {
     Q_UNUSED(unconfirmedBalance);
@@ -479,7 +479,7 @@ void SendBreadcrumbsDialog::setBalance(const CAmount& balance, const CAmount& un
     }
 }
 
-void SendBreadcrumbsDialog::updateDisplayUnit()
+void SendCoinsDialog::updateDisplayUnit()
 {
     setBalance(model->getBalance(), 0, 0, 0, 0, 0);
     ui->customFee->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
@@ -487,16 +487,16 @@ void SendBreadcrumbsDialog::updateDisplayUnit()
     updateSmartFeeLabel();
 }
 
-void SendBreadcrumbsDialog::processSendBreadcrumbsReturn(const WalletModel::SendBreadcrumbsReturn &sendBreadcrumbsReturn, const QString &msgArg)
+void SendCoinsDialog::processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg)
 {
     QPair<QString, CClientUIInterface::MessageBoxFlags> msgParams;
     // Default to a warning message, override if error message is needed
     msgParams.second = CClientUIInterface::MSG_WARNING;
 
-    // This comment is specific to SendBreadcrumbsDialog usage of WalletModel::SendBreadcrumbsReturn.
-    // WalletModel::TransactionCommitFailed is used only in WalletModel::sendBreadcrumbs()
+    // This comment is specific to SendCoinsDialog usage of WalletModel::SendCoinsReturn.
+    // WalletModel::TransactionCommitFailed is used only in WalletModel::sendCoins()
     // all others are used only in WalletModel::prepareTransaction()
-    switch(sendBreadcrumbsReturn.status)
+    switch(sendCoinsReturn.status)
     {
     case WalletModel::InvalidAddress:
         msgParams.first = tr("The recipient address is not valid, please recheck.");
@@ -530,10 +530,10 @@ void SendBreadcrumbsDialog::processSendBreadcrumbsReturn(const WalletModel::Send
         return;
     }
 
-    emit message(tr("Send Breadcrumbs"), msgParams.first, msgParams.second);
+    emit message(tr("Send Coins"), msgParams.first, msgParams.second);
 }
 
-void SendBreadcrumbsDialog::minimizeFeeSection(bool fMinimize)
+void SendCoinsDialog::minimizeFeeSection(bool fMinimize)
 {
     ui->labelFeeMinimized->setVisible(fMinimize);
     ui->buttonChooseFee  ->setVisible(fMinimize);
@@ -543,24 +543,24 @@ void SendBreadcrumbsDialog::minimizeFeeSection(bool fMinimize)
     fFeeMinimized = fMinimize;
 }
 
-void SendBreadcrumbsDialog::on_buttonChooseFee_clicked()
+void SendCoinsDialog::on_buttonChooseFee_clicked()
 {
     minimizeFeeSection(false);
 }
 
-void SendBreadcrumbsDialog::on_buttonMinimizeFee_clicked()
+void SendCoinsDialog::on_buttonMinimizeFee_clicked()
 {
     updateFeeMinimizedLabel();
     minimizeFeeSection(true);
 }
 
-void SendBreadcrumbsDialog::setMinimumFee()
+void SendCoinsDialog::setMinimumFee()
 {
     ui->radioCustomPerKilobyte->setChecked(true);
     ui->customFee->setValue(CWallet::minTxFee.GetFeePerK());
 }
 
-void SendBreadcrumbsDialog::updateFeeSectionControls()
+void SendCoinsDialog::updateFeeSectionControls()
 {
     ui->sliderSmartFee          ->setEnabled(ui->radioSmartFee->isChecked());
     ui->labelSmartFee           ->setEnabled(ui->radioSmartFee->isChecked());
@@ -576,7 +576,7 @@ void SendBreadcrumbsDialog::updateFeeSectionControls()
     ui->customFee               ->setEnabled(ui->radioCustomFee->isChecked() && !ui->checkBoxMinimumFee->isChecked());
 }
 
-void SendBreadcrumbsDialog::updateGlobalFeeVariables()
+void SendCoinsDialog::updateGlobalFeeVariables()
 {
     if (ui->radioSmartFee->isChecked())
     {
@@ -593,7 +593,7 @@ void SendBreadcrumbsDialog::updateGlobalFeeVariables()
     fSendFreeTransactions = ui->checkBoxFreeTx->isChecked();
 }
 
-void SendBreadcrumbsDialog::updateFeeMinimizedLabel()
+void SendCoinsDialog::updateFeeMinimizedLabel()
 {
     if(!model || !model->getOptionsModel())
         return;
@@ -606,7 +606,7 @@ void SendBreadcrumbsDialog::updateFeeMinimizedLabel()
     }
 }
 
-void SendBreadcrumbsDialog::updateMinFeeLabel()
+void SendCoinsDialog::updateMinFeeLabel()
 {
     if (model && model->getOptionsModel())
         ui->checkBoxMinimumFee->setText(tr("Pay only the minimum fee of %1").arg(
@@ -614,7 +614,7 @@ void SendBreadcrumbsDialog::updateMinFeeLabel()
         );
 }
 
-void SendBreadcrumbsDialog::updateSmartFeeLabel()
+void SendCoinsDialog::updateSmartFeeLabel()
 {
     if(!model || !model->getOptionsModel())
         return;
@@ -637,108 +637,108 @@ void SendBreadcrumbsDialog::updateSmartFeeLabel()
     updateFeeMinimizedLabel();
 }
 
-// Breadcrumb Control: copy label "Quantity" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardQuantity()
+// Coin Control: copy label "Quantity" to clipboard
+void SendCoinsDialog::coinControlClipboardQuantity()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlQuantity->text());
+    GUIUtil::setClipboard(ui->labelCoinControlQuantity->text());
 }
 
-// Breadcrumb Control: copy label "Amount" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardAmount()
+// Coin Control: copy label "Amount" to clipboard
+void SendCoinsDialog::coinControlClipboardAmount()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlAmount->text().left(ui->labelBreadcrumbControlAmount->text().indexOf(" ")));
+    GUIUtil::setClipboard(ui->labelCoinControlAmount->text().left(ui->labelCoinControlAmount->text().indexOf(" ")));
 }
 
-// Breadcrumb Control: copy label "Fee" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardFee()
+// Coin Control: copy label "Fee" to clipboard
+void SendCoinsDialog::coinControlClipboardFee()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlFee->text().left(ui->labelBreadcrumbControlFee->text().indexOf(" ")).replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlFee->text().left(ui->labelCoinControlFee->text().indexOf(" ")).replace("~", ""));
 }
 
-// Breadcrumb Control: copy label "After fee" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardAfterFee()
+// Coin Control: copy label "After fee" to clipboard
+void SendCoinsDialog::coinControlClipboardAfterFee()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlAfterFee->text().left(ui->labelBreadcrumbControlAfterFee->text().indexOf(" ")).replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlAfterFee->text().left(ui->labelCoinControlAfterFee->text().indexOf(" ")).replace("~", ""));
 }
 
-// Breadcrumb Control: copy label "Bytes" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardBytes()
+// Coin Control: copy label "Bytes" to clipboard
+void SendCoinsDialog::coinControlClipboardBytes()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlBytes->text().replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlBytes->text().replace("~", ""));
 }
 
-// Breadcrumb Control: copy label "Priority" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardPriority()
+// Coin Control: copy label "Priority" to clipboard
+void SendCoinsDialog::coinControlClipboardPriority()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlPriority->text());
+    GUIUtil::setClipboard(ui->labelCoinControlPriority->text());
 }
 
-// Breadcrumb Control: copy label "Dust" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardLowOutput()
+// Coin Control: copy label "Dust" to clipboard
+void SendCoinsDialog::coinControlClipboardLowOutput()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlLowOutput->text());
+    GUIUtil::setClipboard(ui->labelCoinControlLowOutput->text());
 }
 
-// Breadcrumb Control: copy label "Change" to clipboard
-void SendBreadcrumbsDialog::coinControlClipboardChange()
+// Coin Control: copy label "Change" to clipboard
+void SendCoinsDialog::coinControlClipboardChange()
 {
-    GUIUtil::setClipboard(ui->labelBreadcrumbControlChange->text().left(ui->labelBreadcrumbControlChange->text().indexOf(" ")).replace("~", ""));
+    GUIUtil::setClipboard(ui->labelCoinControlChange->text().left(ui->labelCoinControlChange->text().indexOf(" ")).replace("~", ""));
 }
 
-// Breadcrumb Control: settings menu - coin control enabled/disabled by user
-void SendBreadcrumbsDialog::coinControlFeatureChanged(bool checked)
+// Coin Control: settings menu - coin control enabled/disabled by user
+void SendCoinsDialog::coinControlFeatureChanged(bool checked)
 {
-    ui->frameBreadcrumbControl->setVisible(checked);
+    ui->frameCoinControl->setVisible(checked);
 
     if (!checked && model) // coin control features disabled
-        BreadcrumbControlDialog::coinControl->SetNull();
+        CoinControlDialog::coinControl->SetNull();
 
     if (checked)
         coinControlUpdateLabels();
 }
 
-// Breadcrumb Control: button inputs -> show actual coin control dialog
-void SendBreadcrumbsDialog::coinControlButtonClicked()
+// Coin Control: button inputs -> show actual coin control dialog
+void SendCoinsDialog::coinControlButtonClicked()
 {
-    BreadcrumbControlDialog dlg;
+    CoinControlDialog dlg;
     dlg.setModel(model);
     dlg.exec();
     coinControlUpdateLabels();
 }
 
-// Breadcrumb Control: checkbox custom change address
-void SendBreadcrumbsDialog::coinControlChangeChecked(int state)
+// Coin Control: checkbox custom change address
+void SendCoinsDialog::coinControlChangeChecked(int state)
 {
     if (state == Qt::Unchecked)
     {
-        BreadcrumbControlDialog::coinControl->destChange = CNoDestination();
-        ui->labelBreadcrumbControlChangeLabel->clear();
+        CoinControlDialog::coinControl->destChange = CNoDestination();
+        ui->labelCoinControlChangeLabel->clear();
     }
     else
         // use this to re-validate an already entered address
-        coinControlChangeEdited(ui->lineEditBreadcrumbControlChange->text());
+        coinControlChangeEdited(ui->lineEditCoinControlChange->text());
 
-    ui->lineEditBreadcrumbControlChange->setEnabled((state == Qt::Checked));
+    ui->lineEditCoinControlChange->setEnabled((state == Qt::Checked));
 }
 
-// Breadcrumb Control: custom change address changed
-void SendBreadcrumbsDialog::coinControlChangeEdited(const QString& text)
+// Coin Control: custom change address changed
+void SendCoinsDialog::coinControlChangeEdited(const QString& text)
 {
     if (model && model->getAddressTableModel())
     {
         // Default to no change address until verified
-        BreadcrumbControlDialog::coinControl->destChange = CNoDestination();
-        ui->labelBreadcrumbControlChangeLabel->setStyleSheet("QLabel{color:red;}");
+        CoinControlDialog::coinControl->destChange = CNoDestination();
+        ui->labelCoinControlChangeLabel->setStyleSheet("QLabel{color:red;}");
 
         CBitcoinAddress addr = CBitcoinAddress(text.toStdString());
 
         if (text.isEmpty()) // Nothing entered
         {
-            ui->labelBreadcrumbControlChangeLabel->setText("");
+            ui->labelCoinControlChangeLabel->setText("");
         }
         else if (!addr.IsValid()) // Invalid address
         {
-            ui->labelBreadcrumbControlChangeLabel->setText(tr("Warning: Invalid Duckcoin address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Duckcoin address"));
         }
         else // Valid address
         {
@@ -747,54 +747,54 @@ void SendBreadcrumbsDialog::coinControlChangeEdited(const QString& text)
             addr.GetKeyID(keyid);
             if (!model->getPubKey(keyid, pubkey)) // Unknown change address
             {
-                ui->labelBreadcrumbControlChangeLabel->setText(tr("Warning: Unknown change address"));
+                ui->labelCoinControlChangeLabel->setText(tr("Warning: Unknown change address"));
             }
             else // Known change address
             {
-                ui->labelBreadcrumbControlChangeLabel->setStyleSheet("QLabel{color:black;}");
+                ui->labelCoinControlChangeLabel->setStyleSheet("QLabel{color:black;}");
 
                 // Query label
                 QString associatedLabel = model->getAddressTableModel()->labelForAddress(text);
                 if (!associatedLabel.isEmpty())
-                    ui->labelBreadcrumbControlChangeLabel->setText(associatedLabel);
+                    ui->labelCoinControlChangeLabel->setText(associatedLabel);
                 else
-                    ui->labelBreadcrumbControlChangeLabel->setText(tr("(no label)"));
+                    ui->labelCoinControlChangeLabel->setText(tr("(no label)"));
 
-                BreadcrumbControlDialog::coinControl->destChange = addr.Get();
+                CoinControlDialog::coinControl->destChange = addr.Get();
             }
         }
     }
 }
 
-// Breadcrumb Control: update labels
-void SendBreadcrumbsDialog::coinControlUpdateLabels()
+// Coin Control: update labels
+void SendCoinsDialog::coinControlUpdateLabels()
 {
-    if (!model || !model->getOptionsModel() || !model->getOptionsModel()->getBreadcrumbControlFeatures())
+    if (!model || !model->getOptionsModel() || !model->getOptionsModel()->getCoinControlFeatures())
         return;
 
     // set pay amounts
-    BreadcrumbControlDialog::payAmounts.clear();
+    CoinControlDialog::payAmounts.clear();
     for(int i = 0; i < ui->entries->count(); ++i)
     {
-        SendBreadcrumbsEntry *entry = qobject_cast<SendBreadcrumbsEntry*>(ui->entries->itemAt(i)->widget());
+        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
         if(entry)
-            BreadcrumbControlDialog::payAmounts.append(entry->getValue().amount);
+            CoinControlDialog::payAmounts.append(entry->getValue().amount);
     }
 
-    if (BreadcrumbControlDialog::coinControl->HasSelected())
+    if (CoinControlDialog::coinControl->HasSelected())
     {
         // actual coin control calculation
-        BreadcrumbControlDialog::updateLabels(model, this);
+        CoinControlDialog::updateLabels(model, this);
 
         // show coin control stats
-        ui->labelBreadcrumbControlAutomaticallySelected->hide();
-        ui->widgetBreadcrumbControl->show();
+        ui->labelCoinControlAutomaticallySelected->hide();
+        ui->widgetCoinControl->show();
     }
     else
     {
         // hide coin control stats
-        ui->labelBreadcrumbControlAutomaticallySelected->show();
-        ui->widgetBreadcrumbControl->hide();
-        ui->labelBreadcrumbControlInsuffFunds->hide();
+        ui->labelCoinControlAutomaticallySelected->show();
+        ui->widgetCoinControl->hide();
+        ui->labelCoinControlInsuffFunds->hide();
     }
 }

@@ -328,7 +328,7 @@ Value gettxoutsetinfo(const Array& params, bool fHelp)
 
     Object ret;
 
-    CBreadcrumbsStats stats;
+    CCoinsStats stats;
     FlushStateToDisk();
     if (pcoinsTip->GetStats(stats)) {
         ret.push_back(Pair("height", (int64_t)stats.nHeight));
@@ -368,7 +368,7 @@ Value gettxout(const Array& params, bool fHelp)
             "     ]\n"
             "  },\n"
             "  \"version\" : n,            (numeric) The version\n"
-            "  \"coinbase\" : true|false   (boolean) Breadcrumbbase or not\n"
+            "  \"coinbase\" : true|false   (boolean) Coinbase or not\n"
             "}\n"
 
             "\nExamples:\n"
@@ -389,15 +389,15 @@ Value gettxout(const Array& params, bool fHelp)
     if (params.size() > 2)
         fMempool = params[2].get_bool();
 
-    CBreadcrumbs coins;
+    CCoins coins;
     if (fMempool) {
         LOCK(mempool.cs);
-        CBreadcrumbsViewMemPool view(pcoinsTip, mempool);
-        if (!view.GetBreadcrumbs(hash, coins))
+        CCoinsViewMemPool view(pcoinsTip, mempool);
+        if (!view.GetCoins(hash, coins))
             return Value::null;
-        mempool.pruneSpent(hash, coins); // TODO: this should be done by the CBreadcrumbsViewMemPool
+        mempool.pruneSpent(hash, coins); // TODO: this should be done by the CCoinsViewMemPool
     } else {
-        if (!pcoinsTip->GetBreadcrumbs(hash, coins))
+        if (!pcoinsTip->GetCoins(hash, coins))
             return Value::null;
     }
     if (n<0 || (unsigned int)n>=coins.vout.size() || coins.vout[n].IsNull())
@@ -415,7 +415,7 @@ Value gettxout(const Array& params, bool fHelp)
     ScriptPubKeyToJSON(coins.vout[n].scriptPubKey, o, true);
     ret.push_back(Pair("scriptPubKey", o));
     ret.push_back(Pair("version", coins.nVersion));
-    ret.push_back(Pair("coinbase", coins.fBreadcrumbBase));
+    ret.push_back(Pair("coinbase", coins.fCoinBase));
 
     return ret;
 }

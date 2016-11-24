@@ -92,7 +92,7 @@ with a default value of 1. The old names are still
 supported for compatibility (so specifying -nolisten
 is automatically interpreted as -listen=0; every
 boolean argument can now be specified as either
--foo or -nofoo).
+-bar or -nobar).
 
 The -noirc command-line options was renamed to
 -irc, with a default value of 0. Run -irc=1 to

@@ -65,9 +65,9 @@ void OptionsModel::Init()
         settings.setValue("strThirdPartyTxUrls", "");
     strThirdPartyTxUrls = settings.value("strThirdPartyTxUrls", "").toString();
 
-    if (!settings.contains("fBreadcrumbControlFeatures"))
-        settings.setValue("fBreadcrumbControlFeatures", false);
-    fBreadcrumbControlFeatures = settings.value("fBreadcrumbControlFeatures", false).toBool();
+    if (!settings.contains("fCoinControlFeatures"))
+        settings.setValue("fCoinControlFeatures", false);
+    fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
@@ -188,8 +188,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return strThirdPartyTxUrls;
         case Language:
             return settings.value("language");
-        case BreadcrumbControlFeatures:
-            return fBreadcrumbControlFeatures;
+        case CoinControlFeatures:
+            return fCoinControlFeatures;
         case DatabaseCache:
             return settings.value("nDatabaseCache");
         case ThreadsScriptVerif:
@@ -283,10 +283,10 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 setRestartRequired(true);
             }
             break;
-        case BreadcrumbControlFeatures:
-            fBreadcrumbControlFeatures = value.toBool();
-            settings.setValue("fBreadcrumbControlFeatures", fBreadcrumbControlFeatures);
-            emit coinControlFeaturesChanged(fBreadcrumbControlFeatures);
+        case CoinControlFeatures:
+            fCoinControlFeatures = value.toBool();
+            settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
+            emit coinControlFeaturesChanged(fCoinControlFeatures);
             break;
         case DatabaseCache:
             if (settings.value("nDatabaseCache") != value) {

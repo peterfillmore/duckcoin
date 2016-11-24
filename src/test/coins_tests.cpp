@@ -13,15 +13,15 @@
 
 namespace
 {
-class CBreadcrumbsViewTest : public CBreadcrumbsView
+class CCoinsViewTest : public CCoinsView
 {
     uint256 hashBestBlock_;
-    std::map<uint256, CBreadcrumbs> map_;
+    std::map<uint256, CCoins> map_;
 
 public:
-    bool GetBreadcrumbs(const uint256& txid, CBreadcrumbs& coins) const
+    bool GetCoins(const uint256& txid, CCoins& coins) const
     {
-        std::map<uint256, CBreadcrumbs>::const_iterator it = map_.find(txid);
+        std::map<uint256, CCoins>::const_iterator it = map_.find(txid);
         if (it == map_.end()) {
             return false;
         }
@@ -33,30 +33,30 @@ public:
         return true;
     }
 
-    bool HaveBreadcrumbs(const uint256& txid) const
+    bool HaveCoins(const uint256& txid) const
     {
-        CBreadcrumbs coins;
-        return GetBreadcrumbs(txid, coins);
+        CCoins coins;
+        return GetCoins(txid, coins);
     }
 
     uint256 GetBestBlock() const { return hashBestBlock_; }
 
-    bool BatchWrite(CBreadcrumbsMap& mapBreadcrumbs, const uint256& hashBlock)
+    bool BatchWrite(CCoinsMap& mapCoins, const uint256& hashBlock)
     {
-        for (CBreadcrumbsMap::iterator it = mapBreadcrumbs.begin(); it != mapBreadcrumbs.end(); ) {
+        for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end(); ) {
             map_[it->first] = it->second.coins;
             if (it->second.coins.IsPruned() && insecure_rand() % 3 == 0) {
                 // Randomly delete empty entries on write.
                 map_.erase(it->first);
             }
-            mapBreadcrumbs.erase(it++);
+            mapCoins.erase(it++);
         }
-        mapBreadcrumbs.clear();
+        mapCoins.clear();
         hashBestBlock_ = hashBlock;
         return true;
     }
 
-    bool GetStats(CBreadcrumbsStats& stats) const { return false; }
+    bool GetStats(CCoinsStats& stats) const { return false; }
 };
 }
 
@@ -65,9 +65,9 @@ BOOST_AUTO_TEST_SUITE(coins_tests)
 static const unsigned int NUM_SIMULATION_ITERATIONS = 40000;
 
 // This is a large randomized insert/remove simulation test on a variable-size
-// stack of caches on top of CBreadcrumbsViewTest.
+// stack of caches on top of CCoinsViewTest.
 //
-// It will randomly create/update/delete CBreadcrumbs entries to a tip of caches, with
+// It will randomly create/update/delete CCoins entries to a tip of caches, with
 // txids picked from a limited list of random 256-bit hashes. Occasionally, a
 // new tip is added to the stack of caches, or the tip is flushed and removed.
 //
@@ -85,12 +85,12 @@ BOOST_AUTO_TEST_CASE(coins_cache_simulation_test)
     bool missed_an_entry = false;
 
     // A simple map to track what we expect the cache stack to represent.
-    std::map<uint256, CBreadcrumbs> result;
+    std::map<uint256, CCoins> result;
 
     // The cache stack.
-    CBreadcrumbsViewTest base; // A CBreadcrumbsViewTest at the bottom.
-    std::vector<CBreadcrumbsViewCache*> stack; // A stack of CBreadcrumbsViewCaches on top.
-    stack.push_back(new CBreadcrumbsViewCache(&base)); // Start with one cache.
+    CCoinsViewTest base; // A CCoinsViewTest at the bottom.
+    std::vector<CCoinsViewCache*> stack; // A stack of CCoinsViewCaches on top.
+    stack.push_back(new CCoinsViewCache(&base)); // Start with one cache.
 
     // Use a limited set of random transaction ids, so we do test overwriting entries.
     std::vector<uint256> txids;
@@ -103,8 +103,8 @@ BOOST_AUTO_TEST_CASE(coins_cache_simulation_test)
         // Do a random modification.
         {
             uint256 txid = txids[insecure_rand() % txids.size()]; // txid we're going to modify in this iteration.
-            CBreadcrumbs& coins = result[txid];
-            CBreadcrumbsModifier entry = stack.back()->ModifyBreadcrumbs(txid);
+            CCoins& coins = result[txid];
+            CCoinsModifier entry = stack.back()->ModifyCoins(txid);
             BOOST_CHECK(coins == *entry);
             if (insecure_rand() % 5 == 0 || coins.IsPruned()) {
                 if (coins.IsPruned()) {
@@ -125,8 +125,8 @@ BOOST_AUTO_TEST_CASE(coins_cache_simulation_test)
 
         // Once every 1000 iterations and at the end, verify the full cache.
         if (insecure_rand() % 1000 == 1 || i == NUM_SIMULATION_ITERATIONS - 1) {
-            for (std::map<uint256, CBreadcrumbs>::iterator it = result.begin(); it != result.end(); it++) {
-                const CBreadcrumbs* coins = stack.back()->AccessBreadcrumbs(it->first);
+            for (std::map<uint256, CCoins>::iterator it = result.begin(); it != result.end(); it++) {
+                const CCoins* coins = stack.back()->AccessCoins(it->first);
                 if (coins) {
                     BOOST_CHECK(*coins == it->second);
                     found_an_entry = true;
@@ -145,13 +145,13 @@ BOOST_AUTO_TEST_CASE(coins_cache_simulation_test)
                 stack.pop_back();
             }
             if (stack.size() == 0 || (stack.size() < 4 && insecure_rand() % 2)) {
-                CBreadcrumbsView* tip = &base;
+                CCoinsView* tip = &base;
                 if (stack.size() > 0) {
                     tip = stack.back();
                 } else {
                     removed_all_caches = true;
                 }
-                stack.push_back(new CBreadcrumbsViewCache(tip));
+                stack.push_back(new CCoinsViewCache(tip));
                 if (stack.size() == 4) {
                     reached_4_caches = true;
                 }

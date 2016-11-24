@@ -5,13 +5,13 @@
 #include "coincontroltreewidget.h"
 #include "coincontroldialog.h"
 
-BreadcrumbControlTreeWidget::BreadcrumbControlTreeWidget(QWidget *parent) :
+CoinControlTreeWidget::CoinControlTreeWidget(QWidget *parent) :
     QTreeWidget(parent)
 {
 
 }
 
-void BreadcrumbControlTreeWidget::keyPressEvent(QKeyEvent *event)
+void CoinControlTreeWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space) // press spacebar -> select checkbox
     {
@@ -23,7 +23,7 @@ void BreadcrumbControlTreeWidget::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_Escape) // press esc -> close dialog
     {
         event->ignore();
-        BreadcrumbControlDialog *coinControlDialog = (BreadcrumbControlDialog*)this->parentWidget();
+        CoinControlDialog *coinControlDialog = (CoinControlDialog*)this->parentWidget();
         coinControlDialog->done(QDialog::Accepted);
     }
     else

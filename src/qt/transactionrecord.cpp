@@ -14,7 +14,7 @@
  */
 bool TransactionRecord::showTransaction(const CWalletTx &wtx)
 {
-    if (wtx.IsBreadcrumbBase())
+    if (wtx.IsCoinBase())
     {
         // Ensures we show generated coins / mined transactions at depth 1
         if (!wtx.IsInMainChain())
@@ -38,7 +38,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
     uint256 hash = wtx.GetHash();
     std::map<std::string, std::string> mapValue = wtx.mapValue;
 
-    if (nNet > 0 || wtx.IsBreadcrumbBase())
+    if (nNet > 0 || wtx.IsCoinBase())
     {
         //
         // Credit
@@ -65,7 +65,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     sub.type = TransactionRecord::RecvFromOther;
                     sub.address = mapValue["from"];
                 }
-                if (wtx.IsBreadcrumbBase())
+                if (wtx.IsCoinBase())
                 {
                     // Generated
                     sub.type = TransactionRecord::Generated;
@@ -177,7 +177,7 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
     // Sort order, unrecorded transactions sort to the top
     status.sortKey = strprintf("%010d-%01d-%010u-%03d",
         (pindex ? pindex->nHeight : std::numeric_limits<int>::max()),
-        (wtx.IsBreadcrumbBase() ? 1 : 0),
+        (wtx.IsCoinBase() ? 1 : 0),
         wtx.nTimeReceived,
         idx);
     status.countsForBalance = wtx.IsTrusted() && !(wtx.GetBlocksToMaturity() > 0);

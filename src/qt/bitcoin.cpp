@@ -433,8 +433,8 @@ void BitcoinApplication::initializeResult(int retval)
             window->addWallet(BitcoinGUI::DEFAULT_WALLET, walletModel);
             window->setCurrentWallet(BitcoinGUI::DEFAULT_WALLET);
 
-            connect(walletModel, SIGNAL(coinsSent(CWallet*,SendBreadcrumbsRecipient,QByteArray)),
-                             paymentServer, SLOT(fetchPaymentACK(CWallet*,const SendBreadcrumbsRecipient&,QByteArray)));
+            connect(walletModel, SIGNAL(coinsSent(CWallet*,SendCoinsRecipient,QByteArray)),
+                             paymentServer, SLOT(fetchPaymentACK(CWallet*,const SendCoinsRecipient&,QByteArray)));
         }
 #endif
 
@@ -452,8 +452,8 @@ void BitcoinApplication::initializeResult(int retval)
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
         // bitcoin: URIs or payment requests:
-        connect(paymentServer, SIGNAL(receivedPaymentRequest(SendBreadcrumbsRecipient)),
-                         window, SLOT(handlePaymentRequest(SendBreadcrumbsRecipient)));
+        connect(paymentServer, SIGNAL(receivedPaymentRequest(SendCoinsRecipient)),
+                         window, SLOT(handlePaymentRequest(SendCoinsRecipient)));
         connect(window, SIGNAL(receivedURI(QString)),
                          paymentServer, SLOT(handleURIOrFile(QString)));
         connect(paymentServer, SIGNAL(message(QString,QString,unsigned int)),

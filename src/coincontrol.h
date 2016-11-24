@@ -2,18 +2,18 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITBREADCRUMB_BREADCRUMBCONTROL_H
-#define BITBREADCRUMB_BREADCRUMBCONTROL_H
+#ifndef BITCOIN_COINCONTROL_H
+#define BITCOIN_COINCONTROL_H
 
 #include "primitives/transaction.h"
 
-/** Breadcrumb Control Features. */
-class CBreadcrumbControl
+/** Coin Control Features. */
+class CCoinControl
 {
 public:
     CTxDestination destChange;
 
-    CBreadcrumbControl()
+    CCoinControl()
     {
         SetNull();
     }
@@ -59,4 +59,4 @@ private:
     std::set<COutPoint> setSelected;
 };
 
-#endif // BITBREADCRUMB_BREADCRUMBCONTROL_H
+#endif // BITCOIN_COINCONTROL_H

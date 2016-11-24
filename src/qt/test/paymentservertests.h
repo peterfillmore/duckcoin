@@ -19,17 +19,17 @@ private slots:
 };
 
 // Dummy class to receive paymentserver signals.
-// If SendBreadcrumbsRecipient was a proper QObject, then
+// If SendCoinsRecipient was a proper QObject, then
 // we could use QSignalSpy... but it's not.
 class RecipientCatcher : public QObject
 {
     Q_OBJECT
 
 public slots:
-    void getRecipient(SendBreadcrumbsRecipient r);
+    void getRecipient(SendCoinsRecipient r);
 
 public:
-    SendBreadcrumbsRecipient recipient;
+    SendCoinsRecipient recipient;
 };
 
 #endif // BITBREADCRUMB_QT_TEST_PAYMENTSERVERTESTS_H

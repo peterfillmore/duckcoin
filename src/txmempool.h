@@ -27,7 +27,7 @@ inline bool AllowFree(double dPriority)
     return dPriority > AllowFreeThreshold();
 }
 
-/** Fake height value used in CBreadcrumbs to signify they are only in the memory pool (since 0.8) */
+/** Fake height value used in CCoins to signify they are only in the memory pool (since 0.8) */
 static const unsigned int MEMPOOL_HEIGHT = 0x7FFFFFFF;
 
 /**
@@ -108,18 +108,18 @@ public:
      * all inputs are in the mapNextTx array). If sanity-checking is turned off,
      * check does nothing.
      */
-    void check(const CBreadcrumbsViewCache *pcoins) const;
+    void check(const CCoinsViewCache *pcoins) const;
     void setSanityCheck(bool _fSanityCheck) { fSanityCheck = _fSanityCheck; }
 
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry);
     void remove(const CTransaction &tx, std::list<CTransaction>& removed, bool fRecursive = false);
-    void removeBreadcrumbbaseSpends(const CBreadcrumbsViewCache *pcoins, unsigned int nMemPoolHeight);
+    void removeCoinbaseSpends(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight);
     void removeConflicts(const CTransaction &tx, std::list<CTransaction>& removed);
     void removeForBlock(const std::vector<CTransaction>& vtx, unsigned int nBlockHeight,
                         std::list<CTransaction>& conflicts);
     void clear();
     void queryHashes(std::vector<uint256>& vtxid);
-    void pruneSpent(const uint256& hash, CBreadcrumbs &coins);
+    void pruneSpent(const uint256& hash, CCoins &coins);
     unsigned int GetTransactionsUpdated() const;
     void AddTransactionsUpdated(unsigned int n);
 
@@ -159,18 +159,18 @@ public:
 };
 
 /** 
- * CBreadcrumbsView that brings transactions from a memorypool into view.
+ * CCoinsView that brings transactions from a memorypool into view.
  * It does not check for spendings by memory pool transactions.
  */
-class CBreadcrumbsViewMemPool : public CBreadcrumbsViewBacked
+class CCoinsViewMemPool : public CCoinsViewBacked
 {
 protected:
     CTxMemPool &mempool;
 
 public:
-    CBreadcrumbsViewMemPool(CBreadcrumbsView *baseIn, CTxMemPool &mempoolIn);
-    bool GetBreadcrumbs(const uint256 &txid, CBreadcrumbs &coins) const;
-    bool HaveBreadcrumbs(const uint256 &txid) const;
+    CCoinsViewMemPool(CCoinsView *baseIn, CTxMemPool &mempoolIn);
+    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool HaveCoins(const uint256 &txid) const;
 };
 
 #endif // BITBREADCRUMB_TXMEMPOOL_H

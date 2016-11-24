@@ -21,7 +21,7 @@ class RecentRequestsTableModel;
 class TransactionTableModel;
 class WalletModelTransaction;
 
-class CBreadcrumbControl;
+class CCoinControl;
 class CKeyID;
 class COutPoint;
 class COutput;
@@ -33,12 +33,12 @@ QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
 
-class SendBreadcrumbsRecipient
+class SendCoinsRecipient
 {
 public:
-    explicit SendBreadcrumbsRecipient() : amount(0), nVersion(SendBreadcrumbsRecipient::CURRENT_VERSION) { }
-    explicit SendBreadcrumbsRecipient(const QString &addr, const QString &label, const CAmount& amount, const QString &message):
-        address(addr), label(label), amount(amount), message(message), nVersion(SendBreadcrumbsRecipient::CURRENT_VERSION) {}
+    explicit SendCoinsRecipient() : amount(0), nVersion(SendCoinsRecipient::CURRENT_VERSION) { }
+    explicit SendCoinsRecipient(const QString &addr, const QString &label, const CAmount& amount, const QString &message):
+        address(addr), label(label), amount(amount), message(message), nVersion(SendCoinsRecipient::CURRENT_VERSION) {}
 
     // If from an insecure payment request, this is used for storing
     // the addresses, e.g. address-A<br />address-B<br />address-C.
@@ -101,7 +101,7 @@ public:
     explicit WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent = 0);
     ~WalletModel();
 
-    enum StatusCode // Returned by sendBreadcrumbs
+    enum StatusCode // Returned by sendCoins
     {
         OK,
         InvalidAmount,
@@ -126,7 +126,7 @@ public:
     TransactionTableModel *getTransactionTableModel();
     RecentRequestsTableModel *getRecentRequestsTableModel();
 
-    CAmount getBalance(const CBreadcrumbControl *coinControl = NULL) const;
+    CAmount getBalance(const CCoinControl *coinControl = NULL) const;
     CAmount getUnconfirmedBalance() const;
     CAmount getImmatureBalance() const;
     bool haveWatchOnly() const;
@@ -138,19 +138,19 @@ public:
     // Check address for validity
     bool validateAddress(const QString &address);
 
-    // Return status record for SendBreadcrumbs, contains error id + information
-    struct SendBreadcrumbsReturn
+    // Return status record for SendCoins, contains error id + information
+    struct SendCoinsReturn
     {
-        SendBreadcrumbsReturn(StatusCode status = OK):
+        SendCoinsReturn(StatusCode status = OK):
             status(status) {}
         StatusCode status;
     };
 
     // prepare transaction for getting txfee before sending coins
-    SendBreadcrumbsReturn prepareTransaction(WalletModelTransaction &transaction, const CBreadcrumbControl *coinControl = NULL);
+    SendCoinsReturn prepareTransaction(WalletModelTransaction &transaction, const CCoinControl *coinControl = NULL);
 
     // Send coins to a list of recipients
-    SendBreadcrumbsReturn sendBreadcrumbs(WalletModelTransaction &transaction);
+    SendCoinsReturn sendCoins(WalletModelTransaction &transaction);
 
     // Wallet encryption
     bool setWalletEncrypted(bool encrypted, const SecureString &passphrase);
@@ -185,12 +185,12 @@ public:
     bool getPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const;
     void getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs);
     bool isSpent(const COutPoint& outpoint) const;
-    void listBreadcrumbs(std::map<QString, std::vector<COutput> >& mapBreadcrumbs) const;
+    void listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const;
 
-    bool isLockedBreadcrumb(uint256 hash, unsigned int n) const;
-    void lockBreadcrumb(COutPoint& output);
-    void unlockBreadcrumb(COutPoint& output);
-    void listLockedBreadcrumbs(std::vector<COutPoint>& vOutpts);
+    bool isLockedCoin(uint256 hash, unsigned int n) const;
+    void lockCoin(COutPoint& output);
+    void unlockCoin(COutPoint& output);
+    void listLockedCoins(std::vector<COutPoint>& vOutpts);
 
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest);
@@ -240,8 +240,8 @@ signals:
     // Fired when a message should be reported to the user
     void message(const QString &title, const QString &message, unsigned int style);
 
-    // Breadcrumbs sent: from wallet, to recipient, in (serialized) transaction:
-    void coinsSent(CWallet* wallet, SendBreadcrumbsRecipient recipient, QByteArray transaction);
+    // Coins sent: from wallet, to recipient, in (serialized) transaction:
+    void coinsSent(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction);
 
     // Show progress dialog e.g. for rescan
     void showProgress(const QString &title, int nProgress);
