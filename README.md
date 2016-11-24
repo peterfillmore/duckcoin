@@ -1,7 +1,12 @@
+Okay, this is all copied off the lite-coin src.
+goto http://litecoin.org for their information.
+i think all the licenses are still here. if not soz!
+ignore all the below links. they are broken. if you want to set them up, go bananas.
+
 Duckcoin Core integration/staging tree
 =====================================
 
-https://duckcoin.org
+STILL NEED A WEBSITE
 
 What is Duckcoin?
 ----------------
@@ -12,8 +17,6 @@ with no central authority: managing transactions and issuing money are carried
 out collectively by the network. Duckcoin Core is the name of open source
 software which enables the use of this currency.
 
-For more information, as well as an immediately useable, binary version of
-the Duckcoin Core software, see https://duckcoin.org
 
 License
 -------
